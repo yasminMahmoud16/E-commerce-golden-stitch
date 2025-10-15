@@ -37,7 +37,9 @@ export const signupSchema =
         
         }),
     confirmPassword: z.string(),
-    phone: z.string().regex(/^(002|\+2)?01[0125][0-9]{8}$/),
+        phone: z.string().regex(/^(002|\+2)?01[0125][0-9]{8}$/, {
+            message: "Invalid phone number. Please enter a valid Egyptian number starting with 01, +201, or 00201 followed by 9 digits."
+    }),
     gender: z.enum(GenderEnum).default(GenderEnum.male),
 }).refine((data) => 
     data.password === data.confirmPassword, {

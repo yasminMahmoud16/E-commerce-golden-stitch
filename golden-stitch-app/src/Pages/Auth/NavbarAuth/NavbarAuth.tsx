@@ -1,15 +1,8 @@
 import { useState } from 'react';
-import {Link, useLocation, useNavigate } from 'react-router-dom';
-// import { AuthContext } from '../Context/AuthContext';
-// import { CartContext } from '../Context/CartContext';
-// import { Badge } from '@mui/material';
-// import { WishContext } from '../Context/WishContext';
+import {Link, useLocation } from 'react-router-dom';
 import logo from "@/assets/Images/logo.png"
 export default function NavbarAuth() {
-  // const { token, setToken } = useContext(AuthContext);
-  const navigate = useNavigate();
-  // const { numOfCartItems } = useContext(CartContext);
-  // const { userwishItems } = useContext(WishContext);
+
 
   const [isNavOpen, setIsNavOpen] = useState(false);
   const location = useLocation();
@@ -18,16 +11,12 @@ export default function NavbarAuth() {
     setIsNavOpen(!isNavOpen);
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    // setToken(null);
-    navigate('/login');
-  };
 
   return (
     <>
       <nav className="bg-dark-blue-nav border-gray-200 dark:bg-gray-900 shadow md:flex md:items-center md:justify-around">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-4">
+          <Link to={"/"}>
           <div className=' flex justify-center items-center gap-2'>
             <div>
               <img src={logo} alt=""  className='w-10'/>
@@ -35,6 +24,7 @@ export default function NavbarAuth() {
               <p className='bg-gradient-to-r from-gold-dark to-gold-light bg-clip-text text-transparent uppercase font-bold text-xl'>golden stitch</p>
 
           </div>
+          </Link>
 
           <button
             onClick={toggleNavbar}

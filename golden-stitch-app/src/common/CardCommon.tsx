@@ -21,7 +21,7 @@ export default function CardCommon({
 }:cardProps) {
   return <>
     <Card
-      onClick={() => { onClickCard() }}
+onClick={() => onClickCard?.()}
       className="group  cursor-pointer w-96 p-0 bg-transparent relative border-none overflow-hidden rounded-none">
       <CardContent className=" p-0">
         <img src={image} alt="card1" className="" />
@@ -44,7 +44,7 @@ export default function CardCommon({
             <button
               onClick={(e) => {
                 e.stopPropagation()
-                onClickWishList()
+                onClickWishList?.()
               }}
               className="w-9 h-9 rounded-full bg-gray-400/15 flex items-center justify-center">
 
@@ -54,7 +54,7 @@ export default function CardCommon({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onClickCart()
+                onClickCart?.()
               }}
               className="w-9 h-9 rounded-full bg-gray-400/15 flex items-center justify-center mt-3">
 
@@ -66,7 +66,7 @@ export default function CardCommon({
       <CardHeader className="absolute opacity-0  -bottom-10 bg-gray-50/15 w-full p-2 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:bottom-0">
         <CardTitle className="text-gray-300 font-semibold text-xl capitalize">{title}</CardTitle>
         <CardDescription className="flex items-center justify-center" >
-          <p className="capitalize text-gray-300">{description }</p>
+          <p className="capitalize text-gray-300">{description.slice(0,60) }</p>
           <p className="font-bold text-xl text-[#fdd888] w-30">{price} $</p>
         </CardDescription>
         

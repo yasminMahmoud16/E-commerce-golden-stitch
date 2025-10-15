@@ -1,52 +1,52 @@
-import {  createHashRouter, RouterProvider } from 'react-router-dom'
-import RouterLayout from './Layout/RouterLayout'
-import { lazy, Suspense } from 'react';
-// import Categories from './Components/Categories/Categories';
-// import Brands from './Components/Brands/Brands';
-// import Login from './Components/Login/Login';
-// import Register from './Components/Register/Register';
-import Error from './Components/Error/Error';
-// import AuthContextProvider from './Components/Context/AuthContext';
-// import Guard from './Components/Guard/Guard';
-// import AuthGuard from './Components/AuthGuard/AuthGuard';
-import { QueryClient ,QueryClientProvider } from "@tanstack/react-query";
-import AuthLayout from './Layout/AuthLayout';
-import AuthContextProvider from './Context/AuthContext';
-import ToggleCommon from './common/ToggleCommon';
-// import ProductDetails from './Components/ProductDetails/ProductDetails';
-// import CartContextProvider from './Components/Context/CartContext';
-// import { Toaster } from 'react-hot-toast/src/components/toaster';
-// import ProductContextProvider from './Components/Context/ProductContext';
-// import WishContextProvider from './Components/Context/WishContext';
-// import WishList from './Components/WishList/WishList';
-// import ForgetPassword from './Components/ForgetPassword/ForgetPassword';
-// import PassCode from './Components/ForgetPassword/PassCode';
-// import ResetUser from './Components/ForgetPassword/ResetUser';
-// import Payment from './Components/Payment/Payment';
-// import Cart from './Components/Cart/Cart';
-// import AllOrders from './Components/AllOrders/AllOrders';
-// import Products from './Components/Products/Products';
-// import ProductContextProvider from './Components/Context/ProductContext';
-// import OvalLoading from './Loading/OvalLoading.jsx';
-// import LandingPage from './Components/Home/LandingPage';
-const LandingPage = lazy(() => import('@/Pages/Home/LandingPage'));
-const Register = lazy(() => import('@/Pages/Auth/Register/Register'));
-const Login = lazy(() => import('@/Pages/Auth/login/Login'));
-const ConfirmAccount = lazy(() => import('@/Pages/Auth/Register/ConfirmAccount'));
-const ForgetPassword = lazy(() => import('@/Pages/Auth/forgetPassword/ForgetPassword'));
-const VerifyAccount = lazy(() => import('@/Pages/Auth/forgetPassword/VerifyAccount'));
-const CreateNewPassword = lazy(() => import('@/Pages/Auth/forgetPassword/CreateNewPassword'));
-const ProductDetails = lazy(() => import('@/Pages/ProductDetails/ProductDetails'));
-const OrderConfirm = lazy(() => import('@/Pages/Order/OrderConfirm'));
-const Profile = lazy(() => import('@/Pages/User/Profile'));
-import { Toaster } from 'sonner'
-import UserLayout from './Layout/userLayout';
+// App.tsx
+import { createHashRouter, RouterProvider } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
+import RouterLayout from "./Layout/RouterLayout";
+import AuthLayout from "./Layout/AuthLayout";
+import UserLayout from "./Layout/UserLayout";
+import AdminLayout from "./Layout/AdminLayout";
+import Error from "./Components/Error/Error";
+import AuthContextProvider from "./Context/AuthContextProvider.js";
+import Guard from "./Components/Guard/Guard";
+import AuthGuard from "./Components/AuthGuard/AuthGuard";
+import {SpinnerCustom} from "./Loading/SpinnerCustom.js"; // Assuming you have a loading component
+import { SpinnerCustomData } from "./Loading/SpinnerCustomData.js";
+import CategoryContextProvider from "./Context/CategoryContextProvider.js";
+import ProductContextProvider from "./Context/ProductContextProvider.js";
+// import CartContextProvider from "./Context/CartContextProvider.js";
+import ProfileContextProvider from "./Context/ProfileContextProvider.js";
+import CartContextProvider from "./Context/CartContextProvider.js";
+// import OrderContextProvider from "./Context/OrderContext.js";
+// import OrderContextProvider from "./Context/OrderContext.js";
+// import WishContextProvider from "./Context/WishContext.js";
+// import Products from "./Pages/Product/Products.js";
 
+// Lazy-loaded components
+const LandingPage = lazy(() => import("@/Pages/Home/LandingPage"));
+const Register = lazy(() => import("@/Pages/Auth/Register/Register"));
+const Login = lazy(() => import("@/Pages/Auth/login/Login"));
+const ConfirmAccount = lazy(() => import("@/Pages/Auth/Register/ConfirmAccount"));
+const ForgetPassword = lazy(() => import("@/Pages/Auth/forgetPassword/ForgetPassword"));
+const VerifyAccount = lazy(() => import("@/Pages/Auth/forgetPassword/VerifyAccount"));
+const CreateNewPassword = lazy(() => import("@/Pages/Auth/forgetPassword/CreateNewPassword"));
+const ProductDetails = lazy(() => import("@/Pages/Product/ProductDetails.js"));
+const OrderConfirm = lazy(() => import("@/Pages/Order/OrderConfirm"));
+const Profile = lazy(() => import("@/Pages/User/Profile"));
+const OrderDetails = lazy(() => import("@/Pages/User/OrderDetails"));
+const AccountSetting = lazy(() => import("@/Pages/User/AccountSetting"));
+const ChangePassword = lazy(() => import("@/Pages/User/ChangePassword"));
+const Users = lazy(() => import("@/Pages/Admin/Users"));
+const AdminOrders = lazy(() => import("@/Pages/Admin/AdminOrders"));
+const AdminCategory = lazy(() => import("@/Pages/Admin/AdminCategory"));
+const AdminProducts = lazy(() => import("@/Pages/Admin/AdminProducts"));
+const Products = lazy(() => import("@/Pages/Product/Products.js"));
+const Delete = lazy(() => import("./common/Delete"));
 
+const queryClient = new QueryClient();
 
-const queryClint = new QueryClient();
-
-const route = createHashRouter([
+const router = createHashRouter([
   {
     path: "",
     element: <RouterLayout />,
@@ -54,142 +54,51 @@ const route = createHashRouter([
       {
         index: true,
         element: (
-          <Suspense
-            // fallback={
-            //   // <OvalLoading />
-            // }
-          >
+          <Suspense fallback={<SpinnerCustomData />}>
             <LandingPage />
           </Suspense>
         ),
       },
       {
-        path:"test",
+        path: "test",
         element: (
-          <Suspense
-            // fallback={
-            //   // <OvalLoading />
-            // }
-          >
-            <ToggleCommon />
+          <Suspense fallback={<SpinnerCustom />}>
+            <Delete />
           </Suspense>
         ),
       },
-      // {
-      //   path: "cart",
-      //   element: (
-      //     <Guard>
-      //       <Cart />
-      //     </Guard>
-      //   ),
-      // },
-      // {
-      //   path: "products",
-      //   element: (
-      //     <Guard>
-      //       <Products />
-      //     </Guard>
-      //   ),
-      // },
       {
         path: "product-details/:id",
         element: (
-          <Suspense>
-
-            <ProductDetails />
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <ProductDetails />
+            </Guard>
           </Suspense>
-          // <Guard>
-          // </Guard>
+        ),
+      },
+      {
+        path: "products",
+        element: (
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <Products />
+            </Guard>
+          </Suspense>
         ),
       },
       {
         path: "confirm-order",
         element: (
-          <Suspense>
-
-            <OrderConfirm />
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <OrderConfirm />
+            </Guard>
           </Suspense>
-          // <Guard>
-          // </Guard>
         ),
       },
-      // // {
-      // //   path: "categories",
-      // //   element: (
-      // //     // <Guard>
-      // //     //   <Categories />
-      // //     // </Guard>
-      // //   ),
-      // // },
-      // {
-      //   path: "allorders",
-      //   element: (
-      //     <Guard>
-      //       <AllOrders />
-      //     </Guard>
-      //   ),
-      // },
-      // // {
-      // //   path: "brands",
-      // //   element: (
-      // //     // <Guard>
-      // //     //   <Brands />
-      // //     // </Guard>
-      // //   )
-      // // },
-      // {
-      //   path: "wish-list",
-      //   element: (
-      //     <Guard>
-      //       <WishList />
-      //     </Guard>
-      //   ),
-      // },
-      // {
-      //   path: "payment",
-      //   element: (
-      //     <Guard>
-      //       <Payment />
-      //     </Guard>
-      //   ),
-      // },
-      // {
-      //   path: "login",
-      //   element: (
-      //     <AuthGuard>
-      //       <Login />
-      //     </AuthGuard>
-      //   ),
-      // },
-      // {
-      //   path: "forget-password",
-      //   element: (
-      //     <AuthGuard>
-      //       <ForgetPassword />
-      //     </AuthGuard>
-      //   ),
-      // },
-      // {
-      //   path: "password-code",
-      //   element: (
-      //     <AuthGuard>
-      //       <PassCode />
-      //     </AuthGuard>
-      //   ),
-      // },
-      // {
-      //   path: "reset-User",
-      //   element: (
-      //     <AuthGuard>
-      //       <ResetUser />
-      //     </AuthGuard>
-      //   ),
-      // },
-      
       { path: "*", element: <Error /> },
     ],
-
-
   },
   {
     element: <AuthLayout />,
@@ -197,112 +106,216 @@ const route = createHashRouter([
       {
         path: "register",
         element: (
-          <Suspense>
-
-            <Register />
+          <Suspense fallback={<SpinnerCustom />}>
+            <AuthGuard>
+              <Register />
+            </AuthGuard>
           </Suspense>
-          // <AuthGuard>
-          // </AuthGuard>
         ),
       },
       {
         path: "login",
         element: (
-          <Suspense>
-
-            <Login />
+          <Suspense fallback={<SpinnerCustom />}>
+            <AuthGuard>
+              <Login />
+            </AuthGuard>
           </Suspense>
-          // <AuthGuard>
-          // </AuthGuard>
         ),
       },
       {
         path: "confirm-account",
         element: (
-          <Suspense>
-
-            <ConfirmAccount />
+          <Suspense fallback={<SpinnerCustom />}>
+            <AuthGuard>
+              <ConfirmAccount />
+            </AuthGuard>
           </Suspense>
-          // <AuthGuard>
-          // </AuthGuard>
         ),
       },
       {
         path: "forget-password",
         element: (
-          <Suspense>
-
-            <ForgetPassword />
+          <Suspense fallback={<SpinnerCustom />}>
+            <AuthGuard>
+              <ForgetPassword />
+            </AuthGuard>
           </Suspense>
-
-          // <AuthGuard>
-          // </AuthGuard>
         ),
       },
       {
         path: "verify-account",
         element: (
-          <Suspense>
-
-            <VerifyAccount />
+          <Suspense fallback={<SpinnerCustom />}>
+            <AuthGuard>
+              <VerifyAccount />
+            </AuthGuard>
           </Suspense>
-
-          // <AuthGuard>
-          // </AuthGuard>
         ),
       },
       {
         path: "create-new-password",
         element: (
-          <Suspense>
-
-            <CreateNewPassword />
+          <Suspense fallback={<SpinnerCustom />}>
+            <AuthGuard>
+              <CreateNewPassword />
+            </AuthGuard>
           </Suspense>
-
-          // <AuthGuard>
-          // </AuthGuard>
         ),
       },
-    ]
+    ],
   },
   {
-    element: <UserLayout />,
+    element:
+      <Suspense fallback={<SpinnerCustom />}>
+
+        <UserLayout />
+      </Suspense>,
+    
     children: [
       {
         path: "profile",
         element: (
-          <Suspense>
-
-            <Profile />
+          <Suspense fallback={""}>
+            <Guard>
+              <Profile />
+            </Guard>
           </Suspense>
-          // <AuthGuard>
-          // </AuthGuard>
         ),
       },
-
-    ]
+      {
+        path: "orders",
+        element: (
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <OrderDetails />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      {
+        path: "account-setting",
+        element: (
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <AccountSetting />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      {
+        path: "change-password",
+        element: (
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <ChangePassword />
+            </Guard>
+          </Suspense>
+        ),
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "profile",
+        element: (
+          <Suspense >
+            <Guard>
+              <Profile />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      {
+        path: "users",
+        element: (
+          <Suspense>
+            <Guard>
+              <Users />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      {
+        path: "orders",
+        element: (
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <AdminOrders />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      {
+        path: "category",
+        element: (
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <AdminCategory />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      {
+        path: "products",
+        element: (
+          <Suspense fallback={<SpinnerCustomData />}>
+            <Guard>
+              <AdminProducts />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      {
+        path: "account-setting",
+        element: (
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <AccountSetting />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      {
+        path: "change-password",
+        element: (
+          <Suspense fallback={<SpinnerCustom />}>
+            <Guard>
+              <ChangePassword />
+            </Guard>
+          </Suspense>
+        ),
+      },
+    ],
   },
 ]);
+
 export default function App() {
-  return <>
-    {/* <RouterProvider router={routes}/> */}
-              <QueryClientProvider client={queryClint}>
-              <AuthContextProvider>
-        <RouterProvider router={route} />
-                    <Toaster richColors position="top-right"/>
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthContextProvider>
+              <CartContextProvider>
+        <ProfileContextProvider>
+          <CategoryContextProvider>
 
- {/* 
+          <ProductContextProvider>
+                {/* <WishContextProvider> */}
 
-          <CartContextProvider>
-            <WishContextProvider> */}
-        {/* <ProductContextProvider> */}
-              {/* <Toaster position="top-right" /> */}
-        {/* </ProductContextProvider> */}
-            {/* </WishContextProvider>
+                {/* <OrderContextProvider> */}
+
+          <RouterProvider router={router} />
+                {/* </OrderContextProvider> */}
+                {/* </WishContextProvider> */}
+                
+          </ProductContextProvider>
+          </CategoryContextProvider>
+          <Toaster richColors position="top-right" />
+        </ProfileContextProvider>
           </CartContextProvider>
-          */}
-          </AuthContextProvider>
-          </QueryClientProvider>
-
-  </>
+      </AuthContextProvider>
+    </QueryClientProvider>
+  );
 }

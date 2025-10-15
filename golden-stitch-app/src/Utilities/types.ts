@@ -1,11 +1,18 @@
+import type { updateProfile } from "@/Pages/Auth/validation/userValidation";
 import type { ReactNode } from "react";
-
+import {z} from "zod"
+import type { ICategory, IProduct } from "./interfaces";
 
 
 
 export enum GenderEnum {
     male = "male",
     female = "female",
+}
+export enum RoleEnum {
+    user = "user",
+    admin = "admin",
+    superAdmin = "super-admin",
 }
 export enum PaymentMethodEnum {
   cash = "cash",
@@ -14,6 +21,7 @@ export enum PaymentMethodEnum {
 export enum CardEnum {
     cart = "cart",
     wishList = "wish-list",
+  category = "category",
 }
 export enum logoutEnum {
   all = "all",
@@ -61,16 +69,15 @@ export type createNewPasswordField = {
 };
 
 export type cartProps = {
-  image?: string,
-  title?: string;
-  price?: string;
   type?: CardEnum;
-  cartList?: any[];
-  wishListItems?: any[];
+  cartList?: CartItemFromAPI[];
+  wishListItems?: WishListItem[];
 }
 
 export type cardProps = cartProps & {
-  
+  title?: string;
+  price?:number
+  image?: string;
   description: string;
   onClickCard?: () => void;
   onClickWishList?: () => void;
@@ -81,17 +88,32 @@ export type ToggleCommonProps = {
   openCart?: boolean;
   openWishList?: boolean;
   setOpenWishList?: (open: boolean) => void;
+  setOpenCategory?: (open: boolean) => void;
   setOpenCart?: (open: boolean) => void;
+  openCategory?: boolean
+
+
+
   title?: string
   type?:CardEnum
 };
 export type PopupCommonProps = {
-  text: string;
-  title: string;
-  image: string;
+  text?: string;
+  title?: string;
+  image?: string;
   open: boolean;
-  onOpenChange: (open: boolean) => void
-}
+  onOpenChange: (open: boolean) => void;
+  options?: { label: string; value?: string; onClick?: () => void; className?: string; }[];
+  showCancel?: boolean;
+  showAction?: boolean;
+  actionText?: string;
+  actionLink?: string;
+  classNameTitle?: string
+  classNameText?: string
+  
+  
+};
+
 export type logoutFlags = {
   flag:logoutEnum
 }
@@ -103,3 +125,97 @@ export type order = {
 }
 
 
+export type SidebarLink = {
+  label: string;
+  path: string;
+  icon?: React.ReactNode;
+}
+
+export type AppSidebarProps = {
+  sidebarLinks: SidebarLink[];
+}
+
+
+export type changePasswordFields = {
+
+  oldPassword: string;
+  password: string;
+  confirmPassword: string;
+  flag?: logoutEnum
+
+};
+
+
+export type FieldTypes<T extends Record<string, any> = any> = {
+  name: keyof T | string;
+  label?: string;
+  type?: string;
+  placeholder?: string;
+};
+
+export type FormDataUpdate = z.infer<typeof updateProfile>;
+
+export type EditCommonProps<T extends Record<string, any> = any> = {
+  title?: string;
+  fields: FieldTypes<T>[];
+  data: T | null;
+  onSave?: (values: T) => void;
+  onCancel?: () => void;
+};
+
+export type editFields = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  address: string;
+  gender?: GenderEnum;
+};
+export type productDetails  = {
+  product: IProduct | null; onBack: () => void; onEdit: (cat: IProduct) => void; onDeleteSuccess: () => void;
+};
+export type categoryDetails = {
+  category: ICategory | null; onBack: () => void;  onEdit: (cat: ICategory) => void; onDeleteSuccess: () => void;
+};
+export type categoryEdit = {
+  category: ICategory | null, onBack: () => void,
+};
+
+
+
+
+
+
+
+export type ProductFormValues = {
+  id?: string;
+  name: string;
+  mainPrice: number;
+  stock: number;
+  discountPercent: number;
+  description: string;
+  categoryId?: string;
+  attachments?: FileList | File[];
+  category: {
+    id?: string;
+    name?: string;
+  };
+};
+
+export type userData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  gender: GenderEnum
+  address: string;
+}
+
+
+export type CartItemFromAPI = {
+  productId: string;
+  quantity: number;
+  product?: IProduct;
+};
+
+
+export type WishListItem = string;

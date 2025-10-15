@@ -17,18 +17,20 @@ import { useState } from "react";
 
 import { Icons } from "@/assets/Icons/icons";
 import type { loginFields } from "@/Utilities/types";
-import useLogin from "@/Hooks/useLogin";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../validation/authValidation";
 import { Link } from "react-router-dom";
+import useGlobal from "@/Hooks/useGlobal";
+import { useAuthContext } from "@/Hooks/useAppContexts";
 
 
 
 
 export default function LoginInput() {
-  const { login, loading } = useLogin();
+  const { login, loading } = useAuthContext();
   const [isView, setIsView] = useState(false);
+  const {navigate} =useGlobal()
 
   const handleClickVisibility = () => {
     setIsView(!isView);
@@ -43,7 +45,10 @@ const form = useForm<loginFields>({
   });
 
   const handleSubmit = async (values: loginFields) => {
-    await login(values);
+        const success = await login(values);
+    if (success) {
+      navigate("/")  
+    }
   };
   return (
     <>

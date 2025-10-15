@@ -1,6 +1,6 @@
 import  { useContext, useEffect } from 'react'
 import { WishContext } from '../../Context/WishContext';
-import { CartContext } from '../../Context/CartContext';
+import { CartContext } from '../../Context/CartContextProvider';
 // import { ThreeDots } from 'react-loader-spinner';
 import wishList from '../../assets/wishlist.png'
 export default function WishList() {

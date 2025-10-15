@@ -7,11 +7,9 @@ import {
   SelectValue,
 } from "@/Components/ui/select"
 import { Input } from "@/Components/ui/input";
-
 import { useForm } from "react-hook-form";
 import BtnCommon from "@/common/BtnCommon";
 import { useState } from "react";
-
 import { Icons } from "@/assets/Icons/icons";
 import type { signupFields } from "@/Utilities/types";
 import useSignup from "@/Hooks/useSignup";
@@ -210,7 +208,6 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
               <FormItem>
                 <FormLabel className="text-dark-blue-nav">Gender</FormLabel>
                 <FormControl>
-                  {/* <Input placeholder={`${input.name}`} className="w-md bg-white py-5 px-4 mb-2"{...field} /> */}
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <SelectTrigger className="w-[180px] bg-white">
                       <SelectValue placeholder="Gender" />

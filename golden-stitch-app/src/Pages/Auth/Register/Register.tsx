@@ -1,8 +1,7 @@
 
-import useSignup from "@/Hooks/useSignup";
 import HaveAccount from "./HaveAccount";
 import SignUp from "./SignUp";
-import corner1 from "@/assets/corner1.png"
+import corner1 from "@/assets/Images/corner1.png"
 
 
 
@@ -12,7 +11,7 @@ export default function Register() {
 
 
 
-    <section className=' min-h-screen flex items-center justify-center bg-radial from-dark-blue-1 via-dark-blue-2 to-dark-blue-nav '>
+    <section className=' flex items-center justify-center bg-radial from-dark-blue-1 via-dark-blue-2 to-dark-blue-nav min-h-screen overflow-hidden'>
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-6   shadow-[0_0_10px_rgba(242,217,153,0.1)]  rounded-4xl my-5 ">
           <div className=" hidden md:block md:relative col-span-2 rounded-tl-4xl  bg-radial from-dark-blue-1 via-dark-blue-2 to-dark-blue-nav ">

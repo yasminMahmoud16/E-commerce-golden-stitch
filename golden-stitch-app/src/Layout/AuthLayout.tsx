@@ -6,7 +6,7 @@ export default function AuthLayout() {
     return <>
          <div className="min-h-screen ">
             {/* Auth pages will render here */}
-            <NavbarAuth/>
+        <NavbarAuth/>
       <Outlet />
     </div>
     </>
