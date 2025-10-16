@@ -1,6 +1,5 @@
 import OrderComplete from "./OrderComplete";
 import OrderConfirmSide from "./OrderConfirmSide";
-import corner1 from "@/assets/Images/corner1.png"
 export default function OrderConfirm() {
   return (
     <>

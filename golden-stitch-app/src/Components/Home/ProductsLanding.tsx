@@ -33,7 +33,7 @@ export default function ProductsLanding() {
         queryKey: ["landingProducts", page],
         queryFn: async () => {
             const res = await axiosInstance.get(`/product?page=${page}&size=10`);
-            console.log("response data =>", res.data.data);
+            // console.log("response data =>", res.data.data);
             return res.data.data.products;
         },
         // keepPreviousData: true,

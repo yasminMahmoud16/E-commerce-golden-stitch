@@ -60,8 +60,8 @@ export default function CartContextProvider({ children }: { children: ReactNode 
                 headers: getAuthHeader()
             });
 
-            console.log({ getCart: res });
-            console.log({ cartPro: res.data.data.cart.products });
+            // console.log({ getCart: res });
+            // console.log({ cartPro: res.data.data.cart.products });
             const products = res.data?.data?.cart?.products || [];
 
             return products;
@@ -73,6 +73,7 @@ export default function CartContextProvider({ children }: { children: ReactNode 
                 const generalError = error?.response?.data?.message;
                 console.log(detailedError || generalError || "Something went wrong");
             }
+            return []
         }
     };
 

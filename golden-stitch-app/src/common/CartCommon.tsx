@@ -31,7 +31,7 @@ export default function CartCommon({
 
 
     const listToRender = type === CardEnum.wishList ? wishListItems : cartList;
-    console.log({listToRender});
+    // console.log({listToRender});
     
 
 
@@ -113,10 +113,13 @@ export default function CartCommon({
                                 className="bg-transparent text-dark-blue-2 border border-dark-blue-1 rounded-md w-72 transition-all duration-300 ease-in-out hover:bg-dark-blue-nav hover:text-white"
                             />
                         </Link>
+
+                        <Link to={"/confirm-order"}>
                         <BtnCommon
                             text="Complete Your Order"
                             className="bg-dark-blue-2 text-white border border-dark-blue-1 rounded-md w-72 transition-all duration-300 ease-in-out hover:bg-dark-blue-nav hover:text-white"
                         />
+                        </Link>
                     </div>
                 </> : <>
                     <div className="flex flex-col items-center justify-center gap-3 mb-3">

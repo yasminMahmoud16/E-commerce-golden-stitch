@@ -35,6 +35,16 @@ export default function AdminLayout() {
 
         },
         {
+            label: "Archive Products", path: "archive-products",
+            icon: <Icons.BiSolidCategoryAlt />
+
+        },
+        {
+            label: "Archive Category", path: "archive-category",
+            icon: <Icons.BiSolidCategoryAlt />
+
+        },
+        {
             label: "Account Setting", path: "account-setting",
             icon: <Icons.IoIosSettings />
 

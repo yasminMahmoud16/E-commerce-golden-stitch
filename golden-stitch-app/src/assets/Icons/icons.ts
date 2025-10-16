@@ -22,6 +22,9 @@ import { FaUsers } from "react-icons/fa";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { IoLogOut } from "react-icons/io5";
 import { FaCamera } from "react-icons/fa";
+import { IoMdArchive } from "react-icons/io";
+import { MdOutlineRestore } from "react-icons/md";
+import { MdCancel } from "react-icons/md";
 
 export const Icons = {
     FaRegEye,
@@ -47,5 +50,5 @@ export const Icons = {
     BiSolidCategoryAlt,
     FaUsers,
     AiOutlinePlusCircle,
-    IoLogOut, FaCamera
+    IoLogOut, FaCamera, IoMdArchive, MdOutlineRestore,MdCancel
 };

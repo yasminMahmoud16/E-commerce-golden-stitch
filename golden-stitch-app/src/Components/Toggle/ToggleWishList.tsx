@@ -19,7 +19,7 @@ export default function ToggleWishList({ openCart, setOpenCart, title }: ToggleC
     const userWishList: string[] = Array.isArray(data?.wishlist) ? data.wishlist : [];
 
 
-    console.log({ userWishList: data?.wishlist });
+    // console.log({ userWishList: data?.wishlist });
 
 
 

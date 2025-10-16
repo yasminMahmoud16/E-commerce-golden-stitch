@@ -32,31 +32,28 @@ export default function Navbar() {
     else if (e.currentTarget.id === CardEnum.category) { setOpenCategory(true); } 
   };
 
-  const handleLogoutClick = async(values: logoutEnum) => {
-    await logout({values})
+  const handleLogoutClick = async(flag: logoutEnum) => {
+    await logout({flag})
   };
 
-  const linkClasses = (isActive: boolean) =>
-    `relative block py-2 px-3 rounded md:bg-transparent md:p-0 transition-colors duration-200 ${
-      isActive
-        ? "text-gold after:content-[''] after:absolute after:left-0 after:-bottom-2 after:w-full after:h-[2px] after:bg-gold"
-        : "text-[#DBC9A1] hover:text-gold-dark"
-    }`;
+
+  
+  
 
   return (
     <>
       <nav
         className={`${
           isLanding
-            ? `relative before:content-[''] before:absolute before:-top-4 before:left-0 before:w-full before:h-[2px] before:bg-gold
+            ? `p-3 relative before:content-[''] before:absolute before:-top-4 before:left-0 before:w-full before:h-[2px] before:bg-gold
             after:content-[''] after:absolute after:-top-2 after:left-0 after:w-full after:h-[2px] after:bg-gold`
-            : `p-3 bg-radial from-dark-blue-1 to-dark-blue-nav border-gray-200 shadow md:flex md:items-center md:justify-around`
-        } p-3 bg-radial from-dark-blue-1 to-dark-blue-nav border-gray-200 shadow md:flex md:items-center md:justify-around`}
+            : ` bg-radial from-dark-blue-1 to-dark-blue-nav border-gray-200 shadow md:flex md:items-center md:justify-around`
+        }  bg-radial from-dark-blue-1 to-dark-blue-nav border-gray-200 shadow md:flex md:items-center md:justify-around`}
       >
         {/* Logo + Toggle */}
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-4 ">
           <div className="flex items-center space-x-3 rtl:space-x-reverse">
-            {!isLanding && <img src={logo} className="h-15 w-15" alt="Logo" />}
+            {!isLanding && <img src={logo} className="h-10 w-10" alt="Logo" />}
           </div>
           <button
             onClick={toggleNavbar}
@@ -88,21 +85,35 @@ export default function Navbar() {
           className={`${isNavOpen ? "block" : "hidden"} w-full md:flex md:flex-row items-center justify-center bg-transparent`}
         >
 <ul
-  className="w-full border-none md:ml-30 font-medium flex flex-col p-4 md:p-0 mt-4 
+  className="relative w-full border-none md:ml-30 font-medium flex flex-col p-4 md:p-0 mt-4 
             border border-gray-100 rounded-lg  
             md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent 
             md:justify-center md:items-center md:mx-auto"
 >
   <li>
-    <NavLink to="/#hero" end className={({ isActive }) => linkClasses(isActive)}>
-      Home
-    </NavLink>
+<NavLink
+  to="/#hero"
+  className={`relative 
+        ${location.hash === "#hero" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
+        after:content-[''] after:absolute after:left-0 after:-bottom-1 
+        after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
+        hover:after:w-full
+      `}
+>
+  Home
+</NavLink>
+
   </li>
 
   <li>
     <NavLink
       to="/#about"
-      className={() => linkClasses(location.hash === "#about")}
+      className={`relative 
+        ${location.hash === "#about" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
+        after:content-[''] after:absolute after:left-0 after:-bottom-1 
+        after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
+        hover:after:w-full
+      `}
     >
       About Us
     </NavLink>
@@ -111,17 +122,26 @@ export default function Navbar() {
   <li>
     <NavLink
       to="/products"
-      className={({ isActive }) => linkClasses(isActive)}
+      className={`relative 
+        ${location.hash === "/products" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
+        after:content-[''] after:absolute after:left-0 after:-bottom-1 
+        after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
+        hover:after:w-full
+      `}
     >
       Products
     </NavLink>
   </li>
 
   <li>
-    {/* ✅ Use hash check only */}
     <NavLink
       to="/#contact"
-      className={() => linkClasses(location.hash === "#contact")}
+      className={`relative 
+        ${location.hash === "#contact" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
+        after:content-[''] after:absolute after:left-0 after:-bottom-1 
+        after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
+        hover:after:w-full
+      `}
     >
       Contact Us
     </NavLink>

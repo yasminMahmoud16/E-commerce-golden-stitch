@@ -85,7 +85,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
         toast.error(error.response?.data?.message || "An error occurred");
         console.log("Axios Error:", error);
       } else {
-        console.error("Unexpected error:", error);
+        console.log("Unexpected error:", error);
         toast.error("Unexpected error");
       }
       return null;
@@ -159,7 +159,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
     } else if (!token) {
       setProfile(null);
     }
-    console.log("data comes from profile context =====" ,data);
+    // console.log("data comes from profile context =====" ,data);
     
   }, [data, token]);
 

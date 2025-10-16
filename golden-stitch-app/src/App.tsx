@@ -15,13 +15,12 @@ import {SpinnerCustom} from "./Loading/SpinnerCustom.js"; // Assuming you have a
 import { SpinnerCustomData } from "./Loading/SpinnerCustomData.js";
 import CategoryContextProvider from "./Context/CategoryContextProvider.js";
 import ProductContextProvider from "./Context/ProductContextProvider.js";
-// import CartContextProvider from "./Context/CartContextProvider.js";
 import ProfileContextProvider from "./Context/ProfileContextProvider.js";
 import CartContextProvider from "./Context/CartContextProvider.js";
-// import OrderContextProvider from "./Context/OrderContext.js";
-// import OrderContextProvider from "./Context/OrderContext.js";
-// import WishContextProvider from "./Context/WishContext.js";
-// import Products from "./Pages/Product/Products.js";
+import OrderContextProvider from "./Context/OrderContextProvider.js";
+import ArchiveCategory from "./Pages/Admin/Archive/ArchiveCategory.js";
+import ArchiveProducts from "./Pages/Admin/Archive/ArchiveProducts.js";
+
 
 // Lazy-loaded components
 const LandingPage = lazy(() => import("@/Pages/Home/LandingPage"));
@@ -42,7 +41,6 @@ const AdminOrders = lazy(() => import("@/Pages/Admin/AdminOrders"));
 const AdminCategory = lazy(() => import("@/Pages/Admin/AdminCategory"));
 const AdminProducts = lazy(() => import("@/Pages/Admin/AdminProducts"));
 const Products = lazy(() => import("@/Pages/Product/Products.js"));
-const Delete = lazy(() => import("./common/Delete"));
 
 const queryClient = new QueryClient();
 
@@ -63,7 +61,7 @@ const router = createHashRouter([
         path: "test",
         element: (
           <Suspense fallback={<SpinnerCustom />}>
-            <Delete />
+            {/* <Delete /> */}
           </Suspense>
         ),
       },
@@ -186,13 +184,14 @@ const router = createHashRouter([
       {
         path: "orders",
         element: (
-          <Suspense fallback={<SpinnerCustom />}>
+          <Suspense fallback={<SpinnerCustomData />}>
             <Guard>
               <OrderDetails />
             </Guard>
           </Suspense>
         ),
       },
+      
       {
         path: "account-setting",
         element: (
@@ -242,7 +241,7 @@ const router = createHashRouter([
       {
         path: "orders",
         element: (
-          <Suspense fallback={<SpinnerCustom />}>
+          <Suspense fallback={<SpinnerCustomData />}>
             <Guard>
               <AdminOrders />
             </Guard>
@@ -252,7 +251,7 @@ const router = createHashRouter([
       {
         path: "category",
         element: (
-          <Suspense fallback={<SpinnerCustom />}>
+          <Suspense fallback={<SpinnerCustomData />}>
             <Guard>
               <AdminCategory />
             </Guard>
@@ -268,11 +267,28 @@ const router = createHashRouter([
             </Guard>
           </Suspense>
         ),
+      },{
+        path: "archive-products",
+        element: (
+          <Suspense fallback={<SpinnerCustomData />}>
+            <Guard>
+              <ArchiveProducts />
+            </Guard>
+          </Suspense>
+        ),
+      },{path: "archive-category",
+        element: (
+          <Suspense fallback={<SpinnerCustomData />}>
+            <Guard>
+              <ArchiveCategory />
+            </Guard>
+          </Suspense>
+        ),
       },
       {
         path: "account-setting",
         element: (
-          <Suspense fallback={<SpinnerCustom />}>
+          <Suspense fallback={<SpinnerCustomData />}>
             <Guard>
               <AccountSetting />
             </Guard>
@@ -282,7 +298,7 @@ const router = createHashRouter([
       {
         path: "change-password",
         element: (
-          <Suspense fallback={<SpinnerCustom />}>
+          <Suspense fallback={<SpinnerCustomData />}>
             <Guard>
               <ChangePassword />
             </Guard>
@@ -302,13 +318,11 @@ export default function App() {
           <CategoryContextProvider>
 
           <ProductContextProvider>
-                {/* <WishContextProvider> */}
 
-                {/* <OrderContextProvider> */}
+                <OrderContextProvider>
 
           <RouterProvider router={router} />
-                {/* </OrderContextProvider> */}
-                {/* </WishContextProvider> */}
+                </OrderContextProvider>
                 
           </ProductContextProvider>
           </CategoryContextProvider>

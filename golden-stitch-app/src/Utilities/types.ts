@@ -9,6 +9,12 @@ export enum GenderEnum {
     male = "male",
     female = "female",
 }
+export enum StateEnum {
+  placed="placed",
+  onWay = "onWay",
+  delivered = "delivered",
+  cancel = "cancel",
+}
 export enum RoleEnum {
     user = "user",
     admin = "admin",
@@ -219,3 +225,10 @@ export type CartItemFromAPI = {
 
 
 export type WishListItem = string;
+
+
+export type CreateOrder = {
+  address:string,
+  phone: string,
+  note?: string
+}

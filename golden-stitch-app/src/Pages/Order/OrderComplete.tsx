@@ -2,110 +2,120 @@ import { Icons } from '@/assets/Icons/icons'
 import BtnCommon from '@/common/BtnCommon'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/Components/ui/form'
 import { Input } from '@/Components/ui/input'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group'
-import type { order } from '@/Utilities/types'
+
+import type { CreateOrder } from '@/Utilities/types'
 import { useForm } from 'react-hook-form'
-import shipping from "@/assets/Images/shipping.png"
+import { useOrderContext } from '@/Hooks/useAppContexts'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createProductSchema } from '../Auth/validation/orderValidation'
+import { useNavigate } from 'react-router-dom'
+
+
 export default function OrderComplete() {
-      const form = useForm<order>({
-        // resolver: zodResolver(signupSchema),
-        defaultValues: {
-          email: "",
-          address: "",
-          phone: "",
-          paymentMethod:undefined,
-        }
-      });
-        const handleSubmit = async (values: order) => {
-        // await signup(values); 
-      };
+
+  const { createOrder } = useOrderContext();
+  const navigate= useNavigate()
+  const form = useForm<CreateOrder>({
+    resolver: zodResolver(createProductSchema),
+    defaultValues: {
+      address: "",
+      phone: "",
+      note: "",
+    },
+  });
+  const handleSubmit = async (values: CreateOrder) => {
+    console.log("order data", values);
+
+    await createOrder(values)
+    navigate("/")
+  };
   return <>
     <div className='container'>
       <h1 className='block md:hidden text-center text-3xl font-semibold text-dark-blue-2'>complete your order</h1>
-        <Form {...form} >
+      <Form {...form} >
         <form className="p-8 flex flex-col  items-center justify-center   " method="POST" onSubmit={form.handleSubmit(handleSubmit)}>
 
-           <FormField
-                control={form.control}
-                name="email"
 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-dark-blue-nav">email</FormLabel>
-                    <FormControl>
-                      <div className="relative w-72 md:w-md">
-                                                <Icons.MdOutlineMail
-                                                    className="absolute left-3 top-5 -translate-y-1/2 text-gray-400"
-                                                    size={23}
-                                                />
-                                                <Input
-                                                    type="text"
-                                                    placeholder="email"
-                                                    className="bg-white py-5 px-4 pl-10 mb-2 placeholder:text-gray-400" 
-                                                    {...field}
-                                                />
-                                            </div>
-                    </FormControl>
-                    <FormMessage className="mb-2" />
-                  </FormItem>
-                )}
+
+          <FormField
+            control={form.control}
+            name="address"
+
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-dark-blue-nav">address</FormLabel>
+                <FormControl>
+                  <div className="relative w-72 md:w-md">
+                    <Icons.MdOutlineDriveFileRenameOutline
+                      className="absolute left-3 top-5 -translate-y-1/2 text-gray-400"
+                      size={23}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="address"
+                      className="bg-white py-5 px-4 pl-10 mb-2 placeholder:text-gray-400"
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="mb-2" />
+              </FormItem>
+            )}
           />
-          
-                    <FormField
-                control={form.control}
-                name="address"
-
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-dark-blue-nav">address</FormLabel>
-                    <FormControl>
-                      <div className="relative w-72 md:w-md">
-                                                <Icons.MdOutlineDriveFileRenameOutline
-                                                    className="absolute left-3 top-5 -translate-y-1/2 text-gray-400"
-                                                    size={23}
-                                                />
-                                                <Input
-                                                    type="text"
-                                                    placeholder="address"
-                                                    className="bg-white py-5 px-4 pl-10 mb-2 placeholder:text-gray-400" 
-                                                    {...field}
-                                                />
-                                            </div>
-                    </FormControl>
-                    <FormMessage className="mb-2" />
-                  </FormItem>
-                )}
-              />
 
 
-           <FormField
-                control={form.control}
-                name="phone"
+          <FormField
+            control={form.control}
+            name="phone"
 
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-dark-blue-nav">phone</FormLabel>
-                    <FormControl>
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-dark-blue-nav">phone</FormLabel>
+                <FormControl>
 
-                      <div className="relative w-72 md:w-md">
-                                                <Icons.CiPhone
-                                                    className="absolute left-3 top-5 -translate-y-1/2 text-gray-400"
-                                                    size={23}
-                                                />
-                                                <Input
-                                                    type="text"
-                                                    placeholder="phone"
-                                                    className="bg-white py-5 px-4 pl-10 mb-2 placeholder:text-gray-400" 
-                                                    {...field}
-                                                />
-                                            </div>
-                    </FormControl>
-                    <FormMessage  className="mb-2"/>
-                  </FormItem>
-                )}
-              />
-           <FormField
+                  <div className="relative w-72 md:w-md">
+                    <Icons.CiPhone
+                      className="absolute left-3 top-5 -translate-y-1/2 text-gray-400"
+                      size={23}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="phone"
+                      className="bg-white py-5 px-4 pl-10 mb-2 placeholder:text-gray-400"
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="mb-2" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="note"
+
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-dark-blue-nav">note</FormLabel>
+                <FormControl>
+                  <div className="relative w-72 md:w-md">
+                    <Icons.MdOutlineMail
+                      className="absolute left-3 top-5 -translate-y-1/2 text-gray-400"
+                      size={23}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="note"
+                      className="bg-white py-5 px-4 pl-10 mb-2 placeholder:text-gray-400"
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="mb-2" />
+              </FormItem>
+            )}
+          />
+          {/* <FormField
                 control={form.control}
                 name="paymentMethod"
 
@@ -134,24 +144,24 @@ export default function OrderComplete() {
                     <FormMessage  className="mb-2"/>
                   </FormItem>
                 )}
-              />
+              /> */}
 
           <div>
 
-                  <BtnCommon
-            text="confirm your order"
-                      type="submit"
-                      // loading={loading} 
-                      className=" w-90 rounded-md
+            <BtnCommon
+              text="confirm your order"
+              type="submit"
+              // loading={loading} 
+              className=" w-90 rounded-md
             mt-4 
               bg-gradient-to-l from-dark-blue-1 to-dark-blue-nav
               transition-all duration-700 ease-in-out
                         hover:from-dark-blue-2 hover:to-[50%]
             "
-          />
+            />
           </div>
         </form>
       </Form>
-      </div>
-    </>
+    </div>
+  </>
 }

@@ -1,4 +1,4 @@
-import type { FormDataUpdate, GenderEnum, loginFields, logoutFlags, RoleEnum } from "./types";
+import type { CreateOrder, createOrder, FormDataUpdate, GenderEnum, loginFields, logoutFlags, RoleEnum } from "./types";
 import type { UseMutationResult } from "@tanstack/react-query";
 
 export interface IProfileContextType {
@@ -32,14 +32,16 @@ export interface IProfileContextType {
     }
 export interface IProductContextType {
     allProductsData: IProduct[] | null;
+    archiveProducts: IProduct[] | null;
     page: number;
     isLoading: boolean;
     // size: number;
     search: string;
     setPage: React.Dispatch<React.SetStateAction<number>>;
     setSearch: React.Dispatch<React.SetStateAction<string>>;
-    getProductById:(id:string)=>Promise<IProduct>
-    softDelProduct:(id:string)=>Promise<string>
+    getProductById: (id: string) => Promise<IProduct>;
+    softDelProduct: (id: string) => Promise<string>;
+    restoreProduct: (id: string) => Promise<string>;
     addProduct: UseMutationResult<any, unknown, IProductUpdateInput, unknown>;
     isUpdating: boolean;
     updateProduct: UseMutationResult<any, any, any, unknown>;
@@ -52,10 +54,13 @@ export interface ICategoryContextType {
     search: string;
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     allCategoriesData: ICategory[] | null;
+    archiveCategory: ICategory[] | null;
     // categoryDetails/: ICategory | null;
     getCategoryById: (id: string) => Promise<ICategory>
     updateCategory: UseMutationResult<any, any, any, unknown>;
     softDelCategory: (id: string) => Promise<string>
+    restoreCategory: (id: string) => Promise<string>;
+    hardDelCategory: (id: string) => Promise<string>;
 }
 export interface ICartContextType {
     cartItems?: T|null;
@@ -104,6 +109,7 @@ export interface IProduct {
     };
     images: string[];
     attachments?: string[];
+    freezedAt: string;
 }
 export interface ICategory {
     id: string;
@@ -118,6 +124,7 @@ export interface ICategory {
         username?: string;
     };
     image: string;
+    freezedAt: string;
 }
 
 
@@ -162,4 +169,38 @@ export interface IUserData  {
     gender: GenderEnum;
     role: RoleEnum;
   address: string;
+}
+export interface IOrderContextType  {
+    id?: string;
+    // name: string;
+    page: number;
+    setPage: React.Dispatch<React.SetStateAction<number>>;
+    search: string;
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
+    ordersData: IOrder[]| null;
+    createOrder: (values: CreateOrder) => Promise<string |undefined>
+    onWayByAmin: (id: string) => Promise<string |undefined>
+    // getAllOrders: () => Promise<IOrder>
+    onDeliveredByAmin: (id: string) => Promise<string |undefined>
+    cancelOrder: (id: string, reason:string) => Promise<string |undefined>
+
+}
+
+
+export interface IOrder {
+    id: string;
+    address: string;
+    note: string;
+    paymentType: string;
+    phone: string;
+    status: string;
+    // stock: number;
+    // mainPrice: number;
+    // discountPercent: number;
+    createdBy: {
+        id?: string;
+        username?: string;
+    };
+    // image: string;
+    // freezedAt: string;
 }

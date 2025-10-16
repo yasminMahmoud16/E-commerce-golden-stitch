@@ -15,7 +15,7 @@ export default function CategoryContextProvider({ children }: { children: ReactN
   const [size] = useState(5);
   const [search, setSearch] = useState("");
   const [isUpdating, setIsUpdating] = useState(false); 
-  const { getAuthHeader } = useAuthContext();
+  const { getAuthHeader, token } = useAuthContext();
   const queryClient = useQueryClient();
 
   // 🔹 Get All Categories
@@ -23,7 +23,7 @@ export default function CategoryContextProvider({ children }: { children: ReactN
     const res = await axiosInstance.get(
       `/category?page=${page}&size=${size}${search ? `&search=${search}` : ""}`
     );
-    console.log(res.data.data.categories.docs);
+    // console.log(res.data.data.categories.docs);
     
     return res.data.data.categories.docs;
   };
@@ -124,7 +124,7 @@ export default function CategoryContextProvider({ children }: { children: ReactN
       } catch (error:unknown) {
         if (axios.isAxiosError(error)) {
           
-          console.log({ softDel: error });
+          // console.log({ softDel: error });
           console.log(" Product delete error:", error?.response?.data || error);
           const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
           const generalError = error?.response?.data?.message;
@@ -133,75 +133,110 @@ export default function CategoryContextProvider({ children }: { children: ReactN
         }
         return "Unexpected error";
       }
+  }
+  
+
+
+    const categoryArchives = async ({ page = 1, size = 5, search = "" }) => {
+    try {
+      const res = await axiosInstance.get(`/category/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
+      const archiveCategory =res.data.data.categories.docs
+      console.log("archiveCategory=================", res.data.data.categories.docs);
+      return archiveCategory 
+    } catch (error) {
+      console.log("product archive error", error);
+      return []; 
     }
+  }
+
+
+  
+const { data: archiveCategory = [] , refetch} = useQuery({
+  queryKey: ['archiveCategory', page, size, search],
+  queryFn: () => categoryArchives({ page, size, search }),
+  placeholderData: keepPreviousData,
+  enabled: !!token, 
+});
+
+
+
   // =====================================
     // hard Delete
   
-  //   const hardDelCategory = async (id: string): Promise<string> => {
-  //     try {
-  //       const res = await axiosInstance.delete(`/category/${id}`, {
-  //         headers: getAuthHeader(),
-  //       });
-  //       console.log({ del: res });
-  //       if (res.data.message === "Done") {
+    const hardDelCategory = async (id: string): Promise<string> => {
+      try {
+        const res = await axiosInstance.delete(`/category/${id}`, {
+          headers: getAuthHeader(),
+        });
+        console.log({ del: res });
+        if (res.data.message === "Done") {
   
-  //         Swal.fire({
-  //           title: "The Category Deleted Successfully",
-  //           icon: "success",
-  //           draggable: true,
-  //           background: "#182129",
-  //           color: "#ffff",
-  //           confirmButtonColor: "#6B4129"
-  //         });
+          Swal.fire({
+            title: "The Category Deleted Successfully",
+            icon: "success",
+            draggable: true,
+            background: "#182129",
+            color: "#ffff",
+            confirmButtonColor: "#6B4129"
+          });
   
-  //          await queryClient.invalidateQueries({ queryKey: ['allCategories'] });
-  
-  
-  //       }
-  
+          // await queryClient.invalidateQueries({ queryKey: ['allCategories'] });
+          await queryClient.invalidateQueries({ queryKey: ['archiveCategory'] });
+            refetch?.()
   
   
+        }
+        return res.data.message
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          
+          console.log({ softDel: error });
+          console.log(" Product delete error:", error?.response?.data || error);
+          const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+          const generalError = error?.response?.data?.message;
+          toast.error(detailedError || generalError || "Something went wrong");
+          return detailedError || generalError || "Something went wrong"
+        }
+            return "Something went wrong"
+
+      }
+    }
+  // restore
+    const restoreCategory = async (id: string): Promise<string> => {
+      try {
+        const res = await axiosInstance.patch(`/category/${id}/restore`, {
+          headers: getAuthHeader(),
+        });
+        console.log({ restore: res });
+        if (res.data.message === "Done") {
   
-  //       return res.data.message
-  //     } catch (error) {
-  //       console.log({ softDel: error });
-  //       console.log(" Product delete error:", error?.response?.data || error);
-  //       const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
-  //       const generalError = error?.response?.data?.message;
-  //       toast.error(detailedError || generalError || "Something went wrong");
-  //       return detailedError || generalError || "Something went wrong"
-  //     }
-  //   }
-  // // restore
-  //   const restoreCategory = async (id: string): Promise<string> => {
-  //     try {
-  //       const res = await axiosInstance.patch(`/category/${id}/restore`, {
-  //         headers: getAuthHeader(),
-  //       });
-  //       console.log({ restore: res });
-  //       if (res.data.message === "Done") {
+          Swal.fire({
+            title: "The Category Restored Successfully",
+            icon: "success",
+            draggable: true,
+            background: "#182129",
+            color: "#ffff",
+            confirmButtonColor: "#6B4129"
+          });
   
-  //         Swal.fire({
-  //           title: "The Category Restored Successfully",
-  //           icon: "success",
-  //           draggable: true,
-  //           background: "#182129",
-  //           color: "#ffff",
-  //           confirmButtonColor: "#6B4129"
-  //         });
-  
-  //          await queryClient.invalidateQueries({ queryKey: ['allCategories'] });
-  //       }
-  //       return res.data.message
-  //     } catch (error) {
-  //       console.log({ softDel: error });
-  //       console.log(" Product delete error:", error?.response?.data || error);
-  //       const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
-  //       const generalError = error?.response?.data?.message;
-  //       toast.error(detailedError || generalError || "Something went wrong");
-  //       return detailedError || generalError || "Something went wrong"
-  //     }
-  //   }
+          await queryClient.invalidateQueries({ queryKey: ['allCategories'] });
+          await queryClient.invalidateQueries({ queryKey: ['archiveCategory'] });
+            refetch?.()
+        }
+        return res.data.message
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          
+          console.log({ softDel: error });
+          console.log(" Product delete error:", error?.response?.data || error);
+          const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+          const generalError = error?.response?.data?.message;
+          toast.error(detailedError || generalError || "Something went wrong");
+          return detailedError || generalError || "Something went wrong"
+        }
+        return  "Something went wrong"
+      }
+    }
 
   return (
     <CategoryContext.Provider
@@ -215,7 +250,10 @@ export default function CategoryContextProvider({ children }: { children: ReactN
         setSearch,
         getCategoryById,
         updateCategory,
-        softDelCategory
+        softDelCategory,
+        archiveCategory,
+        restoreCategory,
+        hardDelCategory
       }}
     >
       {children}

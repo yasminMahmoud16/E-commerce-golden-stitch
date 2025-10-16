@@ -39,6 +39,7 @@ const login = async (
     const userRole = res.data?.data?.bearer;
     setRole(userRole);
     localStorage.setItem("role", userRole);
+    console.log("userRole:", res.data?.data?.bearer);
 
     const credentials = res.data?.data?.credentials;
 
@@ -103,10 +104,13 @@ const login = async (
 
       toast.success(res.data?.message);
       navigate?.("/login");
-    } catch (error: unkown) {
+    } catch (error) {
       if (axios.isAxiosError(error)) {
+        if (axios.isAxiosError(error)) {
+          console.log({errorlogout:error});
+          
+        }
         
-        console.log({errorlogout:error});
       }
       
       // const detailedError =

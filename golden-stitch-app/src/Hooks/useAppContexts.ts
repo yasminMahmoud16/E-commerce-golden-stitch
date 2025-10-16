@@ -6,6 +6,7 @@ import { ProfileContext } from "@/Context/contextCreations/ProductContext";
 import { CategoryContext } from "@/Context/contextCreations/CategoryContex.";
 import { CartContext } from "@/Context/contextCreations/CartContex.";
 import { AuthContext } from "@/Context/contextCreations/AuthContex";
+import { OrderContext } from "@/Context/contextCreations/OrderContext";
 // import { OrderContext } from "@/Context/OrderContext";
 // import { WishContext } from "@/Context/WishContext";
 
@@ -50,10 +51,10 @@ export function useCartContext() {
     }
     return context;
 }
-// export function useOrderContext() {
-//     const context = useContext(OrderContext);
-//     if (!context) {
-//         throw new Error("useOrderContext must be used within a OrderContextProvider");
-//     }
-//     return context;
-// }
+export function useOrderContext() {
+    const context = useContext(OrderContext);
+    if (!context) {
+        throw new Error("useOrderContext must be used within a OrderContextProvider");
+    }
+    return context;
+}

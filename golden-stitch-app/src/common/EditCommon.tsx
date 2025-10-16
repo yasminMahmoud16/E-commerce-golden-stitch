@@ -49,7 +49,7 @@ export default function EditCommon({
             const updatedUser = await updateUserProfile(values);
             if (updatedUser && onSave) onSave(updatedUser);
         } catch (err) {
-            console.error("Submit failed:", err);
+            console.log("Submit failed:", err);
         }
     };
 
