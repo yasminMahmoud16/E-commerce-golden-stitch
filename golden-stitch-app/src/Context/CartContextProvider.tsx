@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner';
 import type { ReactNode } from "react";
 import axios from 'axios';
-import { CartContext } from './contextCreations/CartContex.';
+import { CartContext } from './contextCreations/CartContext.';
 
 
 

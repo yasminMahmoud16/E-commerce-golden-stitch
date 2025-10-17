@@ -67,7 +67,7 @@ onClick={() => onClickCard?.()}
         <CardTitle className="text-gray-300 font-semibold text-xl capitalize">{title}</CardTitle>
         <CardDescription className="flex items-center justify-center" >
           <p className="capitalize text-gray-300">{description.slice(0,60) }</p>
-          <p className="font-bold text-xl text-[#fdd888] w-30">{price} $</p>
+          <p className="font-bold text-xl text-[#fdd888] w-30">{price} EGP</p>
         </CardDescription>
         
         {/* <CardAction>Card Action</CardAction> */}

@@ -44,6 +44,7 @@ export default function Profile() {
                                         address: profile.address,
                                         phone: profile.phone,
                                         gender: profile.gender as GenderEnum,
+                                        
                                     }
                                     : null
                             }

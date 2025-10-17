@@ -3,13 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAxios } from './useAxios';
 import Swal from "sweetalert2";
 import type { AxiosResponse } from 'axios';
-import useDashboardAdmin from './useDashboardAdmin';
+// import useDashboardAdmin from './useDashboardAdmin';
 import { toast } from 'sonner';
 import { useAuthContext } from './useAppContexts';
 import axios from 'axios';
 
 export default function useGlobal() {
-    const { refetch } = useDashboardAdmin()
+    // const { refetch } = useDashboardAdmin()
     const axiosInstance = useAxios()
     const [openPopup, setOpenPopup] = useState(false);
     const navigate = useNavigate();
@@ -42,15 +42,15 @@ export default function useGlobal() {
                     color: "#ffff",
                     confirmButtonColor: "#6B4129"
                 });
-                refetch()
+                // refetch()
 
-                if (!id) {
-                    localStorage.removeItem("token");
-                    setTimeout(() => {
+                // if (!id) {
+                //     localStorage.removeItem("token");
+                //     setTimeout(() => {
 
-                        navigate("/register");
-                    }, 2000)
-                }
+                //         navigate("/register");
+                //     }, 2000)
+                // }
             }
 
 

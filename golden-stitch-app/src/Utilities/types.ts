@@ -13,7 +13,8 @@ export enum StateEnum {
   placed="placed",
   onWay = "onWay",
   delivered = "delivered",
-  cancel = "cancel",
+  cancel = "canceled",
+  all = "all",
 }
 export enum RoleEnum {
     user = "user",
@@ -74,21 +75,7 @@ export type createNewPasswordField = {
   confirmPassword: string;
 };
 
-export type cartProps = {
-  type?: CardEnum;
-  cartList?: CartItemFromAPI[];
-  wishListItems?: WishListItem[];
-}
 
-export type cardProps = cartProps & {
-  title?: string;
-  price?:number
-  image?: string;
-  description: string;
-  onClickCard?: () => void;
-  onClickWishList?: () => void;
-  onClickCart?: () => void;
-}
 
 export type ToggleCommonProps = {
   openCart?: boolean;
@@ -152,7 +139,7 @@ export type changePasswordFields = {
 };
 
 
-export type FieldTypes<T extends Record<string, any> = any> = {
+export type FieldTypes<T extends Record<string, string> > = {
   name: keyof T | string;
   label?: string;
   type?: string;
@@ -161,7 +148,7 @@ export type FieldTypes<T extends Record<string, any> = any> = {
 
 export type FormDataUpdate = z.infer<typeof updateProfile>;
 
-export type EditCommonProps<T extends Record<string, any> = any> = {
+export type EditCommonProps<T extends Record<string, string> > = {
   title?: string;
   fields: FieldTypes<T>[];
   data: T | null;
@@ -190,22 +177,32 @@ export type categoryEdit = {
 
 
 
-
-
 export type ProductFormValues = {
-  id?: string;
   name: string;
   mainPrice: number;
   stock: number;
-  discountPercent: number;
-  description: string;
+  discountPercent: number | undefined;
+  description?: string;
   categoryId?: string;
   attachments?: FileList | File[];
-  category: {
-    id?: string;
-    name?: string;
-  };
+  category?: { id?: string; name?: string };
 };
+
+
+// export type ProductFormValues = {
+//   id?: string;
+//   name: string;
+//   mainPrice: number;
+//   stock: number;
+//   discountPercent: number;
+//   description?: string;
+//   categoryId?: string;
+//   attachments?: FileList | File[];
+//   category: {
+//     id?: string;
+//     name?: string;
+//   };
+// };
 
 export type userData = {
   firstName: string;
@@ -216,15 +213,44 @@ export type userData = {
   address: string;
 }
 
+// ========================================
 
+
+export type cartProps = {
+  type?: CardEnum;
+  cartList?: CartItemFromAPI[];
+  // wishListItems?: WishListItem;
+  wishListItems?: WishListProduct[];
+}
+
+export type cardProps = cartProps & {
+  title?: string;
+  price?: number
+  image?: string;
+  description: string;
+  onClickCard?: () => void;
+  onClickWishList?: () => void;
+  onClickCart?: () => void;
+}
 export type CartItemFromAPI = {
-  productId: string;
+  productId: IProduct;
   quantity: number;
   product?: IProduct;
 };
+// export type WishListItem = {
+//   productId: IProduct;
+//   // quantity: number;
+//   product?: IProduct;
+// };
+export interface WishListProduct {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  stock: number;
+}
 
-
-export type WishListItem = string;
+// export type WishListItem = WishListProduct[] ;
 
 
 export type CreateOrder = {

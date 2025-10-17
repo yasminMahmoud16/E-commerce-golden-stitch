@@ -112,8 +112,8 @@ const [, setSelectedData] = useState<string | null>(null);
                 )
             ) : (
                 <>
-                    <div className="w-full mb-2 flex flex-col md:flex-row items-center justify-between">
-                        <div className="flex justify-end mr-8 py-4">
+                    <div className="w-full  mb-2 flex flex-col md:flex-row items-center justify-between">
+                        <div className="flex justify-end  md:justify-end md:mr-8 py-4">
                             {showAddBtn && (
                                 <BtnCommon
                                     text={"add"}
@@ -124,7 +124,7 @@ const [, setSelectedData] = useState<string | null>(null);
                             )}
                         </div>
 
-                        <div className="relative mb-2">
+                        <div className="relative ">
                             <Icons.CiSearch
                                 className="absolute left-3 top-4 -translate-y-1/2 text-footer-items"
                                 size={23}
@@ -132,7 +132,7 @@ const [, setSelectedData] = useState<string | null>(null);
                             <Input
                                 type="text"
                                 placeholder="search"
-                                className="w-60 md:w-80 border-footer-items py-3 px-2 pl-10 mb-2 text-white placeholder:text-footer-items rounded-4xl"
+                                className="w-60 md:w-80 border-footer-items py-3 px-2 pl-10  text-white placeholder:text-footer-items rounded-4xl"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -173,7 +173,7 @@ const [, setSelectedData] = useState<string | null>(null);
                                     </TableCell>
                                     <TableCell className="font-medium text-center">{data.name}</TableCell>
                                     <TableCell className="font-medium text-center">{data.numberOfSale}</TableCell>
-                                    <TableCell className="font-medium text-center">{data.createdBy.username}</TableCell>
+                                    <TableCell className="font-medium text-center">  {data.createdBy?.username || "Unknown"}</TableCell>
                                     <TableCell className="font-medium text-xs">
                                         {/* {data.description.slice(0, 60)} */}
                                           {String(data.description || "").slice(0, 60)}

@@ -11,7 +11,6 @@ import { Input } from "@/Components/ui/input";
 
 import { useForm } from "react-hook-form";
 import BtnCommon from "@/common/BtnCommon";
-import { Checkbox } from "@/Components/ui/checkbox";
 import { useState } from "react";
 
 
@@ -80,7 +79,7 @@ const form = useForm<loginFields>({
                       />
                     </div>
                   </FormControl>
-                  <FormMessage className="mb-2" />
+                  <FormMessage className="mb-2 text-xs text-red-950  capitalize" />
                 </FormItem>
               )}
             />
@@ -118,14 +117,14 @@ const form = useForm<loginFields>({
                     </div>
                   </FormControl>
 
-                  <FormMessage className="text-xs w-96 mb-2" />
+                  <FormMessage className="text-xs w-96 mb-2  text-red-950  capitalize" />
                 </FormItem>
               )}
             />
 
 
             <div className="flex items-center justify-between w-xs md:w-md text-xs md:text-sm px-3 capitalize mb-2 text-dark-blue-2 ">
-              <div className="flex  items-center justify-center gap-2  ">
+              {/* <div className="flex  items-center justify-center gap-2  ">
                 <Checkbox
                   id="remember"
                   className="cursor-pointer border-gold-light data-[state=checked]:bg-gold-light data-[state=checked]:text-white"
@@ -133,9 +132,9 @@ const form = useForm<loginFields>({
                 <label htmlFor="remember" className="cursor-pointer ">
                   remember me
                 </label>
-              </div>
+              </div> */}
               <Link to={"/forget-password"}>
-              <p className="cursor-pointer transition-all duration-300 ease-in-out hover:underline hover:text-gold-dark">forget password </p>
+              <p className="cursor-pointer transition-all duration-300 ease-in-out hover:underline hover:text-gold-dark  underline">forget password? </p>
               </Link>
             </div>
 

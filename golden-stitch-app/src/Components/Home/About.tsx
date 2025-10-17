@@ -16,7 +16,7 @@ export default function About() {
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae perspiciatis vel ipsam quis repudiandae iure dolor sapiente molestias consequuntur necessitatibus eum, nobis rerum fugiat, a consectetur mollitia quia explicabo tempore. Alias ab doloremque dolorem est similique reprehenderit, nobis officiis fugiat perspiciatis ipsum ut asperiores impedit natus eum ducimus? Rerum, sapiente!
                             </p>
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-2 flex items-center justify-center">
                             <img src={logo} alt={`${appName}`}   className="transition-all duration-300 ease-in-out hover:translate-y-2 " 
  />
                         </div>

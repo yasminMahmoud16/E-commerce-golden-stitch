@@ -15,12 +15,24 @@ import BtnCommon from "./BtnCommon";
 import { Icons } from "@/assets/Icons/icons";
 // import useLogin from "@/Hooks/useLogin";
 import { useAuthContext } from "@/Hooks/useAppContexts";
+import useGlobal from "@/Hooks/useGlobal";
+import PopupCommon from "./PopupCommon";
 
 
 export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
-  const {logout} = useAuthContext()
-  return (
-    <Sidebar collapsible="icon" className="bg-radial from-[#E6D7B6] to-[#DBC8A0] border-none " >
+  const { logout } = useAuthContext();
+    const {openPopup, setOpenPopup, navigate, } = useGlobal();
+  
+    const handleLogoutClick = async(flag: logoutEnum) => {
+    await logout({ flag })
+    navigate("/login")
+  };
+  return <>
+   <Sidebar
+  collapsible="icon"
+  className="flex flex-col items-center justify-center bg-radial from-[#E6D7B6] to-[#DBC8A0] border-none "
+>
+
       {/* <SidebarHeader className=" relative" >
         <SidebarHeader /> */}
       
@@ -34,7 +46,7 @@ export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
           </div>
       </SidebarHeader>
       {/* <SidebarTrigger className='  text-white absolute left-65 top-6 md:left-2 md:top-9  z-10 ' /> */}
-      <SidebarContent className="bg-dark-blue-nav  pt-5  border-none  ">
+<SidebarContent className="bg-dark-blue-nav pt-5 border-none overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
 
         <SidebarGroup className="" />
         <SidebarGroupContent className="flex flex-col justify-center mt-6   relative gap-3 ">
@@ -76,10 +88,10 @@ export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
             ))}
 
             <BtnCommon
-              text="Logout"
-              className="absolute -bottom-50 left-10 bg-transparent w-40 rounded-xl transition-all duration-500 ease-in-out hover:translate-x-4 hover:bg-gold-dark  "
+              text="   Logout"
+              className="absolute -bottom-10 left-0 bg-transparent rounded-xl transition-all duration-500 ease-in-out hover:translate-x-4 hover:bg-gold-dark    "
               icon={Icons.IoLogOut}
-              onClick={()=>{logout({ flag: logoutEnum.only })}}
+              onClick={()=>{setOpenPopup(true);}}
             />
 
           </SidebarMenu>
@@ -89,5 +101,24 @@ export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
       {/* <SidebarFooter className="bg-green-500" /> */}
     </Sidebar>
 
-  )
+    
+    <PopupCommon
+  open={openPopup}
+  onOpenChange={setOpenPopup}
+  title="Choose an Option"
+  text="Select what you want to do:"
+  options={[
+    {
+      label: "Logout from this device",
+      onClick: () => handleLogoutClick(logoutEnum.only),
+    },
+    {
+      label: "Logout from all devices",
+      onClick: () => handleLogoutClick(logoutEnum.all),
+    },
+  ]}
+  showCancel={true}   
+  showAction={false}  
+/>
+  </>
 }

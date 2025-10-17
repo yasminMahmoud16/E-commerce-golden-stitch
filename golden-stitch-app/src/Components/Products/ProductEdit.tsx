@@ -1,4 +1,4 @@
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,21 +14,30 @@ import {
     SelectValue,
 } from "@/Components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateProductSchema } from "@/Pages/Auth/validation/productValidation";
-import type { ICategory, IProduct, IProductUpdateInput } from "@/Utilities/interfaces";
-import type { ProductFormValues } from "@/Utilities/types";
+import { updateProductSchema, type UpdateProductForm } from "@/Pages/Auth/validation/productValidation";
+import type { ICategory, IProduct, IProductEditInput } from "@/Utilities/interfaces";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+
 
 export default function ProductEdit({ product, onBack }: {
     product: IProduct, onBack: () => void,
 }) {
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<ProductFormValues>({
-        resolver:zodResolver(updateProductSchema)
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<UpdateProductForm>({
+        resolver: zodResolver(updateProductSchema) as unknown as Resolver<UpdateProductForm>,
+         defaultValues: {
+    category: { id: "", name: "" }, // 👈 مهم جدًا
+  },
     });
     const [preview, setPreview] = useState<string | null>(null);
 
     const { updateProduct } = useProductContext();
-    const { allCategoriesData } = useCategoryContext();
+    const { getCategories, allCategoriesData } = useCategoryContext();
+
+    const { data: catSize } = useQuery({
+        queryKey: ["allCategories"],
+        queryFn: () => getCategories({ size: 50, }),
+    });
 
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
 
@@ -40,7 +49,10 @@ export default function ProductEdit({ product, onBack }: {
             setValue("name", product.name);
             setValue("description", product.description);
             setValue("mainPrice", product.mainPrice);
-            setSelectedCategoryId(product.category?.id || product.category?.id || "");
+                    setValue("category", { id: product.category?.id || "", name: product.category?.name || "" });
+
+
+                setSelectedCategoryId(product.category?.id || "");
 
             if (product.images?.length) {
                 setExistingImages(product.images);
@@ -54,113 +66,93 @@ export default function ProductEdit({ product, onBack }: {
         setRemovedAttachments((prev) => [...prev, img]);
     };
 
-    // const onSubmit = (data: any) => {
-    //     updateProduct.mutate({
-    //         id: product.id,
-    //         name: data.name,
-    //         description: data.description,
-    //         mainPrice: data.mainPrice,
-    //         discountPercent: data.discountPercent,
-    //         category: { id: selectedCategoryId },
-    //         attachments: data.attachment,
-    //         removedAttachments, 
-    //     });
 
-    //     onBack();
-    // };
-
-    // const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
-    //    console.log("✅ Form updated!", data);
-    //   const payload: IProductUpdateInput = {
-    //     id: data?.id || "",
-    //     name: data.name,
-    //     description: data.description,
-    //      mainPrice: Number(data.mainPrice),   
-    //     stock: Number(data.stock),
-    //     discountPercent: Number(data.discountPercent),
-    //     // category: { id: data.categoryId || "" },
-    //       category: { id: selectedCategoryId || "" },
-    
-    //       attachments: data.attachments || [],
-    //     removedAttachments,
-    //   };
-    
-    //   updateProduct.mutate(payload);
-    //       onBack();
-    
-    // };
-
-    const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
-  if (!product?.id) {
-    toast.error("Product ID missing");
-    return;
-  }
-
-  const payload: IProductUpdateInput = {
-    id: product.id, 
-    name: data.name,
-    description: data.description,
-    mainPrice: Number(data.mainPrice),
-    stock: Number(data.stock),
-    discountPercent: Number(data.discountPercent),
-    category: { id: selectedCategoryId || "" },
-    attachments: data.attachments || [],
-    removedAttachments, 
-  };
-
-  updateProduct.mutate(payload);
-  onBack();
-};
+    const onSubmit = (data:UpdateProductForm) => {
 
 
-    // console.log(errors,"form updated")
+        const payload: IProductEditInput = {
+            id: product.id,
+            name: data.name,
+            description: data.description,
+            mainPrice: Number(data.mainPrice),
+            // stock: Number(data.stock),
+            discountPercent: Number(data.discountPercent),
+            category: data.category || { id: "", name: "" },
+            attachments: data.attachments || [],
+            removedAttachments,
+        };
+
+
+        updateProduct.mutate(payload, {
+            onSuccess: () => {
+                onBack();
+            },
+            onError: (error) => {
+      toast.error("❌ Failed to update product");
+                  console.log("update product error:", error);
+            }
+        });
+
+    };
+
+
+    console.log(errors,"form updated")
     return (
         <div className="flex flex-col justify-center items-center p-6">
-             <div className="flex items-center justify-center gap-3 mb-4">
-        <Icons.BsBoxSeamFill className="text-3xl text-gold" />
-        <h1 className=" text-3xl text-gold font-semibold capitalize">edit product</h1>
-      </div>
+            <div className="flex items-center justify-center gap-3 mb-4">
+                <Icons.BsBoxSeamFill className="text-3xl text-gold" />
+                <h1 className=" text-3xl text-gold font-semibold capitalize">edit product</h1>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full max-w-lg">
 
                 {/* NAME */}
                 <div className="space-y-2">
                     <Label htmlFor="name" className="capitalize text-gold-light font-semibold">Name</Label>
-                    <Input id="name" type="text" placeholder="Enter product name" className="text-gray-300"{...register("name", { required: true })} />
-                    {errors.name && <p className="text-red-400 text-sm">{errors.name.message}</p>}
+                    <Input id="name" type="text" placeholder="Enter product name" className="text-gray-300 "{...register("name", { required: true })} />
+                    {errors.name && <p className="text-[hsl(22,55%,44%)] 
+                        text-sm">{errors.name.message}</p>}
                 </div>
 
                 {/* DESCRIPTION */}
                 <div className="space-y-2">
                     <Label htmlFor="description" className="capitalize text-gold-light font-semibold">Description</Label>
                     <Input id="description" placeholder="Enter product description" className="text-gray-300"{...register("description")} />
-                    {errors.description && <p className="text-red-400 text-sm">{errors.description.message}</p>}
+                    {errors.description && <p className="text-[hsl(22,55%,44%)] 
+                        text-sm">{errors.description.message}</p>}
                 </div>
 
                 {/* CATEGORY SELECT */}
                 <div className="space-y-2">
                     <Label htmlFor="category" className="capitalize text-gold-light font-semibold">Category</Label>
                     <Select
-                        value={selectedCategoryId}
-                        onValueChange={(value) => setSelectedCategoryId(value)}
-                    >
-                        <SelectTrigger className="text-gray-300">
-                            <SelectValue
-                                
-                                placeholder={
-                                    allCategoriesData?.find((cat: ICategory) => cat.id === selectedCategoryId)?.name ||
-                                    "Select category"
-                                }
-                            />
-                        </SelectTrigger>
+  value={selectedCategoryId}
+  onValueChange={(value) => {
+    setSelectedCategoryId(value);
+    const selectedCat = allCategoriesData?.find(cat => cat.id === value);
+    if (selectedCat) {
+      setValue("category", { id: selectedCat.id, name: selectedCat.name }, { shouldValidate: true });
+    }
+  }}
+>
+  <SelectTrigger className="text-gray-300">
+    <SelectValue
+      placeholder={
+        allCategoriesData?.find(cat => cat.id === selectedCategoryId)?.name ||
+        product.category?.name || // ✅ fallback للكاتيجوري القديمة
+        "Select category"
+      }
+    />
+  </SelectTrigger>
 
-                        <SelectContent className="bg-dark-blue-1 text-white capitalize border-none">
-                            {allCategoriesData?.map((cat: ICategory) => (
-                                <SelectItem key={cat.id} value={cat.id}>
-                                    {cat.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+  <SelectContent className="bg-dark-blue-1 text-white capitalize border-none">
+    {catSize?.map((cat: ICategory) => (
+      <SelectItem key={cat.id} value={cat.id}>
+        {cat.name}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
+
 
                 </div>
 
@@ -168,14 +160,16 @@ export default function ProductEdit({ product, onBack }: {
                 <div className="space-y-2">
                     <Label htmlFor="mainPrice" className="capitalize text-gold-light font-semibold">Main Price</Label>
                     <Input id="mainPrice" placeholder="Enter product price" className="text-gray-300" {...register("mainPrice")} />
-                    {errors.mainPrice && <p className="text-red-400 text-sm">{errors.mainPrice.message}</p>}
+                    {errors.mainPrice && <p className="text-[hsl(22,55%,44%)] 
+                        text-sm">{errors.mainPrice.message}</p>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="discountPercent" className="capitalize text-gold-light font-semibold">Main Price</Label>
                     <Input id="discountPercent" placeholder="Enter product price" className="text-gray-300"{...register("discountPercent")} />
-                    {errors.discountPercent && <p className="text-red-400 text-sm">{errors.discountPercent.message}</p>}
+                    {errors.discountPercent && <p className="text-[hsl(22,55%,44%)] 
+                        text-sm">{errors.discountPercent.message}</p>}
                 </div>
-             
+
 
                 {existingImages.length > 0 && (
                     <div className="flex flex-wrap gap-4 justify-center mt-4">
@@ -233,7 +227,7 @@ export default function ProductEdit({ product, onBack }: {
 
                 {/* BUTTONS */}
                 <div className="flex justify-between pt-4">
-                    <Button type="button" variant="outline" onClick={onBack}className="rounded-xl cursor-pointer transition-all ease-in-out duration-300  hover:bg-gold-dark hover:text-white border-none">Cancel</Button>
+                    <Button type="button" variant="outline" onClick={onBack} className="rounded-xl cursor-pointer transition-all ease-in-out duration-300  hover:bg-gold-dark hover:text-white border-none">Cancel</Button>
                     <BtnCommon text="Update Product" type="submit" className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
               hover:from-gold-dark hover:to-[55%] " />
                 </div>

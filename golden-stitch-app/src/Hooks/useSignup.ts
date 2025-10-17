@@ -55,8 +55,11 @@ export default function useSignup() {
                     cause?.validationErrors?.[0]?.issues?.[0]?.message;
     
                 if (validationMessage) {
+                    // console.log(validationMessage);
+                    
                     toast.error(validationMessage);
                 } else {
+                    // console.log(error?.response?.data);
                     toast.error(error?.response?.data?.message || "Signup failed");
                 }
             }

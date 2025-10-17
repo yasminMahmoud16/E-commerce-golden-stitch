@@ -8,11 +8,12 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 
 
-
-export function SwitchDemo({ role, id }: { role: RoleEnum |undefined, id: string |undefined }) {
+// no props
+export function SwitchDemo({ role, id}: { role?: RoleEnum |undefined, id?: string |undefined,  }) {
     const axiosInstance = useAxios();
     const { getAuthHeader } = useAuthContext();
     const [currentRole, setCurrentRole] = useState<RoleEnum |undefined>(role);
+console.log({currentRole});
 
     const getNewRole = (role: RoleEnum) => {
         if (role === RoleEnum.user) {
@@ -22,8 +23,6 @@ export function SwitchDemo({ role, id }: { role: RoleEnum |undefined, id: string
             return RoleEnum.user
         }
         return role;
-
-
     }
     const changeRoleByAdmin = async (id: string, newRole: RoleEnum) => {
         try {
@@ -32,6 +31,12 @@ export function SwitchDemo({ role, id }: { role: RoleEnum |undefined, id: string
             })
 
             setCurrentRole(newRole);
+            if (res.data.message === "Done") {
+                toast.success("User Role Changed Successfully");
+                setTimeout(() => {
+    window.location.reload(); 
+  }, 800);
+            }
             console.log(res);
         } catch (error:unknown) {
 

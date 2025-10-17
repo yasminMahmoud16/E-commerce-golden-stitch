@@ -7,15 +7,15 @@ export default function OrderDetails() {
 
   return (
     <>
-      <h1 className="text-center text-4xl font-semibold text-dark-blue-2 mb-10">
+      <h1 className="text-center text-4xl font-semibold text-gold-light mb-10">
         Order Details
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className=" gap-6">
         {ordersData?.map((order) => (
           <div
             key={order.id}
-            className="bg-white/10 border w-full border-gold/30 rounded-2xl p-5 text-white shadow-md hover:shadow-lg transition-all duration-300"
+            className="mb-6 bg-white/10 border w-full border-gold/30 rounded-2xl p-5 text-white shadow-md hover:shadow-lg transition-all duration-300"
           >
             <div className="border-b border-gold/20 pb-3 mb-3">
               <h2 className="text-gold text-xl font-semibold">
@@ -42,7 +42,6 @@ export default function OrderDetails() {
                       {p.productId?.name}
                     </h3>
                     <p className="text-gray-300 text-sm">
-                      Qty: {p.quantity} × {p.unitPrice} ={" "}
                       <span className="text-gold font-semibold">
                         {p.finalPrice} EGP
                       </span>
@@ -77,7 +76,7 @@ export default function OrderDetails() {
                       ? "text-green-400"
                       : order.status === "cancel"
                       ? "text-red-400"
-                      : "text-yellow-400"
+                      : "text-gold-light font-semibold"
                   }`}
                 >
                   {order.status}

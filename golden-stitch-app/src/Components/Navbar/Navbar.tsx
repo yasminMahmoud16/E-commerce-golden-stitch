@@ -33,7 +33,8 @@ export default function Navbar() {
   };
 
   const handleLogoutClick = async(flag: logoutEnum) => {
-    await logout({flag})
+    await logout({ flag })
+    navigate("/login")
   };
 
 
@@ -183,7 +184,7 @@ export default function Navbar() {
 
             {/* Auth Section */}
             {token ? (
-          <div className="w-30 overflow-hidden">
+          <div className="w-30  bg-transparent">
                 <Select
                   onValueChange={(value) => {
                     if (value === 'profile') {
@@ -203,7 +204,7 @@ export default function Navbar() {
                   className="placeholder:text-gold-light placeholder:capitalize focus:outline-none focus:ring-0 focus:border-0"
                 />
               </SelectTrigger>
-              <SelectContent className="bg-amber-100">
+              <SelectContent className="bg-dark-blue-2 border-gray-300 text-gray-400">
                 <SelectItem value="profile" className="cursor-pointer">
                   Profile
                 </SelectItem>

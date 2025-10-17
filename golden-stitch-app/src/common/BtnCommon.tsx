@@ -25,10 +25,10 @@ export default function BtnCommon({
         cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed ${className}`}
       onClick={onClick}
     >
-            {Icon&& <Icon className="text-lg" />}
+            {Icon&& <Icon className="text-lg " />}
 
       {loading ? (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ">
           <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
           Loading...
         </div>

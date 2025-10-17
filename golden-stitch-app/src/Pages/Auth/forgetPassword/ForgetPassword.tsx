@@ -8,10 +8,12 @@ import type { forgetPasswordField } from "@/Utilities/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { sendForgetPasswordValidation } from "../validation/authValidation";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgetPassword() {
 
     const { sendForgetPassword, loading } = useForgetPassword();
+    const navigate = useNavigate();
     const form = useForm<forgetPasswordField>({
             resolver:zodResolver(sendForgetPasswordValidation),
             defaultValues: {
@@ -20,8 +22,9 @@ export default function ForgetPassword() {
         });
     
     
-    const handleSubmit = (values:forgetPasswordField) => {
-        sendForgetPassword(values)
+    const handleSubmit = async(values:forgetPasswordField) => {
+        await sendForgetPassword(values)
+        navigate("/verify-account",{state:{email:values.email}});
     }
     return <>
         <WrapperBg title="Forgot Password?" subtitle="Don't worry, we'll help you reset it.">
@@ -46,7 +49,7 @@ export default function ForgetPassword() {
                                                 />
                                             </div>
                                         </FormControl>
-                                        <FormMessage  className="mb-2"/>
+                                        <FormMessage  className="mb-2 capitalize text-xs text-red-500 text-center"/>
                                     </FormItem>
 
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios, { type AxiosResponse } from 'axios';
 import type { forgetPasswordField, OtpField, resetPassword } from '@/Utilities/types';
 import { toast } from 'sonner';
+import type { IForgetPasswordResponse } from '@/Utilities/interfaces';
 
 export default function useForgetPassword() {
 
@@ -11,17 +12,7 @@ export default function useForgetPassword() {
     const baseUrl = import.meta.env.VITE_BASE_URL;
 
 
-    interface IForgetPasswordResponse {
-        data: {
-            message:string
-        };
-        message: string;
-        cause?: {
-            validationErrors?: {
-                issues?: { message: string }[];
-            }[];
-        };
-    }
+
 
     const sendForgetPassword = async (
         values: forgetPasswordField
@@ -36,9 +27,9 @@ export default function useForgetPassword() {
 
             toast.success(res.data?.message);
 
-            navigate("/verify-account");
+            
 
-            console.log({ reset: res });
+            // console.log({ reset: res });
 
             return res;
         } catch (error: unknown) {
@@ -71,7 +62,7 @@ export default function useForgetPassword() {
 
             toast.success(res.data?.message);
 
-            navigate("/create-new-password");
+            // navigate("/create-new-password");
 
             console.log({ result: res });
 

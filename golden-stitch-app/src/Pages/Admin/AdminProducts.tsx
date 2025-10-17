@@ -23,22 +23,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/Components/ui/table"; 
-import { useProductContext } from "@/Hooks/useAppContexts";
+import { useCategoryContext, useProductContext } from "@/Hooks/useAppContexts";
 import { SpinnerCustomData } from "@/Loading/SpinnerCustomData";
 import type { IProduct } from "@/Utilities/interfaces";
-import {  useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {   useState } from "react";
 import { useLocation } from "react-router-dom";
 export default function AdminProducts() {
   const [openDetails, setOpenDetails] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<IProduct |null>();
   const [isEditing, setIsEditing] = useState(false);
-  const { allProductsData, isLoading, page, setPage, search, setSearch, getProductById,isUpdating } = useProductContext();
+  const { allProductsData, categoryId,
+    setCategoryId, isLoading, page, setPage, search, setSearch, getProductById, isUpdating } = useProductContext();
+    const location = useLocation();
+    const currentLocation = location.pathname
+    const showAddBtn = currentLocation.includes("/admin/products") || currentLocation.includes("/admin/category")
+  const { getCategories} = useCategoryContext();
+  
 
 
-  const location = useLocation();
-  const currentLocation = location.pathname
-  const showAddBtn = currentLocation.includes("/admin/products") || currentLocation.includes("/admin/category")
+
+
+
+const { data: catSize } = useQuery({
+    queryKey: ["allCategories"],
+    queryFn: () => getCategories({ size:50}),
+});
+
+
+
+
+
   const productHeaders = [
     { id: 2, label: "image" },
     { id: 3, label: "Product Name" },
@@ -49,6 +65,7 @@ export default function AdminProducts() {
     { id: 8, label: "Description" },
 
   ];
+
 
   const filteredProducts = allProductsData?.filter((product) => {
     const term = (search || "").toLowerCase();
@@ -120,19 +137,8 @@ export default function AdminProducts() {
       <SpinnerCustomData />
     </div>
   )}
-    <div className="w-full mb-2 flex flex-col md:flex-row items-center justify-between">
-      <div className="flex justify-end mr-8 py-4">
-        {showAddBtn && (
-          <BtnCommon
-            text={"add"}
-            onClick={handleAddClick}
-            className="rounded-xl shadow w-30 transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%]"
-            icon={Icons.AiOutlinePlusCircle}
-          />
-        )}
-      </div>
-
-      <div className="relative mb-2">
+    <div className="w-full relative  mb-2 flex flex-col md:flex-row items-center justify-between">
+            <div className="  mb-2">
         <Icons.CiSearch
           className="absolute left-3 top-4 -translate-y-1/2 text-footer-items"
           size={23}
@@ -143,16 +149,65 @@ export default function AdminProducts() {
           className="w-60 md:w-80 border-footer-items py-3 px-2 pl-10 mb-2 text-white placeholder:text-footer-items rounded-4xl"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-        />
+                  />
+                  
+{/* CATEGORY FILTER BUTTONS */}
+<div className="flex flex-wrap gap-3 justify-center my-3">
+  <button
+    onClick={() => setCategoryId("")} // زرار All يرجع كل المنتجات
+    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+      categoryId === ""
+        ? "bg-gold text-white"
+        : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
+    }`}
+  >
+    All
+  </button>
+
+  {catSize?.map((cat) => (
+    <button
+      key={cat.id}
+      onClick={() => setCategoryId(cat.id)}
+      className={`px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300 ${
+        categoryId === cat.id
+          ? "bg-gold text-white"
+          : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
+      }`}
+    >
+      {cat.name}
+    </button>
+  ))}
+</div>
+
+
       </div>
+                
+                <div className="absolute -top-4 right-0 mr-8 py-4">
+        {showAddBtn && (
+          <BtnCommon
+            text={"add"}
+            onClick={handleAddClick}
+            className="rounded-xl shadow w-30 transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%]"
+            icon={Icons.AiOutlinePlusCircle}
+          />
+        )}
+      </div>
+
+
     </div>
 
-    <Table>
+              
+              <div className=" overflow-x-auto hide-scrollbar"
+              
+              
+               
+>
+            <Table className="overflow-x-hidden scrollbar-hide ">
       <TableHeader>
         <TableRow>
           {productHeaders.map((header) => (
             <TableHead
-              className="bg-gold-light w-md text-center text-gold-dark font-semibold mr-8"
+              className="bg-gold-light w-md text-center text-gold-dark font-semibold mr-2"
               key={header.id}
             >
               {header.label}
@@ -170,7 +225,7 @@ export default function AdminProducts() {
             key={data.id}
             className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
           >
-            <TableCell className="font-medium my-2 w-80 h-20">
+            <TableCell className="font-medium my-2">
               <div className="flex justify-center items-center">
                 <img
                   src={`/${data.images[0]}`}
@@ -189,6 +244,8 @@ export default function AdminProducts() {
         ))}
       </TableBody>
     </Table>
+              </div>
+
 
     <Pagination>
       <PaginationContent>

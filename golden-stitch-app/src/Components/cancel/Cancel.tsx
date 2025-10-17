@@ -15,10 +15,12 @@ export default function Cancel({
     open,
     onOpenChange,
     orderId,
+    onStatusChange, // callback from parent
 }: {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     orderId: string | null;
+    onStatusChange?: (id: string, status: string) => void;
 }) {
     const { cancelOrder } = useOrderContext();
     const [reason, setReason] = useState("");
@@ -34,9 +36,15 @@ export default function Cancel({
             return;
         }
 
-        await cancelOrder(orderId, reason);
+        const message = await cancelOrder(orderId, reason);
+
+        // call parent callback to update the status immediately
+        if (message === "Done" && onStatusChange) {
+            onStatusChange(orderId, "cancel");
+        }
+
         onOpenChange(false);
-        setReason(""); 
+        setReason("");
     };
 
     return (
@@ -54,7 +62,7 @@ export default function Cancel({
                             placeholder="Reason"
                             value={reason}
                             onChange={(e) => setReason(e.target.value)}
-                            className=" md:w-full py-3 px-4 pl-10 placeholder:text-gray-400 mt-2 text-black"
+                            className="md:w-full py-3 px-4 pl-10 placeholder:text-gray-400 mt-2 text-black"
                         />
                     </AlertDialogDescription>
                 </AlertDialogHeader>

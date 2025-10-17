@@ -16,7 +16,9 @@ import { Icons } from "@/assets/Icons/icons"
 
 
 export default function ToggleCart({ openCart, setOpenCart, title }: ToggleCommonProps) {
-    const { cartItems , clearCart} = useCartContext()
+    const { cartItems, clearCart } = useCartContext();;
+    // console.log(cartItems,"carrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrt");
+
 
     return (
         <>
@@ -29,21 +31,29 @@ export default function ToggleCart({ openCart, setOpenCart, title }: ToggleCommo
                 >
                     <SheetHeader>
                         <div className='flex items-center'>
-                            <img src={logo} alt="" className='w-15' />
-                            <div className='bg-gradient-to-r from-gold-dark to-gold-light bg-clip-text text-transparent uppercase font-bold text-xl'>
+                            <img src={logo} alt="" className='w-10 mr-2' />
+                            <div className='bg-gradient-to-r from-gold-dark to-[#d4973b] bg-clip-text text-transparent uppercase font-bold text-xl'>
                                 golden stitch
                             </div>
                         </div>
                         <span className='flex items-center justify-center'>
                             <img src={border} alt="border" className='w-50' />
                         </span>
-                        <SheetTitle className='capitalize  flex justify-between'>
+                        <SheetTitle className='capitalize text-xl text-dark-blue-2  flex justify-between'>
                             {title}
-                            <div className="flex items-center justify-end gap-1 transition-all duration-500 ease-in-out cursor-pointer text-red-700 hover:bg-red-600 hover:text-white py-1 px-3 rounded-lg" onClick={()=>{clearCart()}}>
 
-                                <Icons.FaTrash /> 
-                                clear
-                            </div>
+
+                            {(cartItems?.length ?? 0) > 0 && (
+                                <div
+                                    className="flex items-center justify-end gap-1 transition-all duration-500 ease-in-out cursor-pointer   text-dark-blue-nav font-light text-sm  hover:text-red-900 py-1 px-3 rounded-lg"
+                                    onClick={() => clearCart()}
+                                >
+                                    <Icons.FaTrash className="text-sm" />
+                                    clear
+                                </div>
+                            )}
+
+
                         </SheetTitle>
                     </SheetHeader>
 
@@ -52,10 +62,10 @@ export default function ToggleCart({ openCart, setOpenCart, title }: ToggleCommo
                             <div>
                                 {/* <CartCommon cartList={cartItems} /> */}
                                 <CartCommon
-                                    cartList={cartItems?.map((item:CartItemFromAPI) => ({
+                                    cartList={cartItems?.map((item: CartItemFromAPI) => ({
                                         productId: item.productId,
-                                        quantityNum:item.quantity
-                                     }))}
+                                        quantity: item.quantity
+                                    }))}
                                     type={CardEnum.cart}
                                 />
                             </div>

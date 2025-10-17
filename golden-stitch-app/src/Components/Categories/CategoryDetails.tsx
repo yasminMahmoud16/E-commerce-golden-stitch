@@ -48,7 +48,7 @@ export default function CategoryDetails({ category, onBack, onEdit, onDeleteSucc
       <div className="flex justify-between items-center">
         <button
           onClick={onBack}
-          className="mb-4 text-gold-dark font-semibold transition-all ease-in-out duration-300 hover:-translate-x-1 hover:underline cursor-pointer"
+          className="mb-4 text-[hsl(22,55%,44%)] font-semibold transition-all ease-in-out duration-300 hover:-translate-x-1 hover:underline cursor-pointer"
         >
           ← Back to Category
         </button>
@@ -56,22 +56,22 @@ export default function CategoryDetails({ category, onBack, onEdit, onDeleteSucc
         <div className="flex items-center justify-center gap-3">
           <Icons.FaEdit
             size={20}
-            className="text-gray-300 cursor-pointer hover:text-gold-dark"
+            className="text-gray-300 cursor-pointer transition-all ease-in-out duration-300 hover:text-gold-dark"
             onClick={() => onEdit(currentCategory!)}
           />
-          <Icons.FaTrash size={20} className="text-red-700 cursor-pointer"  onClick={()=>{setIsDelete(true)}}/>
+          <Icons.FaTrash size={20} className="transition-all ease-in-out duration-300 text-[hsl(22,55%,44%)] hover:text-red-800 cursor-pointer"  onClick={()=>{setIsDelete(true)}}/>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col items-center justify-center md:flex-row gap-6">
         <img
           src={`/${currentCategory?.image}`}
           alt={currentCategory?.name}
-          className="w-60 h-60 object-cover rounded-xl shadow-lg"
+          className="w-30 h-30 md:w-60 md:h-60 object-cover rounded-xl shadow-lg"
         />
 
-        <div>
-          <h2 className="text-3xl font-semibold text-gold-dark mb-2 capitalize">
+        <div className="flex flex-col justify-center gap-5">
+          <h2 className="text-xl md:text-3xl font-semibold text-[hsl(22,55%,44%)] k mb-2 capitalize">
             {currentCategory?.name}
           </h2>
           <p className="text-gray-400 mb-3">{currentCategory?.description}</p>
@@ -90,8 +90,8 @@ export default function CategoryDetails({ category, onBack, onEdit, onDeleteSucc
       <PopupCommon
         open={isDelete}
         onOpenChange={setIsDelete}
-        title="Are you sure you want to delete this product?"
-        text="Only Admin can restore the product after deletion."
+        title="Are you sure you want to delete this category?"
+        // text="Only Admin can restore the product after deletion."
         classNameText="text-center text-gray-400"
         classNameTitle="!text-red-700 text-3xl text-center"
         image={deleteImage}

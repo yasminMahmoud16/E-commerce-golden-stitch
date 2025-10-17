@@ -1,4 +1,4 @@
-import { useProductContext } from "@/Hooks/useAppContexts"
+import {  useProductContext } from "@/Hooks/useAppContexts"
 import {
     Table,
     TableBody,
@@ -18,10 +18,23 @@ import {
 import AdminTitles from "@/common/AdminTitles";
 import { Icons } from "@/assets/Icons/icons";
 import { Input } from "@/Components/ui/input";
+// import { useQuery } from "@tanstack/react-query";
 export default function ArchiveProducts() {
 
 
-    const { archiveProducts, page, setPage, search, setSearch,restoreProduct } = useProductContext()
+  const { archiveProducts, page, setPage, search, setSearch, restoreProduct } = useProductContext();
+    // const { getCategories} = useCategoryContext();
+  
+
+
+
+
+
+// const { data: catSize } = useQuery({
+//     queryKey: ["allCategories"],
+//     queryFn: () => getCategories({ size:50}),
+// });
+
     console.log({ archiveProducts });
     const productsHeaders = [
         { id: 2, label: "image" },
@@ -30,6 +43,7 @@ export default function ArchiveProducts() {
         { id: 6, label: "Customer Name" },
         { id: 8, label: "Description" },
         { id: 7, label: "Canceled At" },
+        { id: 7, label: "Category" },
         { id: 7, label: "Restore" },
 
     ];
@@ -55,7 +69,35 @@ export default function ArchiveProducts() {
                 className="w-60 md:w-80 border-footer-items py-3 px-2 pl-10 mb-2 text-white placeholder:text-footer-items rounded-4xl"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-            />
+        />
+        
+        {/* CATEGORY FILTER BUTTONS */}
+{/* <div className="flex flex-wrap gap-3 justify-center my-3">
+  <button
+    onClick={() => setCategoryId("")} 
+    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+      categoryId === ""
+        ? "bg-gold text-white"
+        : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
+    }`}
+  >
+    All
+  </button>
+
+  {catSize?.map((cat) => (
+    <button
+      key={cat.id}
+      onClick={() => setCategoryId(cat.id)}
+      className={`px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300 ${
+        categoryId === cat.id
+          ? "bg-gold text-white"
+          : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
+      }`}
+    >
+      {cat.name}
+    </button>
+  ))}
+</div> */}
         </div>
 <div className="w-full overflow-x-auto scrollbar-hide">
   <Table className="min-w-full">
@@ -94,6 +136,8 @@ export default function ArchiveProducts() {
             {String(data.description || "").slice(0, 60)}
           </TableCell>
           <TableCell className="font-medium text-center">{data.freezedAt}</TableCell>
+                      <TableCell className="font-medium text-center">{data.category?.name}</TableCell>
+
           <TableCell className="font-medium text-center flex items-center justify-center mt-5" ><Icons.MdOutlineRestore className="text-2xl text-gold-dark transition-all duration-300 ease-in-out hover:text-green-400" onClick={()=>{restoreProduct(data.id)}}/></TableCell>
         </TableRow>
       ))}

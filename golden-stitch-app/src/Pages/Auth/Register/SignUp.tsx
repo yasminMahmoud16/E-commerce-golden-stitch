@@ -47,7 +47,7 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
     <div className="flex flex-col items-center justify-center mt-10  py-4">
       <h2 className="text-3xl capitalize font-bold text-center text-dark-blue-1 md:text-4xl">create account</h2>
       <Form {...form} >
-        <form className="p-8 flex flex-col  " method="POST" onSubmit={form.handleSubmit(handleSubmit)}>
+        <form className="p-8 flex flex-col   " method="POST" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
                 control={form.control}
                 name="username"
@@ -69,7 +69,7 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
                                                 />
                                             </div>
                     </FormControl>
-                    <FormMessage className="mb-2" />
+                    <FormMessage className="mb-2 text-red-950 text-xs capitalize" />
                   </FormItem>
                 )}
               />
@@ -94,7 +94,7 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
                                                 />
                                             </div>
                     </FormControl>
-                    <FormMessage className="mb-2" />
+                    <FormMessage className="mb-2 text-red-950 capitalize text-xs" />
                   </FormItem>
                 )}
               />
@@ -132,7 +132,7 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
                               </div>
                             </FormControl>
           
-                            <FormMessage className="text-xs w-96 mb-2" />
+                            <FormMessage className="capitalize w-96 mb-2 text-red-950  text-xs" />
                           </FormItem>
                         )}
                       />
@@ -170,7 +170,7 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
                               </div>
                             </FormControl>
           
-                            <FormMessage className="mb-2" />
+                            <FormMessage className="mb-2 text-red-950 capitalize  text-xs" />
                           </FormItem>
                         )}
                       />
@@ -196,7 +196,10 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
                                                 />
                                             </div>
                     </FormControl>
-                    <FormMessage  className="mb-2"/>
+                    <div className=" w-80">
+                      
+                    <FormMessage  className="mb-2 text-red-950  text-xs capitalize"/>
+                    </div>
                   </FormItem>
                 )}
               />
@@ -218,7 +221,7 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
                     </SelectContent>
                   </Select>
                 </FormControl>
-                <FormMessage  className="mb-2"/>
+                <FormMessage  className="mb-2  text-xs text-red-950 capitalize"/>
               </FormItem>
             )}
           />

@@ -27,6 +27,7 @@ export default function AuthContextProvider({ children }: { children: ReactNode 
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  // const navigate = useNavigate();
 
   
 const login = async (
@@ -62,9 +63,9 @@ const login = async (
       const validationMessage =
       cause?.validationErrors?.[0]?.issues?.[0]?.message;
       console.log(validationMessage || error?.response?.data?.message);
+      toast.error(validationMessage || error?.response?.data?.message);
     }
     return false; 
-    // toast.error(validationMessage || error?.response?.data?.message);
   } finally {
     setLoading(false);
   }
@@ -103,22 +104,23 @@ const login = async (
       setUserId(null);
 
       toast.success(res.data?.message);
-      navigate?.("/login");
+      // navigate?.("/login");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (axios.isAxiosError(error)) {
           console.log({errorlogout:error});
           
+          const detailedError =
+            error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+          const generalError = error?.response?.data?.message;
+         
+          console.log({generalError,detailedError });
+          
+          toast.error(detailedError || generalError || "logout issue ");
         }
         
       }
       
-      // const detailedError =
-      //   error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
-      // const generalError = error?.response?.data?.message;
-      // console.log({generalError,detailedError });
-      
-      // toast.error(detailedError || generalError || "logout issue ");
     }
   };
 

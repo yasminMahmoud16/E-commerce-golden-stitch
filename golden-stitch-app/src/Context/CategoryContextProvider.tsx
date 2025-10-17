@@ -18,6 +18,7 @@ export default function CategoryContextProvider({ children }: { children: ReactN
   const { getAuthHeader, token } = useAuthContext();
   const queryClient = useQueryClient();
 
+
   // 🔹 Get All Categories
   const getCategories = async ({ page = 1, size = 5, search = "" }) => {
     const res = await axiosInstance.get(
@@ -37,9 +38,17 @@ export default function CategoryContextProvider({ children }: { children: ReactN
 
   // 🔹 Get category by ID
   const getCategoryById = async (id: string) => {
-    const res = await axiosInstance.get(`/category/${id}`);
-    
-    return res.data.data.category;
+    try {
+
+      const res = await axiosInstance.get(`/category/${id}`);
+      
+      const category=res.data.data.category
+      return category;
+      
+    } catch (error) {
+      console.log({categoryDetailsErr:error});
+      
+    }
   };
 
   // 🔹 Update Category
@@ -91,6 +100,28 @@ export default function CategoryContextProvider({ children }: { children: ReactN
     },
   });
 
+// Archive category
+
+      const categoryArchives = async ({ page = 1, size = 5, search = "" }) => {
+    try {
+      const res = await axiosInstance.get(`/category/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
+      const archiveCategory =res.data.data.categories.docs
+      console.log("archiveCategory=================", res.data.data.categories.docs);
+      return archiveCategory 
+    } catch (error) {
+      console.log("product archive error", error);
+      return []; 
+    }
+  }
+
+
+  
+const { data: archiveCategory = [] , refetch:ArchiveRefetch} = useQuery({
+  queryKey: ['archiveCategory', page, size, search],
+  queryFn: () => categoryArchives({ page, size, search }),
+  placeholderData: keepPreviousData,
+  enabled: !!token, 
+});
 
 
     // soft Delete
@@ -111,8 +142,8 @@ export default function CategoryContextProvider({ children }: { children: ReactN
             color: "#ffff",
             confirmButtonColor: "#6B4129"
           });
-  
           await queryClient.invalidateQueries({ queryKey: ['allCategories'] });
+          ArchiveRefetch()
   
   
         }
@@ -137,26 +168,6 @@ export default function CategoryContextProvider({ children }: { children: ReactN
   
 
 
-    const categoryArchives = async ({ page = 1, size = 5, search = "" }) => {
-    try {
-      const res = await axiosInstance.get(`/category/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
-      const archiveCategory =res.data.data.categories.docs
-      console.log("archiveCategory=================", res.data.data.categories.docs);
-      return archiveCategory 
-    } catch (error) {
-      console.log("product archive error", error);
-      return []; 
-    }
-  }
-
-
-  
-const { data: archiveCategory = [] , refetch} = useQuery({
-  queryKey: ['archiveCategory', page, size, search],
-  queryFn: () => categoryArchives({ page, size, search }),
-  placeholderData: keepPreviousData,
-  enabled: !!token, 
-});
 
 
 
@@ -182,7 +193,8 @@ const { data: archiveCategory = [] , refetch} = useQuery({
   
           // await queryClient.invalidateQueries({ queryKey: ['allCategories'] });
           await queryClient.invalidateQueries({ queryKey: ['archiveCategory'] });
-            refetch?.()
+          // refetch?.()
+          ArchiveRefetch()
   
   
         }
@@ -221,7 +233,7 @@ const { data: archiveCategory = [] , refetch} = useQuery({
   
           await queryClient.invalidateQueries({ queryKey: ['allCategories'] });
           await queryClient.invalidateQueries({ queryKey: ['archiveCategory'] });
-            refetch?.()
+            ArchiveRefetch()
         }
         return res.data.message
       } catch (error) {
@@ -241,6 +253,7 @@ const { data: archiveCategory = [] , refetch} = useQuery({
   return (
     <CategoryContext.Provider
       value={{
+        getCategories,
         allCategoriesData,
         isLoading,
         isUpdating, 

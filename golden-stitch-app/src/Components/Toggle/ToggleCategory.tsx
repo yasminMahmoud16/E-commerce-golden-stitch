@@ -53,10 +53,7 @@ export default function ToggleCategory({ openCategory, setOpenCategory, title }:
 ))}
 
 
-                                {/* <CartCommon
-                                    wishListItems={userWishList?.map(item => ({ productId: item }))}
-                                    type={CardEnum.wishList}
-                                /> */}
+
                             </ul>
                         </SheetDescription>
                     </div>

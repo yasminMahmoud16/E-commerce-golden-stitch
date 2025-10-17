@@ -9,14 +9,15 @@ import {
 
 import logo from "@/assets/Images/logo.png"
 import border from "@/assets/Images/border.png"
-import { CardEnum, type ToggleCommonProps, type WishListItem } from '@/Utilities/types'
+import { CardEnum, type ToggleCommonProps, type WishListProduct } from '@/Utilities/types'
 import CartCommon from "@/common/CartCommon"
 import { useProfileContext } from "@/Hooks/useAppContexts"
 export default function ToggleWishList({ openCart, setOpenCart, title }: ToggleCommonProps) {
 
     const { data } = useProfileContext()
-    // const userWishList = data?.wishlist; 
-    const userWishList: string[] = Array.isArray(data?.wishlist) ? data.wishlist : [];
+    const userWishList: WishListProduct[] | undefined =
+  Array.isArray(data?.wishlist) ? (data.wishlist as WishListProduct[]) : undefined;
+
 
 
     // console.log({ userWishList: data?.wishlist });
@@ -50,7 +51,8 @@ export default function ToggleWishList({ openCart, setOpenCart, title }: ToggleC
                             <div>
 
                                 <CartCommon
-                                    wishListItems={userWishList?.map((item:WishListItem) => ({ productId: item }))}
+                                
+                                    wishListItems={userWishList}
                                     type={CardEnum.wishList}
                                 />
                             </div>

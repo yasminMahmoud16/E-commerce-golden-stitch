@@ -6,7 +6,7 @@ import { useAuthContext } from '@/Hooks/useAppContexts';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { ProductContext } from './contextCreations/ProfileContext';
-import type { IProduct, IProductUpdateInput } from '@/Utilities/interfaces';
+import type { IAddProductResponse, IProduct, IProductEditInput, IProductUpdateInput } from '@/Utilities/interfaces';
 
 // export const ProductContext = createContext<IProductContextType | undefined>(undefined);
 
@@ -15,14 +15,24 @@ export default function ProductContextProvider({ children }: { children: ReactNo
   const [page, setPage] = useState(1);
   const [size] = useState(5);
   const [search, setSearch] = useState("");
-  const [isUpdating, setIsUpdating] = useState(false); // 🔹 حالة تحميل عند التحديث
+  const [categoryId, setCategoryId] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false); 
   const { getAuthHeader ,token } = useAuthContext();
   const queryClient = useQueryClient();
 
   //  Get All Products
-  const getProducts = async ({ page = 1, size = 5, search = "" }) => {
-    const res = await axiosInstance.get(
-      `/product?page=${page}&size=${size}${search ? `&search=${search}` : ""}`
+  const getProducts = async ({ page = 1, size = 5, search = "", categoryId = "" }) => {
+  let url = `/product?page=${page}&size=${size}`;
+
+  if (categoryId) {
+    url += `&categoryId=${categoryId}`;
+  }
+
+  if (search) {
+    url += `&search=${search}`;
+  }
+
+    const res = await axiosInstance.get(url
     );
     console.log({ product: res.data.data.products.docs });
     // console.log({ productWishList: res.data.data.products.docs });
@@ -31,9 +41,9 @@ export default function ProductContextProvider({ children }: { children: ReactNo
     return res.data.data.products.docs;
   };
 
-  const { data: allProductsData, isLoading } = useQuery({
-    queryKey: ['allProducts', page, size, search],
-    queryFn: () => getProducts({ page, size, search }),
+  const { data: allProductsData, isLoading , refetch:refetchProducts } = useQuery({
+    queryKey: ['allProducts', page, size, search, categoryId],
+    queryFn: () => getProducts({ page, size, search , categoryId}),
     // keepPreviousData: true,
     placeholderData: keepPreviousData,
   });
@@ -60,27 +70,20 @@ export default function ProductContextProvider({ children }: { children: ReactNo
       toast.error("Unexpected error occurred getProductById");
       return "Unexpected error occurred getProductById";
     }
-      // console.log(" Product delete error:", error?.response?.data || error);
-      // const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
-      // const generalError = error?.response?.data?.message;
-      // toast.error(detailedError || generalError || "get Product issue");
-      // return detailedError || generalError || "get Product issue"
+
     }
   };
-  // const { data: spacificeProduct, isLoading:spacificeProductLoading } = useQuery({
-  //   queryKey: ['getProductById', id],
-  //   queryFn: () => getProductById(id)
-  // });
+
 
 
   // 🔹 Update product
-  const updateProduct = useMutation<IProduct, unknown, IProductUpdateInput>({
-    mutationFn: async (data: IProductUpdateInput) => {
+  const updateProduct = useMutation<IProduct, unknown, IProductEditInput>({
+    mutationFn: async (data: IProductEditInput) => {
       setIsUpdating(true);
 
       const formData = new FormData();
       formData.append("name", data.name);
-      formData.append("description", data.description);
+      formData.append("description", data.description ||"");
       formData.append("mainPrice", data.mainPrice.toString());
       formData.append("discountPercent", data.discountPercent.toString());
 formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
@@ -106,6 +109,7 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
         headers: getAuthHeader(),
       });
 
+
       return res.data.data.product;
     },
 
@@ -121,6 +125,7 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
         );
       });
 
+      
       await queryClient.invalidateQueries({ queryKey: ['product', updatedProduct.id] });
 
     },
@@ -151,11 +156,11 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
 
 
 
-const addProduct = useMutation<IProduct, unknown, IProductUpdateInput>({
+const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput, unknown>({
   mutationFn: async (data: IProductUpdateInput) => {
     const formData = new FormData();
     formData.append("name", data.name);
-    formData.append("description", data.description);
+    formData.append("description", data.description ||"");
     formData.append("mainPrice", data.mainPrice.toString());
     formData.append("stock", data.stock.toString());
     formData.append("discountPercent", data.discountPercent.toString());
@@ -170,20 +175,36 @@ const addProduct = useMutation<IProduct, unknown, IProductUpdateInput>({
     const res = await axiosInstance.post("/product", formData, {
       headers: getAuthHeader(),
     });
-    return res.data.product;
+    return res.data as IAddProductResponse
   },
 
   onSuccess: (res) => {
     console.log(res);
-        queryClient.invalidateQueries({ queryKey: ["allProductsData"] });
+    if (res.message === "Done") {
+      
+      queryClient.invalidateQueries({ queryKey: ["allProductsData"] });
+      refetchProducts()
+      toast.success("✅ Product added successfully!");
+      // onBack()
+    }
 
 
-    toast.success("✅ Product added successfully!");
   },
 
 
   onError: (error) => {
-    console.log({addpostError:error});
+    console.log({ addproductError: error });
+     if (axios.isAxiosError(error)) {
+    const detailedError =
+      error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+
+    const generalError = error.response?.data?.message;
+
+    toast.error(detailedError || generalError || "update product issue");
+
+  } else {
+    toast.error("Unexpected error from update product");
+  }
     
   }
 });
@@ -308,6 +329,8 @@ const { data: archiveProducts = [], refetch } = useQuery({
         setPage,
         search,
         setSearch,
+        categoryId,
+        setCategoryId,
         getProductById,
         updateProduct,
         softDelProduct,

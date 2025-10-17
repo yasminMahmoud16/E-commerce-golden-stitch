@@ -21,7 +21,8 @@ import { Input } from "@/Components/ui/input";
 export default function ArchiveCategory() {
 
 
-    const { archiveCategory, page, setPage, search, setSearch,restoreCategory , hardDelCategory } = useCategoryContext()
+    const { archiveCategory, page, setPage, search, setSearch, restoreCategory, hardDelCategory } = useCategoryContext();
+    
     console.log({ archiveCategory });
     const Headers = [
         { id: 2, label: "image" },
@@ -49,7 +50,7 @@ export default function ArchiveCategory() {
             <Input
                 type="text"
                 placeholder="search"
-                className="w-60 md:w-80 border-footer-items py-3 px-2 pl-10 mb-2 text-white placeholder:text-footer-items rounded-4xl"
+                className="w-60 md:w-80 border-footer-items py-3 px-2 pl-10 mb-2 text-white placeholder:text-footer-items rounded-4xl "
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
             />
@@ -91,10 +92,10 @@ export default function ArchiveCategory() {
                             </TableCell>
                             <TableCell className="font-medium text-center">{data.freezedAt}</TableCell>
                             <TableCell className="font-medium text-center flex gap-3 items-center justify-center mt-5" >
-                                <Icons.MdOutlineRestore className="text-2xl text-gold-dark transition-all duration-300 ease-in-out hover:text-green-400"
+                                <Icons.MdOutlineRestore className="text-2xl text-[hsl(22,55%,44%)] transition-all duration-300 ease-in-out hover:text-green-400"
                                 onClick={() => { restoreCategory(data.id) }}
                             />
-                                <Icons.FaTrash className="text-lg text-red-700 transition-all duration-300 ease-in-out hover:text-red-400"
+                                <Icons.FaTrash className="text-lg text-red-800 shadow-2xl transition-all duration-300 ease-in-out hover:text-red-400"
                                 onClick={() => { hardDelCategory(data.id) }}
                             />
                             </TableCell>

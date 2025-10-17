@@ -30,18 +30,19 @@ export default function AdminLayout() {
 
         },
         {
+            label: "Archive Products", path: "archive-products",
+            icon: <Icons.IoMdArchive />
+
+        },
+        {
             label: "Category", path: "category",
             icon: <Icons.BiSolidCategoryAlt />
 
         },
-        {
-            label: "Archive Products", path: "archive-products",
-            icon: <Icons.BiSolidCategoryAlt />
-
-        },
+        
         {
             label: "Archive Category", path: "archive-category",
-            icon: <Icons.BiSolidCategoryAlt />
+            icon: <Icons.IoMdArchive />
 
         },
         {

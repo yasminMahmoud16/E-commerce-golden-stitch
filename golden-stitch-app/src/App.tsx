@@ -52,7 +52,7 @@ const router = createHashRouter([
       {
         index: true,
         element: (
-          <Suspense fallback={<SpinnerCustomData />}>
+          <Suspense fallback={<SpinnerCustom />}>
             <LandingPage />
           </Suspense>
         ),

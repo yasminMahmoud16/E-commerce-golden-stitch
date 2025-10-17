@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/Components/ui/label";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/Components/ui/button";
 import { useAxios } from "@/Hooks/useAxios";
 import { toast } from "sonner";
@@ -10,6 +10,8 @@ import BtnCommon from "@/common/BtnCommon";
 import { useAuthContext } from "@/Hooks/useAppContexts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createCategory } from "@/Pages/Auth/validation/categoryValidation";
+// import type { ICategory } from "@/Utilities/interfaces";
+import axios from "axios";
 
 export default function AddCategory({ onBack }: { onBack: () => void }) {
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm({
@@ -18,35 +20,46 @@ export default function AddCategory({ onBack }: { onBack: () => void }) {
   const axiosInstance = useAxios();
   const {getAuthHeader} = useAuthContext()
   const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { name: string; description?: string; attachment?: string }) => {
     try {
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("description", data.description);
-      if (data.attachment?.[0]) {
-        formData.append("attachment", data.attachment[0]);
-      }
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description || "");
+    if (data.attachment?.[0]) {
+      formData.append("attachment", data.attachment[0]);
+    }
 
-      const res = await axiosInstance.post("/category", formData, {
-        headers: getAuthHeader(),
-      });
-      console.log({addCategorey:res});
-      
+    const res = await axiosInstance.post("/category", formData, {
+      headers: getAuthHeader(),
+    });
 
+
+    if (res.data.message === "Done") {
+      console.log({ addCategory: res });
       toast.success("Category added successfully!");
       reset();
+      
       setPreview(null);
       onBack();
-    } catch (error: any) {
-      console.log({addCat:error});
-      
-      const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
-            const generalError = error?.response?.data?.message;
-            const messageToShow = detailedError || generalError || "add category issue ";
-            toast.error(messageToShow);
     }
-  };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const detailedError =
+        error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+      const generalError = error?.response?.data?.message;
+      const messageToShow = detailedError || generalError || "Add category issue";
+      toast.error(messageToShow);
+    }
+    console.log({ addCat: error });
+  } finally {
+    setLoading(false)
+  }
+};
+
 
 
   return (
@@ -67,23 +80,23 @@ export default function AddCategory({ onBack }: { onBack: () => void }) {
               <Input
                 id="name"
             type="text"
-            className="text-gray-200 placeholder:text-gray-400 text-gray-300"
+            className=" placeholder:text-gray-400 text-gray-300"
                 placeholder="Enter category name"
                 {...register("name", { required: true })}
           />
-          {errors.name && <p className="text-red-400 text-sm">{errors.name.message}</p>}
+          {errors.name && <p className="text-[hsl(22,55%,44%)] font-semibold text-sm">{errors.name.message}</p>}
             </div>
 
             {/* Description */}
             <div className="space-y-2">
-              <Label htmlFor="description" className="capitalize text-gold-light font-semibold">Description</Label>
+              <Label htmlFor="description" className="capitalize text-gold font-semibold text-sm">Description</Label>
               <Input
             id="description"
             className="placeholder:text-gray-400 text-gray-300"
                 placeholder="Enter category description"
                 {...register("description")}
           />
-          {errors.description && <p className="text-red-400 text-sm">{errors.description.message}</p>}
+          {errors.description && <p className="text-[hsl(22,55%,44%)] font-semibold  text-sm">{errors.description.message}</p>}
             </div>
 
             {/* Image Upload + Preview */}
@@ -143,8 +156,19 @@ export default function AddCategory({ onBack }: { onBack: () => void }) {
                 className="rounded-xl cursor-pointer transition-all ease-in-out duration-300  hover:bg-gold-dark hover:text-white border-none"
               >
                 Cancel
-              </Button>
-              <BtnCommon text="Add Category" type="submit" className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
+          </Button>
+          {/* {loading ? <>
+            <BtnCommon text="Category adding ...."
+              type="submit"
+              className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
+                hover:from-gold-dark hover:to-[55%] "/>
+          </> :
+          } */}
+          <BtnCommon text="Add Category "
+            type="submit"
+            loading={loading}
+            
+            className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
               hover:from-gold-dark hover:to-[55%] "/>
                 
             </div>

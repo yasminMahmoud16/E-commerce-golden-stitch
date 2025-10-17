@@ -19,13 +19,15 @@ import {
 import useDashboardAdmin from "@/Hooks/useDashboardAdmin";
 import useGlobal from "@/Hooks/useGlobal";
 import { SpinnerCustomData } from "@/Loading/SpinnerCustomData";
+import type { IUserData } from "@/Utilities/interfaces";
 
 export type TableProps = {
     headers: { id: number; label: string }[];
-    data: Array<Record<string, string>>
+    // data: Array<Record<string, string>>
+    data: IUserData[]
     onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
-    isLoading:boolean
+    isLoading?:boolean
 };
 
 export default function AdminTable({ headers, data, onEdit, onDelete }: TableProps) {
@@ -36,10 +38,11 @@ export default function AdminTable({ headers, data, onEdit, onDelete }: TablePro
     const showActions =
         currentPath.includes("/admin/users");
 
+  
 
     return (
 
-        <div className=" flex flex-col ">
+        <div className=" flex flex-col  overflow-x-auto scrollbar-hide w-full">
 
         <Table  className="">
             <TableHeader>
@@ -76,11 +79,17 @@ export default function AdminTable({ headers, data, onEdit, onDelete }: TablePro
         <TableCell className="font-medium my-2 text-center capitalize">
           {dataItem.firstName}
         </TableCell>
-        <TableCell className="font-medium px-6 py-3 my-2 text-center">
+        <TableCell className="font-medium px-6 py-3 my-2 text-center capitalize">
           {dataItem.email}
         </TableCell>
+        {/* <TableCell className="font-medium px-6 py-3 my-2 text-center">
+          {dataItem.email}
+        </TableCell> */}
         <TableCell className="font-medium px-6 py-3 my-2 text-center">
           {dataItem.phone}
+        </TableCell>
+        <TableCell className="font-medium px-6 py-3 my-2 text-center capitalize">
+          {dataItem.role}
         </TableCell>
 
         {headers.some((h) => h.label === "Order Status") ? (
@@ -117,7 +126,7 @@ export default function AdminTable({ headers, data, onEdit, onDelete }: TablePro
                 size="sm"
                 onClick={() => onDelete?.(dataItem.id)}
               >
-                <Icons.FaTrash className="text-red-700 transition-all duration-300 ease-in-out group-hover:text-red-500" />
+                <Icons.FaTrash className="text-red-900 transition-all duration-300 ease-in-out group-hover:text-red-500" />
               </Button>
             </div>
           </TableCell>

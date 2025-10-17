@@ -4,7 +4,7 @@ import type { ICategoryContextType, IAuthContextType, IProductContextType, IProf
 import { ProductContext } from "@/Context/contextCreations/ProfileContext";
 import { ProfileContext } from "@/Context/contextCreations/ProductContext";
 import { CategoryContext } from "@/Context/contextCreations/CategoryContex.";
-import { CartContext } from "@/Context/contextCreations/CartContex.";
+import { CartContext } from "@/Context/contextCreations/CartContext.";
 import { AuthContext } from "@/Context/contextCreations/AuthContex";
 import { OrderContext } from "@/Context/contextCreations/OrderContext";
 // import { OrderContext } from "@/Context/OrderContext";

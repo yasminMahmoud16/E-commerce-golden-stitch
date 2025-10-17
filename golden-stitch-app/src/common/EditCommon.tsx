@@ -10,8 +10,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/Components/ui/select";
-import {  useEffect, useState } from "react";
-import type { EditCommonProps, FormDataUpdate } from "@/Utilities/types";
+// import {  useEffect, useState } from "react";
+import { GenderEnum, type EditCommonProps, type FormDataUpdate } from "@/Utilities/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProfile } from "@/Pages/Auth/validation/userValidation";
 import { useProfileContext } from "@/Hooks/useAppContexts";
@@ -33,7 +33,7 @@ export default function EditCommon({
         handleSubmit,
         control,
         setValue,
-        reset,
+        // reset,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(updateProfile),
@@ -41,9 +41,9 @@ export default function EditCommon({
     });
 
 
-    const [preview, setPreview] = useState<string | null>(
-        data?.image ? (data.image as string) : null
-    );
+    // const [preview, setPreview] = useState<string | null>(
+    //     data?.image ? (data.image as string) : null
+    // );
     const handleSubmitEdit = async (values: FormDataUpdate) => {
         try {
             const updatedUser = await updateUserProfile(values);
@@ -55,20 +55,20 @@ export default function EditCommon({
 
 
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setPreview(imageUrl);
-            setValue("image" , file as any);
-        }
-    };
-    useEffect(() => {
-        if (data) {
-            reset(data);
-            setPreview(data.image ? (data.image as string) : null);
-        }
-    }, [data, reset]);
+    // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const file = e.target.files?.[0];
+    //     if (file) {
+    //         const imageUrl = URL.createObjectURL(file);
+    //         setPreview(imageUrl);
+    //         setValue("image" , file as any);
+    //     }
+    // };
+    // useEffect(() => {
+    //     if (data) {
+    //         reset(data);
+    //         setPreview(data.image ? (data.image as string) : null);
+    //     }
+    // }, [data, reset]);
 
 
 
@@ -84,7 +84,7 @@ export default function EditCommon({
             {title && <h2 className="text-xl text-gold font-medium mb-4">{title}</h2>}
 
             <form onSubmit={handleSubmit(handleSubmitEdit)}>
-                <div className="grid grid-cols-1 md:grid-cols-6 gap-4 w-full">
+                <div className=" grid md:grid-cols-6 gap-4 w-full">
                     {fields.map((field) => (
                         <div key={field.name} className="col-span-3">
                             {field.label && (
@@ -96,19 +96,18 @@ export default function EditCommon({
                                 </Label>
                             )}
 
-                            {/* 👇 Handle Gender Select */}
                             {field.name === "gender" ? (
                                 <>
 
                                     <Controller
                                         name={field.name}
                                         control={control}
-                                        defaultValue={data?.[field.name] ?? ""}
+                                        // defaultValue={data?.[field.name] ?? ""}
                                         render={({ field: selectField }) => (
                                             <Select
                                                 onValueChange={(value) => {
                                                     selectField.onChange(value);
-                                                    setValue(field.name as keyof FormDataUpdate, value as any);
+                                                    setValue(field.name as keyof FormDataUpdate, value );
                                                 }}
                                                 value={selectField.value ?? ""}
 
@@ -117,8 +116,8 @@ export default function EditCommon({
                                                     <SelectValue placeholder={field.placeholder || "Select Gender"} />
                                                 </SelectTrigger>
                                                 <SelectContent sideOffset={1} position="popper">
-                                                    <SelectItem value="male">male</SelectItem>
-                                                    <SelectItem value="female">female</SelectItem>
+                                                    <SelectItem value={GenderEnum.male}>male</SelectItem>
+                                                    <SelectItem value={GenderEnum.female}>female</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         )}
@@ -128,27 +127,27 @@ export default function EditCommon({
 
                             ) : field.type === "file" ? (
                                 <div className="flex flex-col items-start gap-3 ">
-                                    {preview && (
+                                    {/* {preview && (
                                         <img
                                             src={preview}
                                             alt="Preview"
                                             className="w-24 h-24 object-cover rounded-full border-2 border-gold-light shadow-md"
                                         />
-                                    )}
+                                    )} */}
 
-                                    <label
+                                    {/* <label
                                         htmlFor={field.name}
                                         className="cursor-pointer bg-gradient-to-r from-gold-dark to-gold-light text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition-all"
                                     >
                                         Upload New Image
-                                    </label>
-                                    <Input
+                                    </label> */}
+                                    {/* <Input
                                         id={field.name}
                                         type="file"
                                         accept="image/*"
                                         onChange={handleImageChange}
                                         className="hidden"
-                                    />
+                                    /> */}
                                 </div>
                             ) : (
                                 <Input
@@ -161,7 +160,7 @@ export default function EditCommon({
                             )}
 
                             {field.name in errors && (
-                                <span className="text-red-500 text-sm">
+                                <span className="text-red-900 font-semibold text-xs">
                                     {(errors[field.name as keyof FormDataUpdate]?.message as string) || ""}
                                 </span>
                             )}

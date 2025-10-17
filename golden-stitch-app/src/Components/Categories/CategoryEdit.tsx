@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/Components/ui/label";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/Components/ui/button";
 import { Icons } from "@/assets/Icons/icons";
 import BtnCommon from "@/common/BtnCommon";
@@ -10,6 +10,7 @@ import { useCategoryContext } from "@/Hooks/useAppContexts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateCategorySchema } from "@/Pages/Auth/validation/categoryValidation";
 import type { categoryEdit } from "@/Utilities/types";
+import type {  ICategoryUpdate } from "@/Utilities/interfaces";
 
 export default function CategoryEdit({ category, onBack }:categoryEdit) {
     
@@ -28,15 +29,14 @@ export default function CategoryEdit({ category, onBack }:categoryEdit) {
     }
   }, [category, setValue]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: ICategoryUpdate) => {
     updateCategory.mutate({
-      id: category.id,
+      id: category!.id,
       name: data.name,
-      description: data.description,
+      description: data.description || "",
       attachment: data.attachment,
     });
 
-    // بعد ما يتم الـupdate بنرجع للدتفاصيل
     onBack();
   };
 
@@ -52,13 +52,13 @@ export default function CategoryEdit({ category, onBack }:categoryEdit) {
         <div className="space-y-2">
           <Label htmlFor="name" className="capitalize text-gold-light font-semibold">Name</Label>
             <Input id="name" type="text" placeholder="Enter category name" className="text-gray-300" {...register("name", { required: true })} />
-            {errors.name && <p className="text-red-400 text-sm">{errors.name.message}</p>}
+            {errors.name && <p className="text-[hsl(22,55%,44%)] font-semibold text-sm">{errors.name.message}</p>}
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="description" className="capitalize text-gold-light font-semibold">Description</Label>
           <Input id="description" placeholder="Enter category description"  className="text-gray-300" {...register("description")} />
-            {errors.description && <p className="text-red-400 text-sm">{errors.description.message}</p>}
+            {errors.description && <p className="text-text-[hsl(22,55%,44%)] font-semibold text-sm">{errors.description.message}</p>}
         </div>
 
         <div className="space-y-2 flex flex-col items-center justify-center">
@@ -95,7 +95,8 @@ export default function CategoryEdit({ category, onBack }:categoryEdit) {
 
         <div className="flex justify-between pt-4">
           <Button type="button" variant="outline" onClick={onBack} className="rounded-xl">Back</Button>
-          <BtnCommon text="Update Category" type="submit" className="rounded-xl" />
+          <BtnCommon
+            text="Update Category" type="submit" className="rounded-xl w-40" />
         </div>
       </form>
     </div>

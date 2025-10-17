@@ -18,27 +18,27 @@ export default function ProductDetails({ product, onBack, onEdit, onDeleteSucces
   const queryClient = useQueryClient();
   const { getProductById, isUpdating ,softDelProduct} = useProductContext();
   const { allCategoriesData } = useCategoryContext();
-  const [parentImage, setParentImage] = useState(null);
+const [parentImage, setParentImage] = useState<string | null>(null);
   const [isDelete, setIsDelete] = useState(false);
   
 
   const { data: productData } = useQuery({
-    queryKey: ["product", product.id],
-    queryFn: () => getProductById(product.id),
+    queryKey: ["product", product?.id],
+    queryFn: () => getProductById(product!.id),
     initialData: () =>
-      queryClient.getQueryData(["product", product.id]) || product,
-    enabled: !!product.id,
+      queryClient.getQueryData(["product", product?.id]) || product,
+    enabled: !!product?.id,
   });
 
   const currentProduct = productData || product;
 
   const categoryName =
-    typeof currentProduct.category === "string"
+    typeof currentProduct?.category === "string"
       ? allCategoriesData?.find((cat) => cat.id === currentProduct.category)
           ?.name || "Unknown Category"
-      : currentProduct.category?.name || "Unknown Category";
+      : currentProduct?.category?.name || "Unknown Category";
 
-  const handleGallery = (image) => {
+  const handleGallery = (image:string) => {
     setParentImage(image);
   };
 
@@ -71,10 +71,10 @@ export default function ProductDetails({ product, onBack, onEdit, onDeleteSucces
         <div className="flex items-center justify-center gap-3">
           <Icons.FaEdit
             size={20}
-            className="text-gray-300 cursor-pointer hover:text-gold-dark"
-            onClick={() => onEdit(currentProduct)}
+            className="text-gray-300 cursor-pointer  transition-all duration-300 ease-in-out  hover:text-gold-dark"
+            onClick={() => currentProduct && onEdit(currentProduct)}
           />
-          <Icons.FaTrash size={20} className="text-red-700 cursor-pointer"
+          <Icons.FaTrash size={20} className="  text-[hsl(22,55%,44%)] transition-all duration-300 ease-in-out hover:text-red-700 cursor-pointer"
             onClick={()=>{setIsDelete(true)}} />
         </div>
       </div>
@@ -84,15 +84,15 @@ export default function ProductDetails({ product, onBack, onEdit, onDeleteSucces
         <div className=" flex flex-col items-center justify-center">
 
         <img
-          src={`/${parentImage || currentProduct.images?.[0]}`}
-          alt={currentProduct.name}
+          src={`/${parentImage || currentProduct?.images?.[0]}`}
+          alt={currentProduct?.name}
           className="w-60 h-60 object-cover rounded-xl shadow-lg"
         />
 
         <Carousel className="relative w-full md:w-[350px]">
           <CarouselPrevious className="cursor-pointer absolute left-1 z-10" />
           <CarouselContent className="-ml-4 flex mt-3">
-            {currentProduct.images?.map((img, index) => (
+            {currentProduct?.images?.map((img, index) => (
               <CarouselItem
                 key={index}
                 className="pl-4 basis-1/3 shrink-0"
@@ -116,12 +116,12 @@ export default function ProductDetails({ product, onBack, onEdit, onDeleteSucces
         </div>
 
         <div>
-          <h2 className="text-3xl font-semibold text-gold-dark mb-2 capitalize">
-            {currentProduct.name}
+          <h2 className="text-xl md:text-3xl font-semibold text-gold-dark mb-2 capitalize">
+            {currentProduct?.name}
           </h2>
-          <p className="text-gray-400 mb-3">{currentProduct.description}</p>
+          <p className="text-gray-400 mb-3">{currentProduct?.description}</p>
           <p className="text-gray-400">
-            <strong>Price:</strong> {currentProduct.mainPrice}
+            <strong>Price:</strong> {currentProduct?.mainPrice}
           </p>
           <p className="text-gray-400">
             <strong>Category:</strong> {categoryName}
@@ -144,7 +144,7 @@ export default function ProductDetails({ product, onBack, onEdit, onDeleteSucces
         label: "Yes, Delete it",
         className: "bg-red-600 hover:bg-red-700",
         onClick: async () => {
-          await handleDeleteClick(currentProduct.id);
+          await handleDeleteClick(currentProduct!.id);
           setIsDelete(false); // close popup
         },
       },

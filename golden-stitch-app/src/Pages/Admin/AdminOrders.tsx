@@ -16,26 +16,27 @@ import {
     PaginationPrevious,
 } from "@/Components/ui/pagination"
 import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
+    Select,
+    SelectTrigger,
+    SelectContent,
+    SelectItem,
+    SelectValue,
 } from "@/Components/ui/select";
 
 import AdminTitles from "@/common/AdminTitles";
 import { Icons } from "@/assets/Icons/icons";
-import { Input } from "@/Components/ui/input";
+// import { Input } from "@/Components/ui/input";
 import { useState } from "react";
 import Cancel from "@/Components/cancel/Cancel";
 import { StateEnum } from "@/Utilities/types";
 export default function ArchiveOrders() {
 
 
-    const { ordersData, page, setPage, search, setSearch,onDeliveredByAmin,onWayByAmin } = useOrderContext();
+    const { ordersData, page, setPage, statusFilter, setStatusFilter, onDeliveredByAmin, onWayByAmin } = useOrderContext();
     const [open, setOpen] = useState(false);
-    // const [ orderType,setOrderType] = useState<string>("onWay");
-const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+    const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+    // const [pendingCancelStatus, setPendingCancelStatus] = useState<string | null>(null);
+    const [pendingStatus, setPendingStatus] = useState<Record<string, string>>({});
 
     console.log({ ordersData });
     const Headers = [
@@ -48,11 +49,11 @@ const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
     ];
 
-    const handelCancelClick =async (id:string) => {
-            setSelectedOrderId(id);
-            setOpen(true)
-        
-    }
+    // const handelCancelClick = async (id: string) => {
+    //     setSelectedOrderId(id);
+    //     setOpen(true)
+
+    // }
 
     return <>
 
@@ -63,19 +64,27 @@ const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
         />
 
 
-        <div className="relative mb-2">
-            <Icons.CiSearch
-                className="absolute left-3 top-4 -translate-y-1/2 text-footer-items"
-                size={23}
-            />
-            <Input
-                type="text"
-                placeholder="search"
-                className="w-60 md:w-80 border-footer-items py-3 px-2 pl-10 mb-2 text-white placeholder:text-footer-items rounded-4xl"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-            />
+
+        <div className="relative mb-2 mr-4 flex justify-end">
+            <Select
+                value={statusFilter}
+                onValueChange={(value) => setStatusFilter(value)}
+            >
+                <SelectTrigger className="w-[150px] bg-transparent text-gold border-gold-dark border-4">
+                    <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+
+                <SelectContent className="bg-dark-blue-nav border-gray-400 text-gray-400">
+
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value={StateEnum.placed}>Placed</SelectItem>
+                    <SelectItem value={StateEnum.onWay}>On Way</SelectItem>
+                    <SelectItem value={StateEnum.delivered}>Delivered</SelectItem>
+                    <SelectItem value={StateEnum.cancel}>Cancelled</SelectItem>
+                </SelectContent>
+            </Select>
         </div>
+
         <div className="w-full overflow-x-auto scrollbar-hide">
             <Table className="min-w-full">
                 <TableHeader>
@@ -97,15 +106,7 @@ const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
                             key={data.id}
                             className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
                         >
-                            {/* <TableCell className="font-medium my-2 w-40 h-10 ">
-            <div className="flex justify-center items-center">
-              <img
-                src={`/${data.images}`}
-                alt="image"
-                className="w-15 h-15 rounded-md"
-              />
-            </div>
-          </TableCell> */}
+
                             <TableCell className="font-medium text-center">{data.address}</TableCell>
                             <TableCell className="font-medium text-center">{data.paymentType}</TableCell>
                             <TableCell className="font-medium text-center">{data.createdBy.username}</TableCell>
@@ -113,39 +114,58 @@ const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
                                 {String(data.note || "").slice(0, 60)}
                             </TableCell>
                             <TableCell className="font-medium text-center">{data.phone}</TableCell>
-                            {/* <TableCell className="font-medium text-center">{data.status}</TableCell> */}
-                            {/* <TableCell className="font-medium text-center"> */}
-<TableCell className="font-medium text-center">
-  <Select
-    value={data.status || StateEnum.placed}
-    onValueChange={async (value) => {
-  if (value === StateEnum.onWay) await onWayByAmin(data.id);
-  if (value === StateEnum.delivered) await onDeliveredByAmin(data.id);
-  if (value === StateEnum.cancel) await handelCancelClick(data.id);
-//   await refetch();
-//   setOrderType(value);
 
-}}
+                            <TableCell className="font-medium text-center">
+                                <Select
+                                    value={pendingStatus[data.id] || data.status || StateEnum.placed}
+                                    onValueChange={async (value) => {
+                                        if (value === StateEnum.cancel) {
+                                            setSelectedOrderId(data.id);
+                                            setPendingStatus((prev) => ({ ...prev, [data.id]: StateEnum.cancel }));
+                                            setOpen(true); // open modal for reason
+                                        } else if (value === StateEnum.onWay) {
+                                            setPendingStatus((prev) => ({ ...prev, [data.id]: StateEnum.onWay }));
+                                            await onWayByAmin(data.id);
+                                        } else if (value === StateEnum.delivered) {
+                                            setPendingStatus((prev) => ({ ...prev, [data.id]: StateEnum.delivered }));
+                                            await onDeliveredByAmin(data.id);
+                                        }
+                                    }}
+                                >
+                                    <SelectTrigger
+                                        className={`w-[150px] bg-transparent border-gold-dark border-4
+      ${(pendingStatus[data.id] || data.status) === StateEnum.cancel
+                                                ? "text-red-500"
+                                                : (pendingStatus[data.id] || data.status) === StateEnum.delivered
+                                                    ? "text-green-500"
+                                                    : (pendingStatus[data.id] || data.status) === StateEnum.onWay
+                                                        ? "text-yellow-400"
+                                                        : "text-blue-500"
+                                            }`}
+                                    >
+                                        <SelectValue placeholder="Select status" />
+                                    </SelectTrigger>
 
-  >
-    <SelectTrigger className="w-[150px] bg-transparent text-gold-dark border-gold-dark">
-      <SelectValue placeholder="Select status" />
-    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value={StateEnum.placed} className="text-blue-500">
+                                            Placed
+                                        </SelectItem>
+                                        <SelectItem value={StateEnum.onWay} className="text-yellow-500">
+                                            On Way
+                                        </SelectItem>
+                                        <SelectItem value={StateEnum.delivered} className="text-green-500">
+                                            Delivered
+                                        </SelectItem>
+                                        <SelectItem value={StateEnum.cancel} className="text-red-600">
+                                            Cancelled
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
 
-    <SelectContent>
-      <SelectItem value={StateEnum.placed}>Placed</SelectItem>
-      <SelectItem value={StateEnum.onWay}>On Way</SelectItem>
-      <SelectItem value={StateEnum.delivered}>Delivered</SelectItem>
-      <SelectItem value={StateEnum.cancel}>Cancelled</SelectItem>
-    </SelectContent>
-  </Select>
-</TableCell>
+                            </TableCell>
 
 
 
-{/* </TableCell> */}
-
-                            {/* <TableCell className="font-medium text-center flex items-center justify-center pt-3" ><Icons.MdCancel className="text-2xl text-gold-dark transition-all duration-300 ease-in-out hover:text-red-400" onClick={() => { handelCancelClick(data.id) }} /></TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>
@@ -183,15 +203,12 @@ const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
         </Pagination>
 
 
-       {open && (
-  <Cancel open={open} onOpenChange={setOpen} orderId={selectedOrderId} />
-)}
+        {open && (
+            <Cancel open={open} onOpenChange={setOpen} orderId={selectedOrderId} onStatusChange={(id, status) => {
+                setPendingStatus(prev => ({ ...prev, [id]: status }));
+            }} />
+        )}
 
-        {/* <PopupCommon
-            open={open}
-            onOpenChange={setOpen}
-            text="Please register or log in to add items to your Cart or wish list"
-            title="You must register"
-        /> */}
+
     </>
 }

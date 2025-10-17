@@ -32,7 +32,7 @@ export default function userLayout() {
                         <img src={cornerBottomRightHero} alt="cornerBottomRightHero" className="w-40" />
             </div>
 
-        <SidebarProvider className=' flex  items-start  gap-2'>
+        <SidebarProvider className=''>
 
             <AppSidebar sidebarLinks={userLinks} />
 

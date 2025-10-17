@@ -5,8 +5,8 @@
 
 
 
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useForm, type Resolver } from "react-hook-form";
+import {  useState } from "react";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/Components/ui/button";
@@ -21,16 +21,22 @@ import {
   SelectValue,
 } from "@/Components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createProduct } from "@/Pages/Auth/validation/productValidation";
-import type { ICategory, IProduct, IProductUpdateInput } from "@/Utilities/interfaces";
-import type { ProductFormValues } from "@/Utilities/types";
+import { createProduct, type ProductFormValues } from "@/Pages/Auth/validation/productValidation";
+import type { ICategory, IProductUpdateInput } from "@/Utilities/interfaces";
+// import type { ProductFormValues } from "@/Utilities/types";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-export default function ProductEdit({ product, onBack }: {
-  product?: IProduct, onBack: () => void,
+export default function ProductEdit({
+  // product,
+  onBack }: {
+  // product?: IProduct,
+  onBack: () => void,
 }) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
+  const [loading, setIsLoading]=useState<boolean>(false)
 const { register, handleSubmit, setValue, formState: { errors } } = useForm<ProductFormValues>({
-  resolver: zodResolver(createProduct),
+  resolver: zodResolver(createProduct) as unknown as Resolver<ProductFormValues>,
   defaultValues: {
     name: "",
     mainPrice: 0,
@@ -39,69 +45,39 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
     description: "",
     categoryId: "",
     attachments: undefined,
-  }
+    category: { id: "", name: "" },
+  },
 });
 
 
-  const [preview, setPreview] = useState<string | null>(null);
 
-  const { addProduct } = useProductContext();
-  const { allCategoriesData } = useCategoryContext();
+  const [preview, setPreview] = useState<string[]>();
 
-
-
-
-useEffect(() => {
-  if (product) {
-    setValue("name", product.name);
-    setValue("description", product.description);
-    setValue("mainPrice", product.mainPrice);
-    setValue("stock", product.stock);
-    setValue("discountPercent", product.discountPercent);
-    setSelectedCategoryId(product.category?.id || "");
-    
-  }
-}, [product, setValue]);
+  const { addProduct,  } = useProductContext();
+  const { getCategories, allCategoriesData } = useCategoryContext();
+  
+  const { data: catSize } = useQuery({
+  queryKey: ["allCategories"],
+  queryFn: () => getCategories({  size: 50,  }),
+});
 
 
 
 
-  // type addProductType = {
-  //   name: string;
-  //   description: string;
-  //   mainPrice: string;
-  //   stock: string;
-  //   discountPercent: string;
-  //   category?: { id: string };
-  //   attachments: FileList | File[];
-  // }
-  // const onSubmit = (data:IProductUpdateInput) => {
-  //   console.log({ addProductData: data });
-
-  //   addProduct.mutate({
-  //     name: data.name,
-  //     description: data.description,
-  //     mainPrice: data.mainPrice,
-  //     stock: data.stock,
-  //     discountPercent: data.discountPercent,
-  //     category: { id: selectedCategoryId },
-  //     attachments: data.attachments,
-  //   });
 
 
 
-  //   onBack();
-  // };
+ 
 
   console.log("form errors:", errors);
 
-const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
-  //  console.log("✅ Form submitted!", data);
+  const onSubmit = (data: ProductFormValues) => {
+    setIsLoading(true);
   const payload: IProductUpdateInput = {
     // id: data?.id || "",
     name: data.name,
     description: data.description,
-     mainPrice: Number(data.mainPrice),   
+    mainPrice: Number(data.mainPrice),   
     stock: Number(data.stock),
     discountPercent: Number(data.discountPercent),
     // category: { id: data.categoryId || "" },
@@ -110,8 +86,15 @@ const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
     attachments: data.attachments || [],
   };
 
-  addProduct.mutate(payload);
+  addProduct.mutate(payload, {
+    onSuccess: () => {
       onBack();
+    },
+    onError: (error) => {
+      toast.error(`Add  product error:${error}`)
+      // console.log("Add product error:", error);
+    }
+  });
 
 };
 
@@ -130,64 +113,79 @@ const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
         <div className="space-y-2">
           <Label htmlFor="name" className="capitalize text-gold-light font-semibold">Name</Label>
           <Input id="name" type="text" placeholder="Enter product name" {...register("name", { required: true })} className="text-gray-300" />
-          {errors.name && <p className="text-red-400 text-sm">{errors.name.message}</p>}
+          {errors.name && <p className="text-[hsl(22,55%,44%)]  text-sm">{errors.name.message}</p>}
         </div>
 
         {/* DESCRIPTION */}
         <div className="space-y-2">
           <Label htmlFor="description" className="capitalize text-gold-light font-semibold">Description</Label>
           <Input id="description" placeholder="Enter product description" {...register("description")} className="text-gray-300" />
-          {errors.description && <p className="text-red-400 text-sm">{errors.description.message}</p>}
+          {errors.description && <p className="text-[hsl(22,55%,44%)]  text-sm">{errors.description.message}</p>}
         </div>
+
 
         {/* CATEGORY SELECT */}
-        <div className="space-y-2">
-          <Label htmlFor="category" className="capitalize text-gold-light font-semibold">Category</Label>
-          <Select
-            value={selectedCategoryId}
-            onValueChange={(value) => {
-              setSelectedCategoryId(value);
-              setValue("categoryId", value);
-            }}
-            
-          >
-            <SelectTrigger className="text-gray-300" >
-              <SelectValue
-                placeholder={
-                  allCategoriesData?.find((cat: ICategory) => cat.id === selectedCategoryId)?.name ||
-                  "Select category"
-                }
-              />
-            </SelectTrigger>
+<div className="space-y-2">
+  <Label
+    htmlFor="category"
+    className="capitalize text-gold-light font-semibold"
+  >
+    Category
+  </Label>
 
-            <SelectContent className="bg-dark-blue-1 capitalize border-none text-white">
-              {allCategoriesData?.map((cat: ICategory) => (
-                <SelectItem key={cat.id} value={cat.id}>
-                  {cat.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+  <Select
+    value={selectedCategoryId}
+    onValueChange={(value) => {
+      setSelectedCategoryId(value);
+      setValue("categoryId", value);
+    }}
+  >
+    <SelectTrigger className="text-gray-300">
+      <SelectValue
+        placeholder={
+          allCategoriesData?.find(
+            (cat: ICategory) => cat.id === selectedCategoryId
+          )?.name || "Select category"
+        }
+      />
+    </SelectTrigger>
 
-        </div>
+    <SelectContent className="bg-dark-blue-1 capitalize border-none text-white">
+      {catSize && catSize.length > 0 ? (
+        catSize.map((cat: ICategory) => (
+          <SelectItem key={cat.id} value={cat.id}>
+            {cat.name}
+          </SelectItem>
+        ))
+      ) : (
+        <p className="px-3 py-2 text-gray-400 text-sm">No categories found</p>
+      )}
+    </SelectContent>
+  </Select>
+
+  {errors.categoryId && (
+    <p className="text-red-400 text-sm">{errors.categoryId.message}</p>
+  )}
+</div>
+
 
         {/* PRICE */}
         <div className="space-y-2">
           <Label htmlFor="mainPrice" className="capitalize text-gold-light font-semibold">Main Price</Label>
           <Input id="mainPrice" placeholder="Enter product price" {...register("mainPrice",{ valueAsNumber: true })} className="text-gray-300" />
-          {errors.mainPrice && <p className="text-red-400 text-sm">{errors.mainPrice.message}</p>}
+          {errors.mainPrice && <p className="text-[hsl(22,55%,44%)]  text-sm">{errors.mainPrice.message}</p>}
         </div>
         {/* stock */}
         <div className="space-y-2">
           <Label htmlFor="stock" className="capitalize text-gold-light font-semibold">stock</Label>
           <Input id="stock" placeholder="Enter product price" {...register("stock",{ valueAsNumber: true })} className="text-gray-300" />
-          {errors.stock && <p className="text-red-400 text-sm">{errors.stock.message}</p>}
+          {errors.stock && <p className="text-[hsl(22,55%,44%)]  text-sm">{errors.stock.message}</p>}
         </div>
         {/* stock */}
         <div className="space-y-2">
           <Label htmlFor="discountPercent" className="capitalize text-gold-light font-semibold">discountPercent</Label>
           <Input id="discountPercent" placeholder="Enter product price" className="text-gray-300" {...register("discountPercent",{ valueAsNumber: true })} />
-          {errors.discountPercent && <p className="text-red-400 text-sm">{errors.discountPercent.message}</p>}
+          {errors.discountPercent && <p className="text-[hsl(22,55%,44%)]  text-sm">{errors.discountPercent.message}</p>}
         </div>
 
         {/* MULTIPLE IMAGE UPLOAD */}
@@ -220,7 +218,7 @@ const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
     "
           >
             <Icons.FaCamera className="text-3xl mb-2 text-gold" />
-            <span className="text-sm">Upload Images</span>
+            <span className="text-sm  text-gold">Upload Images</span>
           </label>
 
           {/* ✅ PREVIEW MULTIPLE IMAGES */}
@@ -248,7 +246,9 @@ const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
 
 
 
-          <BtnCommon text="Add Product" type="submit" className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
+          <BtnCommon
+            loading={loading}
+            text="Add Product" type="submit" className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
               hover:from-gold-dark hover:to-[55%] " />
         </div>
       </form>

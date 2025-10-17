@@ -80,7 +80,10 @@ export default function ChangePassword() {
                                         </div>
                                     </FormControl>
 
-                                    <FormMessage className="text-xs w-96 mb-2" />
+                                    <div className="w-96 ml-3 mb-3">
+
+                                    <FormMessage className="text-xs font-semibold text-gold capitalize" />
+                                    </div>
                                 </FormItem>
                             )}
                         />
@@ -118,7 +121,10 @@ export default function ChangePassword() {
                                         </div>
                                     </FormControl>
 
-                                    <FormMessage className="text-xs w-96 mb-2" />
+                                    <div className="w-96 ml-3 mb-3">
+
+                                    <FormMessage className="text-xs font-semibold text-gold capitalize" />
+                                    </div>
                                 </FormItem>
                             )}
                         />
@@ -156,7 +162,10 @@ export default function ChangePassword() {
                                         </div>
                                     </FormControl>
 
-                                    <FormMessage className="mb-2" />
+                                    <div className="w-96 ml-3 mb-3">
+
+                                    <FormMessage className="text-xs font-semibold text-gold capitalize" />
+                                    </div>
                                 </FormItem>
                             )}
                         />

@@ -10,11 +10,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { resetPasswordValidation } from "../validation/authValidation";
+import { useLocation } from "react-router-dom";
 
 export default function CreateNewPassword() {
     const { resetPassword ,loading} = useForgetPassword();
     const [isView, setIsView] = useState(false);
-
+  const location = useLocation();
+  const emailFromState = location.state?.email || "";
+  const otpFromState = location.state?.otp || "";
     const handleClickVisibility = () => {
         setIsView(!isView);
         console.log(isView)
@@ -22,14 +25,14 @@ export default function CreateNewPassword() {
     const form = useForm<resetPassword>({
         resolver:zodResolver(resetPasswordValidation),
         defaultValues: {
-            email: "",
-            otp:"",
+            email: emailFromState,
+            otp:otpFromState,
             password: "",
             confirmPassword: ""
         }
     });
-    const handleSubmit = (values:resetPassword) => {
-                resetPassword(values)
+    const handleSubmit = async (values:resetPassword) => {
+                await resetPassword(values)
             }
     return <>
         <WrapperBg title="Create New Password" subtitle="Please enter your new password below. Make sure it’s strong and secure">
@@ -46,16 +49,16 @@ export default function CreateNewPassword() {
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormControl>
-                                            <div className="relative w-72 md:w-md">
+                                        <FormControl  className=" flex items-center justify-center ">
+                                            <div className="relative w-72 md:w-md  flex items-center justify-between">
                                                 <Icons.MdOutlineMail
-                                                    className="absolute left-3 top-5 -translate-y-1/2 text-gray-400"
+                                                    className="absolute left-20 top-5 -translate-y-1/2 text-gold"
                                                     size={23}
                                                 />
                                                 <Input
                                                     type="text"
                                                     placeholder="email"
-                                                    className="bg-white py-5 px-4 pl-10 mb-2 placeholder:text-gray-400" 
+                                                    className="bg-transparent border-none outline-0 ring-0 py-5 px-4 pl-10 mb-2 placeholder:text-gray-400 text-gold  text-center" 
                                                     {...field}
                                                 />
                                             </div>
@@ -70,35 +73,35 @@ export default function CreateNewPassword() {
                                 control={form.control}
                                 name="otp"
                                 render={({ field }) => (
-                                    <FormItem className=" flex flex-col items-center justify-center mt-2 md:p-2 ml-4 md:ml-0">
+                                    <FormItem className=" flex flex-col items-center justify-center md:p-2 ml-4 md:ml-0">
                                         <FormControl >
-                                            <div className="px-4">
+                                            <div className="px-1">
                                             <InputOTP
                                                 maxLength={6}
                                                 value={field.value}       // controlled value
                                                 onChange={field.onChange} // update RHF
                                             >
                                                 <InputOTPGroup>
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={0} />
+                                                    <InputOTPSlot className=" rounded-md  text-md  bg-transparent border-none text-gold font-semibold" index={0} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={1} />
+                                                    <InputOTPSlot className="bg-transparent border-none rounded-md  text-md  text-gold font-semibold" index={1} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={2} />
+                                                    <InputOTPSlot className="bg-transparent border-none rounded-md  text-md  text-gold font-semibold" index={2} />
                                                 </InputOTPGroup>
 
                                                 <InputOTPGroup>
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={3} />
+                                                    <InputOTPSlot className="bg-transparent border-none rounded-md  text-md  text-gold font-semibold" index={3} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={4} />
+                                                    <InputOTPSlot className="bg-transparent border-none rounded-md  text-md  text-gold font-semibold" index={4} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={5} />
+                                                    <InputOTPSlot className="bg-transparent border-none rounded-md  text-md  text-gold font-semibold" index={5} />
                                                 </InputOTPGroup>
 
                                             </InputOTP>
 
                                             </div>
                                         </FormControl>
-                                        <FormMessage  className="mb-2"/>
+                                        
                                     </FormItem>
                                 )}
                             />
@@ -128,7 +131,10 @@ export default function CreateNewPassword() {
                                     </div>
                                 </FormControl>
 
-                                <FormMessage />
+                                <div className=" w-96 ml-5">
+
+                                <FormMessage className="text-xs mb-2 text-red-950 font-semibold " />
+                                </div>
                             </FormItem>
                         )}
                     />
@@ -163,7 +169,10 @@ export default function CreateNewPassword() {
                                     </div>
                                 </FormControl>
 
-                                <FormMessage />
+                                <div className=" w-96 ml-5">
+
+                                <FormMessage className="text-xs mb-2 text-red-950 font-semibold  " />
+                                </div>
                             </FormItem>
                         )}
                     />
