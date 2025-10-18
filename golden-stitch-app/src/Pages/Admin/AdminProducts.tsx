@@ -78,7 +78,7 @@ const { data: catSize } = useQuery({
 
   const handleDetailsClick = async (id: string) => {
     const product = await getProductById(id);
-    console.log("Fetched product:", product);
+    // console.log("Fetched product:", product);
     setSelectedProduct(product);
     setOpenDetails(true);
   };
@@ -154,7 +154,7 @@ const { data: catSize } = useQuery({
 {/* CATEGORY FILTER BUTTONS */}
 <div className="flex flex-wrap gap-3 justify-center my-3">
   <button
-    onClick={() => setCategoryId("")} // زرار All يرجع كل المنتجات
+    onClick={() => setCategoryId("")} 
     className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
       categoryId === ""
         ? "bg-gold text-white"
@@ -168,7 +168,7 @@ const { data: catSize } = useQuery({
     <button
       key={cat.id}
       onClick={() => setCategoryId(cat.id)}
-      className={`px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300 ${
+      className={`px-4 py-2 rounded-full text-xs font-semibold capitalize transition-all duration-300 ${
         categoryId === cat.id
           ? "bg-gold text-white"
           : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"

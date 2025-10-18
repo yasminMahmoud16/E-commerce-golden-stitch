@@ -29,16 +29,15 @@ export default function LandingPage() {
           />
 
           {/* About */}
-          <div className="relative z-10 mb-8">
+          <div className="relative z-10 my-10">
             <About />
           </div>
 
           {/* Products */}
-          <div className="relative z-10 mb-8">
+          <div className="relative z-10 my-10">
             <ProductsLanding />
           </div>
 
-          {/* Bottom corners ثابتة داخل الصفحة */}
           <img
             src={cornerBottomRightHero}
             alt="cornerBottomRightHero"

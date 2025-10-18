@@ -64,7 +64,7 @@ export default function useForgetPassword() {
 
             // navigate("/create-new-password");
 
-            console.log({ result: res });
+            // console.log({ result: res });
 
             return res;
         } catch (error: unknown) {
@@ -99,7 +99,7 @@ export default function useForgetPassword() {
 
             navigate("/login");
 
-            console.log({ result: res });
+            // console.log({ result: res });
 
             return res;
         } catch (error: unknown)

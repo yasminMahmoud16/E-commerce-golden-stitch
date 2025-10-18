@@ -19,9 +19,7 @@ export default function CartContextProvider({ children }: { children: ReactNode 
 
     const queryClient = useQueryClient();
 
-
-    const addToCart = async (productId: string, quantity: number) => {
-
+    const addToCart = async (productId: string, quantity: number, showToast: boolean = true) => {
         try {
             const res = await axiosInstance.post(
                 "/cart",
@@ -30,26 +28,31 @@ export default function CartContextProvider({ children }: { children: ReactNode 
             );
 
             if (res.data.message === "Done") {
-                toast.success("Product Added To Cart");
-
-                cartRefresh()
+                if (showToast) toast.success("Product Added To Cart");
+                cartRefresh();
             }
-        } catch (err) {
-            console.log(err, "cart context error");
-            toast.error("Something Went Wrong");
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            // toast.error("Something Went Wrong", error);
+            // if (axios.isAxiosError(error)) {
+
+            // }
+            // console.log(err, "cart context error");
         }
     };
 
     // incrementQuantity
     const incrementQuantity = (productId: string, currentQuantity: number) => {
         const newQuantity = currentQuantity + 1;
-        addToCart(productId, newQuantity);
+        addToCart(productId, newQuantity, false);
     };
+
     // decrementQuantity
     const decrementQuantity = (productId: string, currentQuantity: number) => {
         const newQuantity = Math.max(1, currentQuantity - 1);
-        addToCart(productId, newQuantity);
+        addToCart(productId, newQuantity, false);
     };
+
 
     // get user cart items
     const getCartItems = async () => {
@@ -68,16 +71,16 @@ export default function CartContextProvider({ children }: { children: ReactNode 
 
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                
-                const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
-                const generalError = error?.response?.data?.message;
-                console.log(detailedError || generalError || "Something went wrong");
+
+                // const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+                // const generalError = error?.response?.data?.message;
+                // toast.error(detailedError || generalError || "Something went wrong");
             }
             return []
         }
     };
 
-    const { data: cartItems,  refetch: cartRefresh } = useQuery({
+    const { data: cartItems, refetch: cartRefresh } = useQuery({
         queryKey: ["getCartItems"],
         queryFn: getCartItems,
         enabled: !!token,
@@ -99,10 +102,11 @@ export default function CartContextProvider({ children }: { children: ReactNode 
 
                 cartRefresh()
 
-                console.log({ RemoveCart: res });
+                // console.log({ RemoveCart: res });
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
-            console.log(err, 'wish context error');
+            // console.log(err, 'wish context error');
 
         }
     }
@@ -123,17 +127,19 @@ export default function CartContextProvider({ children }: { children: ReactNode 
 
                 await queryClient.invalidateQueries({ queryKey: ["getCartItems"] });
 
-                console.log("Cart cleared & UI updated ✅");
+                // console.log("Cart cleared & UI updated ✅");
             }
 
-            console.log({ clearCart: res });
-        } catch (error:unknown) {
+            // console.log({ clearCart: res });
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
-                
-                console.log({ clearCart: error });
+
+                // console.log({ clearCart: error });
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const generalError = error?.response?.data?.message;
-                console.log(detailedError || generalError || "clear cart issue ");
+                // console.log(detailedErrظor || generalError || "clear cart issue ");
             }
         }
     };

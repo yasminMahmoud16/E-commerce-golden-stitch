@@ -30,7 +30,7 @@ export default function ChangePassword() {
     });
     const handleSubmit = async (values: changePasswordFields) => {
         await changePassword(values);
-        console.log({ changeValue: values });
+        // console.log({ changeValue: values });
 
     };
     return <>

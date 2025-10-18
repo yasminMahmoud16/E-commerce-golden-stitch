@@ -1,24 +1,22 @@
-import {  useState } from 'react';
-import { Link, NavLink} from 'react-router-dom';
+import { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import logo from '@/assets/Images/logo.png';
 import { Icons } from '@/assets/Icons/icons';
 import BtnCommon from '@/common/BtnCommon';
 import { CardEnum, logoutEnum, } from '@/Utilities/types';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import PopupCommon from '@/common/PopupCommon';
 import useGlobal from '@/Hooks/useGlobal';
 import { useAuthContext, useProfileContext } from '@/Hooks/useAppContexts';
 import ToggleCart from '../Toggle/ToggleCart';
 import ToggleWishList from '../Toggle/ToggleWishList';
-import ToggleCategory from '../Toggle/ToggleCategory';
 
 export default function Navbar() {
-  const {openPopup, setOpenPopup, navigate, location} = useGlobal();
+  const { openPopup, setOpenPopup, navigate, location } = useGlobal();
   const { profile } = useProfileContext();
   const { token, logout } = useAuthContext();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [openCart, setOpenCart] = useState(false);
-  const [openCategory, setOpenCategory] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const isLanding = location.pathname === "/";
 
@@ -27,29 +25,41 @@ export default function Navbar() {
   const handleToggle = (e: React.MouseEvent<SVGElement>) => {
     if (e.currentTarget.id === CardEnum.cart) {
       setOpenCart(true)
-     }
-    else if (e.currentTarget.id === CardEnum.wishList) { setOpenWishlist(true); } 
-    else if (e.currentTarget.id === CardEnum.category) { setOpenCategory(true); } 
+    }
+    else if (e.currentTarget.id === CardEnum.wishList) { setOpenWishlist(true); }
   };
 
-  const handleLogoutClick = async(flag: logoutEnum) => {
+  const handleLogoutClick = async (flag: logoutEnum) => {
     await logout({ flag })
     navigate("/login")
   };
 
 
-  
-  
+  const handleClickProfile = () => {
+    if (profile?.role === 'admin' || profile?.role === 'super-admin') {
+      navigate('/admin/profile');
+    } else {
+      navigate('/profile');
+    }
+  }
+
+
+  const handleScrollToSection = (id: string) => {
+  const section = document.querySelector(id);
+  if (section) {
+    section.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
 
   return (
     <>
       <nav
-        className={`${
-          isLanding
+        className={`${isLanding
             ? `p-3 relative before:content-[''] before:absolute before:-top-4 before:left-0 before:w-full before:h-[2px] before:bg-gold
             after:content-[''] after:absolute after:-top-2 after:left-0 after:w-full after:h-[2px] after:bg-gold`
             : ` bg-radial from-dark-blue-1 to-dark-blue-nav border-gray-200 shadow md:flex md:items-center md:justify-around`
-        }  bg-radial from-dark-blue-1 to-dark-blue-nav border-gray-200 shadow md:flex md:items-center md:justify-around`}
+          }  bg-radial from-dark-blue-1 to-dark-blue-nav border-gray-200 shadow md:flex md:items-center md:justify-around`}
       >
         {/* Logo + Toggle */}
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-4 ">
@@ -85,69 +95,71 @@ export default function Navbar() {
         <div
           className={`${isNavOpen ? "block" : "hidden"} w-full md:flex md:flex-row items-center justify-center bg-transparent`}
         >
-<ul
-  className="relative w-full border-none md:ml-30 font-medium flex flex-col p-4 md:p-0 mt-4 
+          <ul
+            className="relative w-full border-none md:ml-30 font-medium flex flex-col p-4 md:p-0 mt-4 
             border border-gray-100 rounded-lg  
             md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent 
             md:justify-center md:items-center md:mx-auto"
->
-  <li>
-<NavLink
-  to="/#hero"
-  className={`relative 
+          >
+            <li>
+              <NavLink
+                to="/#hero"
+                className={`relative 
         ${location.hash === "#hero" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
         after:content-[''] after:absolute after:left-0 after:-bottom-1 
         after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
         hover:after:w-full
       `}
->
-  Home
-</NavLink>
+              >
+                Home
+              </NavLink>
 
-  </li>
+            </li>
 
-  <li>
-    <NavLink
-      to="/#about"
-      className={`relative 
+            <li className={`relative text-gold after:w-0"} 
+        after:content-[''] after:absolute after:left-0 after:-bottom-1 
+        after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
+        hover:after:w-full cursor-pointer
+      `} onClick={() => handleScrollToSection("#about")}>
+              {/* <NavLink
+                to="/#about"
+                className={`relative 
         ${location.hash === "#about" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
         after:content-[''] after:absolute after:left-0 after:-bottom-1 
         after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
         hover:after:w-full
       `}
-    >
-      About Us
-    </NavLink>
-  </li>
+              > */}
+                About Us
+              {/* </NavLink> */}
+            </li>
 
-  <li>
-    <NavLink
-      to="/products"
-      className={`relative 
+            <li>
+              <NavLink
+                to="/products"
+                className={`relative 
         ${location.hash === "/products" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
         after:content-[''] after:absolute after:left-0 after:-bottom-1 
         after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
         hover:after:w-full
       `}
-    >
-      Products
-    </NavLink>
-  </li>
+              >
+                Products
+              </NavLink>
+            </li>
 
-  <li>
-    <NavLink
-      to="/#contact"
-      className={`relative 
-        ${location.hash === "#contact" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
+            {/* <li> */}
+              <li
+                className={`relative text-gold after:w-0"} 
         after:content-[''] after:absolute after:left-0 after:-bottom-1 
         after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
-        hover:after:w-full
-      `}
-    >
-      Contact Us
-    </NavLink>
-  </li>
-</ul>
+        hover:after:w-full cursor-pointer
+      `}  onClick={() => handleScrollToSection("#contact")}
+              >
+                Contact Us
+              </li>
+            {/* </li> */}
+          </ul>
 
 
 
@@ -159,9 +171,9 @@ export default function Navbar() {
                   id={CardEnum.cart}
                   onClick={handleToggle}
                   size={22}
-                  className="text-gold drop-shadow-[1px_1px_1px_rgba(0,0,0,0.6)] cursor-pointer"
+                  className="text-gold drop-shadow-[1px_1px_1px_rgba(0,0,0,0.6)] cursor-pointer  transition-all duration-300 ease-in-out hover:text-[hsl(22,55%,44%)] hover:-translate-y-1"
                 />
-                <div className='h-4 w-4 rounded-full bg-dark-blue-nav text-white flex items-center justify-center p-2 text-xs absolute left-3 -top-1'>0</div>
+               
               </div>
 
               <div id={CardEnum.wishList}>
@@ -169,62 +181,37 @@ export default function Navbar() {
                   id={CardEnum.wishList}
                   onClick={handleToggle}
                   size={22}
-                  className="text-gold drop-shadow-[1px_1px_1px_rgba(0,0,0,0.6)] cursor-pointer"
+                  className="text-gold drop-shadow-[1px_1px_1px_rgba(0,0,0,0.6)] cursor-pointer  transition-all duration-300 ease-in-out hover:text-[hsl(22,55%,44%)] hover:-translate-y-1"
                 />
               </div>
-              <div id={CardEnum.category}>
-                <Icons.BiSolidCategoryAlt
-                  id={CardEnum.category}
-                  onClick={handleToggle}
-                  size={22}
-                  className="text-gold drop-shadow-[1px_1px_1px_rgba(0,0,0,0.6)] cursor-pointer"
-                />
-              </div>
+
             </div>
 
             {/* Auth Section */}
             {token ? (
-          <div className="w-30  bg-transparent">
-                <Select
-                  onValueChange={(value) => {
-                    if (value === 'profile') {
-                      if (profile?.role === 'admin' || profile?.role === 'super-admin') {
-                        navigate('/admin/profile'); 
-                      } else {
-                        navigate('/profile'); 
-                      }
-                    } else if (value === 'logout') {
-                      setOpenPopup(true);
-                    }
-                  }}
-            >
-              <SelectTrigger className="w-30 border-0 focus:outline-none focus:ring-0 focus:border-0 overflow-hidden">
-                <SelectValue
-                  placeholder={profile?.firstName || 'user'}
-                  className="placeholder:text-gold-light placeholder:capitalize focus:outline-none focus:ring-0 focus:border-0"
+              <div className="w-30 flex items-center justify-center gap-3  bg-transparent mr-2">
+
+                <p className='capitalize  text-gold cursor-pointer transition-all duration-300 ease-in-out hover:text-[hsl(22,55%,44%)] ' onClick={handleClickProfile}>
+                  {profile?.firstName || 'user'}
+                </p>
+
+                <Icons.IoLogOut className='text-2xl text-gold cursor-pointer   transition-all duration-300 ease-in-out hover:text-[hsl(22,55%,44%)]'
+                  onClick={() => { setOpenPopup(true) }}
                 />
-              </SelectTrigger>
-              <SelectContent className="bg-dark-blue-2 border-gray-300 text-gray-400">
-                <SelectItem value="profile" className="cursor-pointer">
-                  Profile
-                </SelectItem>
-                <SelectItem value="logout" className="cursor-pointer">
-                  Logout
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        ) : (
-          <div className="flex items-center justify-center">
-            <Link to="/register">
-              <BtnCommon
-                type="button"
-                text="SIGN UP / SIGN IN"
-                className="w-30 text-xs transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%]"
-              />
-            </Link>
-          </div>
-        )}
+
+
+              </div>
+            ) : (
+              <div className="flex items-center justify-center">
+                <Link to="/register">
+                  <BtnCommon
+                    type="button"
+                    text="SIGN UP / SIGN IN"
+                    className="w-30 text-xs transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%]"
+                  />
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>
@@ -243,30 +230,25 @@ export default function Navbar() {
         title="Your Wishlist"
         type={CardEnum.wishList}
       />
-      <ToggleCategory
-        openCategory={openCategory}
-        setOpenCategory={setOpenCategory}
-        title="Your Category"
-        type={CardEnum.category}
+
+      <PopupCommon
+        open={openPopup}
+        onOpenChange={setOpenPopup}
+        title="Choose an Option"
+        text="Select what you want to do:"
+        options={[
+          {
+            label: "Logout from this device",
+            onClick: () => handleLogoutClick(logoutEnum.only),
+          },
+          {
+            label: "Logout from all devices",
+            onClick: () => handleLogoutClick(logoutEnum.all),
+          },
+        ]}
+        showCancel={true}
+        showAction={false}
       />
-<PopupCommon
-  open={openPopup}
-  onOpenChange={setOpenPopup}
-  title="Choose an Option"
-  text="Select what you want to do:"
-  options={[
-    {
-      label: "Logout from this device",
-      onClick: () => handleLogoutClick(logoutEnum.only),
-    },
-    {
-      label: "Logout from all devices",
-      onClick: () => handleLogoutClick(logoutEnum.all),
-    },
-  ]}
-  showCancel={true}   
-  showAction={false}  
-/>
 
 
     </>

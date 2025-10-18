@@ -1,17 +1,29 @@
+import { Icons } from "@/assets/Icons/icons";
+import AdminTitles from "@/common/AdminTitles";
 import { useOrderContext } from "@/Hooks/useAppContexts";
+import { SpinnerCustomData } from "@/Loading/SpinnerCustomData";
+import { StateEnum } from "@/Utilities/types";
 
 export default function OrderDetails() {
-  const { ordersData } = useOrderContext();
+  const { ordersData , loadingDetails} = useOrderContext();
 
-  console.log({ ordersDataUser: ordersData });
+  // console.log({ ordersDataUser: ordersData });
 
   return (
     <>
+         <AdminTitles
+                  text="Your Orders"
+                  icon={Icons.BsBoxSeamFill}
+              />
       <h1 className="text-center text-4xl font-semibold text-gold-light mb-10">
         Order Details
       </h1>
 
       <div className=" gap-6">
+        {loadingDetails ? <>
+        <SpinnerCustomData/>
+        </> : <>
+        
         {ordersData?.map((order) => (
           <div
             key={order.id}
@@ -72,11 +84,10 @@ export default function OrderDetails() {
                 <span className="text-gold font-semibold">Status:</span>{" "}
                 <span
                   className={`capitalize ${
-                    order.status === "delivered"
-                      ? "text-green-400"
-                      : order.status === "cancel"
-                      ? "text-red-400"
-                      : "text-gold-light font-semibold"
+                    order.status === StateEnum.delivered? "text-green-400"
+                      : order.status === StateEnum.cancel? "text-red-400"
+                      : order.status === StateEnum.onWay ? "text-gold-light font-semibold"
+                        :"text-blue-500"
                   }`}
                 >
                   {order.status}
@@ -85,6 +96,8 @@ export default function OrderDetails() {
             </div>
           </div>
         ))}
+        
+        </>}
       </div>
     </>
   );

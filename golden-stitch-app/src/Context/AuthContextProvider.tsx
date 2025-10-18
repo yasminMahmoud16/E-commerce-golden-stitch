@@ -40,7 +40,7 @@ const login = async (
     const userRole = res.data?.data?.bearer;
     setRole(userRole);
     localStorage.setItem("role", userRole);
-    console.log("userRole:", res.data?.data?.bearer);
+    // console.log("userRole:", res.data?.data?.bearer);
 
     const credentials = res.data?.data?.credentials;
 
@@ -53,7 +53,7 @@ const login = async (
     localStorage.setItem("token", accessToken);
 
     toast.success(res.data?.message);
-    console.log({ login: res });
+    // console.log({ login: res });
 
     return true; 
   } catch (error: unknown) {
@@ -62,7 +62,7 @@ const login = async (
       const cause = error?.response?.data?.cause;
       const validationMessage =
       cause?.validationErrors?.[0]?.issues?.[0]?.message;
-      console.log(validationMessage || error?.response?.data?.message);
+      // console.log(validationMessage || error?.response?.data?.message);
       toast.error(validationMessage || error?.response?.data?.message);
     }
     return false; 
@@ -108,13 +108,13 @@ const login = async (
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (axios.isAxiosError(error)) {
-          console.log({errorlogout:error});
+          // console.log({errorlogout:error});
           
           const detailedError =
             error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
           const generalError = error?.response?.data?.message;
          
-          console.log({generalError,detailedError });
+          // console.log({generalError,detailedError });
           
           toast.error(detailedError || generalError || "logout issue ");
         }
@@ -134,8 +134,9 @@ const login = async (
       try {
         const decoded = jwtDecode<DecodedToken>(storedToken);
         setUserId(decoded.id);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        console.log("Invalid token", error);
+        // console.log("Invalid token", error);
         localStorage.removeItem("token");
         setToken(null);
         setUserId(null);

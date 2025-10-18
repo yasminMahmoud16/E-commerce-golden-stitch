@@ -20,7 +20,7 @@ export default function CreateNewPassword() {
   const otpFromState = location.state?.otp || "";
     const handleClickVisibility = () => {
         setIsView(!isView);
-        console.log(isView)
+        // console.log(isView)
     }
     const form = useForm<resetPassword>({
         resolver:zodResolver(resetPasswordValidation),

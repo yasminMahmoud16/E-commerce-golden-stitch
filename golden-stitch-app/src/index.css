@@ -177,3 +177,20 @@ body[data-scroll-locked] {
   display: none;
   /* Chrome, Safari, Opera */
 }
+
+/* === Infinite up-down animation === */
+@keyframes upDown {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-upDown {
+  animation: upDown 2s ease-in-out infinite;
+}

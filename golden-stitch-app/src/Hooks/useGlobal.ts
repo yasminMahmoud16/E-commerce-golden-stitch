@@ -30,7 +30,7 @@ export default function useGlobal() {
         try {
             const deleteEndPoint = id ? `/user/${id}/freeze-account` : `/user/freeze-account`;
             const res = await axiosInstance.delete(deleteEndPoint, { headers: getAuthHeader() })
-            console.log({ delRes: res });
+            // console.log({ delRes: res });
 
             if (res.data.message === "Done") {
 
@@ -60,7 +60,7 @@ export default function useGlobal() {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 
-                console.log({ delError: error });
+                // console.log({ delError: error });
                 const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
     
                 const generalError = error?.response?.data?.message;

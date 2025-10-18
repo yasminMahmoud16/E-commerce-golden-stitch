@@ -30,12 +30,8 @@ export default function ArchiveProducts() {
 
 
 
-// const { data: catSize } = useQuery({
-//     queryKey: ["allCategories"],
-//     queryFn: () => getCategories({ size:50}),
-// });
 
-    console.log({ archiveProducts });
+    // console.log({ archiveProducts });
     const productsHeaders = [
         { id: 2, label: "image" },
         { id: 3, label: "Product Name" },
@@ -43,12 +39,11 @@ export default function ArchiveProducts() {
         { id: 6, label: "Customer Name" },
         { id: 8, label: "Description" },
         { id: 7, label: "Canceled At" },
-        { id: 7, label: "Category" },
-        { id: 7, label: "Restore" },
+        { id: 9, label: "Restore" },
+        // { id: 7, label: "Category" },
 
     ];
 
-    // handl
     return <>
 
 
@@ -99,8 +94,8 @@ export default function ArchiveProducts() {
   ))}
 </div> */}
         </div>
-<div className="w-full overflow-x-auto scrollbar-hide">
-  <Table className="min-w-full">
+<div className="w-full overflow-x-hidden hide-scrollbar">
+  <Table className="overflow-x-hidden scrollbar-hide">
     <TableHeader>
       <TableRow>
         {productsHeaders.map((header) => (
@@ -120,7 +115,7 @@ export default function ArchiveProducts() {
           key={data.id}
           className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
         >
-          <TableCell className="font-medium my-2 w-40 h-10 ">
+          <TableCell className="font-medium my-2 w-20 h-8 ">
             <div className="flex justify-center items-center">
               <img
                 src={`/${data.images}`}
@@ -136,7 +131,7 @@ export default function ArchiveProducts() {
             {String(data.description || "").slice(0, 60)}
           </TableCell>
           <TableCell className="font-medium text-center">{data.freezedAt}</TableCell>
-                      <TableCell className="font-medium text-center">{data.category?.name}</TableCell>
+                      {/* <TableCell className="font-medium text-center">{data.category?.name}</TableCell> */}
 
           <TableCell className="font-medium text-center flex items-center justify-center mt-5" ><Icons.MdOutlineRestore className="text-2xl text-gold-dark transition-all duration-300 ease-in-out hover:text-green-400" onClick={()=>{restoreProduct(data.id)}}/></TableCell>
         </TableRow>

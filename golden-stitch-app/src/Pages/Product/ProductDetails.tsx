@@ -6,9 +6,7 @@ import cornerBottomLeftHero from "@/assets/Images/cornerBottomLeftHero.png"
 import secCornerRight from "@/assets/Images/secCornerRight.png"
 import secCornerLeft from "@/assets/Images/secCornerLeft.png"
 
-import { Icons } from "@/assets/Icons/icons";
 import BtnCommon from "@/common/BtnCommon";
-import { Input } from "@/Components/ui/input";
 import {
     Carousel, CarouselContent, CarouselItem, CarouselNext,
     CarouselPrevious
@@ -25,7 +23,7 @@ export default function ProductDetails() {
 
     
     const { id } = useParams();
-    console.log(id);
+    // console.log(id);
 
 
 
@@ -34,7 +32,7 @@ export default function ProductDetails() {
         queryFn: () => getProductById(id!),
         enabled: !!id, 
     });
-    console.log({product});
+    // console.log({product});
     
 
 
@@ -48,12 +46,12 @@ export default function ProductDetails() {
             <section className="relative min-h-screen">
                 {/* Top corners */}
                 <img src={secCornerRight} alt="secCornerRight" className="absolute right-2 top-0 z-0" />
-                <img src={secCornerLeft} alt="secCornerLeft" className="absolute left-0 top-0 z-0" />
+                <img src={secCornerLeft} alt="secCornerLeft" className="absolute left-0 top-0" />
 
 
-                <div className="container">
+                <div className="container relative z-20">
 
-                    <div className="grid grid-cols-1 md:grid-cols-6 items-center md:items-start justify-center pt-10 md:gap-4 relative z-10">
+                    <div className="grid grid-cols-1 md:grid-cols-6 items-center md:items-start justify-center pt-10 md:gap-4 relative z-20">
                         <div className="col-span-2 mb-6 md:mb-0 ">
                             <div>
                                 <img src={`/${parentImage || product?.images?.[0]}`} alt="" />
@@ -92,15 +90,39 @@ export default function ProductDetails() {
                             </div>
                         </div>
                         <div className="col-span-4  ">
-                            <div className="flex flex-col justify-center gap-3 mt-3  h-72">
+                            <div className="flex flex-col justify-center gap-1 mt-3  h-72">
 
-                                <h2 className="text-3xl font-semibold text-dark-blue-nav">{product?.name}</h2>
+                                <h2 className="text-3xl font-semibold text-dark-blue-nav capitalize">{product?.name}</h2>
                                 <p> {product?.category?.name}</p>
                                 <p> {product?.description}</p>
+
                                 <div >
-                                    <p className="text-4xl font-bold text-gold-dark mb-3">{product?.mainPrice} $</p>
+                                    <p className="text-md font-semibold text-gold-dark mb-2">
+                                        <span className="text-dark-blue-2 font-light">
+                                            stock:
+                                    </span> {product?.stock} </p>
                                     
                                 </div>
+                                <div >
+                                    <p className="text-md font-semibold text-gold-dark mb-3">
+                                        <span className="text-dark-blue-2 font-light">
+                                        sale Price:
+
+                                        </span>
+                                            
+                                        
+                                        {product?.salePrice} </p>
+                                    
+                                </div>
+                                <div >
+                                    <p className="text-4xl font-bold text-gold-dark mb-3">{product?.mainPrice} EGP</p>
+                                    
+                                </div>
+                                <div >
+                                    <p className="text-4xl font-bold text-gold-dark mb-3">{product?.category?.name} </p>
+                                    
+                                </div>
+                                
 
                                 <BtnCommon
                                     text={"add to cart"}
@@ -118,20 +140,20 @@ export default function ProductDetails() {
                     </div>
 
 
-                    <div className=" flex flex-col items-center justify-center mt-15 pb-10">
+                    {/* <div className=" flex flex-col items-center justify-center mt-15 pb-10">
                         <p>follow our page to know the latest trends </p>
                         <div className="relative w-55 md:w-80">
                             <Icons.CiSearch
-                                className="absolute left-3 top-4 -translate-y-1/2 text-footer-items"
+                                className="absolute left-3 top-7 -translate-y-1/2 text-footer-items"
                                 size={23}
                             />
                             <Input
                                 type="text"
                                 placeholder="search"
-                                className="w-60 md:w-80 bg-white  py-3 px-2 pl-10 mb-2 placeholder:text-footer-items rounded-4xl"
+                                className="w-60 md:w-80 bg-transparent border-dark-blue-nav shadow mt-3  py-3 px-2 pl-10 mb-2 placeholder:text-footer-items rounded-4xl"
                             />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Bottom corners */}

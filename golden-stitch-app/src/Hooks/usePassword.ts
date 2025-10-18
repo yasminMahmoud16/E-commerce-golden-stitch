@@ -30,7 +30,7 @@ export default function usePassword() {
             const res = await axiosInstance.patch("/user/password", values, {
                 headers: getAuthHeader()
             })
-            console.log(res);
+            // console.log(res);
             if (res.data.message === "Done") {
                 localStorage.removeItem("token");
                 navigate("/login");
@@ -40,7 +40,7 @@ export default function usePassword() {
 
             if (axios.isAxiosError(error)) {
 
-                console.log({ changePasswordError: error });
+                // console.log({ changePasswordError: error });
     
                 const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
     

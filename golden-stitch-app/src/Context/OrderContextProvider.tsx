@@ -31,7 +31,7 @@ export default function OrderContextProvider({ children }: { children: ReactNode
       const res = await axiosInstance.post(`/order`, orderData, {
         headers: getAuthHeader()
       });
-      console.log(res);
+      // console.log(res);
       
       if (res.data.message === "Done") {
         toast.success(res.data.message)
@@ -42,13 +42,13 @@ export default function OrderContextProvider({ children }: { children: ReactNode
         const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
         
         if (message) {
-          console.log({ messageCreateOrder: message });
+          // console.log({ messageCreateOrder: message });
           toast.error(message);
           
         } else if (detailedError) {
           
           toast.error(detailedError);
-          console.log({ errorCreateOrder: detailedError });
+          // console.log({ errorCreateOrder: detailedError });
         }
         return "something wrong please try again later "
       }
@@ -68,10 +68,11 @@ const getAllOrders = async ({ page = 1, size = 5, status = "all" }) => {
     const res = await axiosInstance.get(url);
     const allOrders = res.data.data.orders.docs;
 
-    console.log("allOrders=================", allOrders);
+    // console.log("allOrders=================", allOrders);
     return allOrders;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.log("order fetch error", error);
+    // console.log("order fetch error", error);
     return [];
   }
 };
@@ -79,7 +80,7 @@ const getAllOrders = async ({ page = 1, size = 5, status = "all" }) => {
 
 
   
-const { data: ordersData = [] } = useQuery({
+const { data: ordersData = [], isLoading:loadingDetails } = useQuery({
   queryKey: ['ordersData', page, size, statusFilter],
   queryFn: () => getAllOrders({ page, size, status:statusFilter }),
   placeholderData: keepPreviousData,
@@ -114,18 +115,6 @@ const { data: ordersData = [] } = useQuery({
       order.id === id ? { ...order, status: StateEnum.cancel } : order
     );
   });
-
-  // // Ensure backend + UI are in sync
-  // queryClient.invalidateQueries({
-  //   queryKey: ['ordersData'],
-  // });
-      // queryClient.setQueryData(['ordersData'], (oldData: IOrder[]) => {
-      //   if (!oldData) return oldData;
-
-      //   return oldData?.map((order: IOrder) =>
-      //     order.id === id ? { ...order, status: StateEnum.cancel } : order
-      //   );
-      // });
     }
 
     return res.data.message;
@@ -146,7 +135,7 @@ const { data: ordersData = [] } = useQuery({
     const res = await axiosInstance.patch(`/order/${id}/on-way`, {}, {
       headers: getAuthHeader()
     });
-    console.log(res);
+    // console.log(res);
     
     if (res.data.message === "Done") {
       toast.success("order is on way");
@@ -163,9 +152,9 @@ const { data: ordersData = [] } = useQuery({
 
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log({onWayByAmin:error});
+      // console.log({onWayByAmin:error});
           
-          console.log(" order on way error:", error?.response?.data || error);
+          // console.log(" order on way error:", error?.response?.data || error);
           const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
           const generalError = error?.response?.data?.message;
           toast.error(detailedError || generalError || "Something went wrong");
@@ -191,7 +180,7 @@ const onDeliveredByAmin = async (id: string): Promise<string | undefined> => {
     const res = await axiosInstance.patch(`/order/${id}/delivered`, {}, {
       headers: getAuthHeader()
     });
-    console.log(res);
+    // console.log(res);
 
         if (res.data.message === "Done") {
       toast.success("order is on delivered");
@@ -205,9 +194,9 @@ const onDeliveredByAmin = async (id: string): Promise<string | undefined> => {
 
 
     }
-    
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.log({onWayByAmin:error});
+    // console.log({onWayByAmin:error});
     
     }
     return "null"
@@ -236,6 +225,7 @@ const onDeliveredByAmin = async (id: string): Promise<string | undefined> => {
       value={{
         // allOrders,
         // isLoading,
+        loadingDetails,
         // isUpdating, 
         page,
         createOrder,

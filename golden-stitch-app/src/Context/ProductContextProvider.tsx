@@ -34,7 +34,7 @@ export default function ProductContextProvider({ children }: { children: ReactNo
 
     const res = await axiosInstance.get(url
     );
-    console.log({ product: res.data.data.products.docs });
+    // console.log({ product: res.data.data.products.docs });
     // console.log({ productWishList: res.data.data.products.docs });
 
 
@@ -52,21 +52,21 @@ export default function ProductContextProvider({ children }: { children: ReactNo
   const getProductById = async (id: string) => {
     try {
       const res = await axiosInstance.get(`/product/${id}`);
-      console.log({spacifice : res.data.data.product});
+      // console.log({spacifice : res.data.data.product});
       
       return res.data.data.product;
 
       
     } catch (error:unknown) {
           if (axios.isAxiosError(error)) {
-      console.log("Product fetch error:", error.response?.data || error);
+      // console.log("Product fetch error:", error.response?.data || error);
       const detailedError =
         error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
       const generalError = error.response?.data?.message;
       toast.error(detailedError || generalError || "Get Product issue");
       return detailedError || generalError || "Get Product issue";
     } else {
-      console.log("Unexpected error from getProductById:", error);
+      // console.log("Unexpected error from getProductById:", error);
       toast.error("Unexpected error occurred getProductById");
       return "Unexpected error occurred getProductById";
     }
@@ -103,7 +103,7 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
       //   });
       // }
 
-      console.log("🧩 updateProduct payload:", data);
+      // console.log("🧩 updateProduct payload:", data);
 // console.log("🧩 product id:", data.id);
       const res = await axiosInstance.patch(`/product/${data.id}`, formData, {
         headers: getAuthHeader(),
@@ -139,9 +139,9 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
 
     toast.error(detailedError || generalError || "update product issue");
 
-    console.log("Axios Error:", error);
+    // console.log("Axios Error:", error);
   } else {
-    console.error("Unexpected error from update product :", error);
+    // console.error("Unexpected error from update product :", error);
     toast.error("Unexpected error from update product");
   }
 },
@@ -179,7 +179,7 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
   },
 
   onSuccess: (res) => {
-    console.log(res);
+    // console.log(res);
     if (res.message === "Done") {
       
       queryClient.invalidateQueries({ queryKey: ["allProductsData"] });
@@ -193,7 +193,7 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
 
 
   onError: (error) => {
-    console.log({ addproductError: error });
+    // console.log({ addproductError: error });
      if (axios.isAxiosError(error)) {
     const detailedError =
       error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
@@ -217,7 +217,7 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
       const res = await axiosInstance.delete(`/product/${id}/freeze`, {
         headers: getAuthHeader(),
       });
-      console.log({ del: res });
+      // console.log({ del: res });
       if (res.data.message === "Done") {
 
         Swal.fire({
@@ -239,8 +239,8 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
 
       if (axios.isAxiosError(error)) {
         
-        console.log({ softDel: error });
-        console.log(" Product delete error:", error?.response?.data || error);
+        // console.log({ softDel: error });
+        // console.log(" Product delete error:", error?.response?.data || error);
         const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
         const generalError = error?.response?.data?.message;
         toast.error(detailedError || generalError || "soft delete product issue ");
@@ -260,12 +260,18 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
     try {
       const res = await axiosInstance.get(`/product/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
       const archiveProducts =res.data.data.products.docs
-      console.log("productsArchives=================", res.data.data.products.docs);
+      // console.log("productsArchives=================", res.data.data.products.docs);
       return archiveProducts 
-    } catch (error) {
-      console.log("product archive error", error);
-      return []; 
-    }
+
+    } catch (error: unknown) {
+  if (axios.isAxiosError(error)) {
+    toast.error(error.response?.data?.message || error.message || "Something went wrong");
+  } else {
+    toast.error("Unexpected error occurred");
+  }
+  return [];
+}
+
   }
 
 
@@ -283,7 +289,7 @@ const { data: archiveProducts = [], refetch } = useQuery({
           const res = await axiosInstance.patch(`/product/${id}/restore`, {
             headers: getAuthHeader(),
           });
-          console.log({ restore: res });
+          // console.log({ restore: res });
           if (res.data.message === "Done") {
     
             Swal.fire({
@@ -305,8 +311,8 @@ const { data: archiveProducts = [], refetch } = useQuery({
 
           if (axios.isAxiosError(error)) {
             
-            console.log({ softDel: error });
-            console.log(" Product delete error:", error?.response?.data || error);
+            // console.log({ softDel: error });
+            // console.log(" Product delete error:", error?.response?.data || error);
             const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
             const generalError = error?.response?.data?.message;
             toast.error(detailedError || generalError || "Something went wrong");

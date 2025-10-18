@@ -24,7 +24,6 @@ import { useAxios } from "@/Hooks/useAxios";
 export default function ProductsLanding() {
     const axiosInstance = useAxios();
     const { getProductById, page, setPage, search, setSearch, allProductsData, categoryId, setCategoryId, isLoading } = useProductContext();
-    //   const { allProductsData, categoryId,setCategoryId, isLoading, page, setPage, search, setSearch, getProductById, isUpdating } = useProductContext();
     const { addToCart } = useCartContext();
     const { addToWishList } = useProfileContext();
     const { getCategories } = useCategoryContext();
@@ -50,8 +49,7 @@ export default function ProductsLanding() {
             // console.log("response dataproooooooooooooo =>", res.data.data);
             return res.data.data.products;
         },
-        // keepPreviousData: true,
-        // placeholderData: keepPreviousData,
+
 
     });
 
@@ -90,42 +88,10 @@ export default function ProductsLanding() {
                         <h1 className="mb-4 text-center mt-6 text-3xl font-semibold text-dark-blue-2 capitalize">
                         products & categories 
                     </h1>
-                        <div className="flex items-center justify-center flex-wrap gap-2  ">
-                            <button
-                                onClick={() => setCategoryId("")}
-                                className={`w-20 h-20 rounded-full text-sm font-semibold transition-all duration-300 ${categoryId === ""
-                                    ? "bg-gold text-white shadow-lg"
-                                    : "bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
-                                    }`}
-                            >
-                                All
-                            </button>
 
-                            {catSize?.map((cat) => <>
 
-                                <div
-                                    key={cat.id}
-                                    onClick={() => setCategoryId(cat.id)}
-                                    className={`flex flex-col items-center justify-center mx-6 mt-3 rounded-full text-sm font-semibold capitalize  transition-all  duration-300 ease-in-out  hover:-translate-y-2 ${categoryId === cat.id
-                                        ? ""
-                                        : " "
-                                        }`}
-                                >
-
-                                    <img src={`/${cat.image}`} alt="" className="w-20 h-20 rounded-full overflow-hidden cursor-pointer shadow-2xl " />
-                                    <p className="text-center">{cat.name}</p>
-                                </div>
-                            </>)}
-                        </div>
-
-                        {/* <div className="w-30 h-30 rounded-full">
-                        <img src="" alt="" />
-                        
-                    </div> */}
                     </div>
-                    {/* <h1 className="mb-4 text-center mt-6 text-3xl font-semibold text-dark-blue-2 capitalize">
-                        our products
-                    </h1> */}
+                    
 
                     <div className=" relative mb-2 mt-8   items-center justify-center  flex flex-col ">
 
@@ -140,12 +106,12 @@ export default function ProductsLanding() {
                             className="absolute  right-186 top-4 -translate-y-1/2 text-gray-500"
                             size={23}
                         />
-                        {/* <div className="flex flex-wrap gap-3 justify-center my-3">
+                        <div className="flex flex-wrap gap-3 justify-center my-3">
                             <button
                                 onClick={() => setCategoryId("")}
-                                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${categoryId === ""
-                                        ? "bg-gold text-white shadow-lg"
-                                        : "bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
+                                className={`cursor-pointer px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${categoryId === ""
+                                        ? "cursor-pointer bg-gold text-white shadow-lg"
+                                        : "cursor-pointer bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
                                     }`}
                             >
                                 All
@@ -155,39 +121,45 @@ export default function ProductsLanding() {
                                 <button
                                     key={cat.id}
                                     onClick={() => setCategoryId(cat.id)}
-                                    className={`px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300 ${categoryId === cat.id
-                                            ? "bg-gold text-white shadow-lg"
-                                            : "bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
+                                    className={` cursor-pointer px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300 ${categoryId === cat.id
+                                            ? "cursor-pointer bg-gold text-white shadow-lg"
+                                            : " cursor-pointer bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
                                         }`}
                                 >
                                     {cat.name}
                                 </button>
                             ))}
-                        </div> */}
+                        </div>
                     </div>
                     <div className="flex   items-center justify-center flex-wrap gap-4 pb-4">
-                        {isLoading ? (
-                            <SpinnerCustomData />
-                        ) : (
-                            filteredProducts?.map((product: IProduct) => (
-                                <CardCommon
-                                    key={product.id}
-                                    image={`/${product.images?.[0]}`}
-                                    title={product.name}
-                                    description={product.description}
-                                    price={product.mainPrice}
-                                    onClickCard={() => handleOnClickProductDetails(product.id)}
-                                    onClickCart={() => handleOnClickCart(product.id, 1)}
-                                    onClickWishList={() => handleOnClickWishList(product.id)}
-                                />
-                            ))
-                        )}
+                    <div className="flex flex-wrap justify-center gap-4 pb-4 items-center">
+  {isLoading ? (
+    <SpinnerCustomData />
+  ) : filteredProducts?.length === 0 ? (
+    <div className="text-center text-dark-blue-2 font-semibold text-lg mt-10">
+      No products found for this category
+    </div>
+  ) : (
+    filteredProducts?.map((product: IProduct) => (
+      <CardCommon
+        key={product.id}
+        image={`/${product.images?.[0]}`}
+        title={product.name}
+        description={product.description}
+        price={product.mainPrice}
+        onClickCard={() => handleOnClickProductDetails(product.id)}
+        onClickCart={() => handleOnClickCart(product.id, 1)}
+        onClickWishList={() => handleOnClickWishList(product.id)}
+      />
+    ))
+  )}
+</div>
+
                     </div>
 
                     <Pagination className="mb-4">
                         <PaginationContent>
 
-                            {/* إخفاء previous في أول صفحة */}
                             {page > 1 && (
                                 <PaginationItem>
                                     <PaginationPrevious
@@ -203,7 +175,6 @@ export default function ProductsLanding() {
                                 </PaginationLink>
                             </PaginationItem>
 
-                            {/* إخفاء next في آخر صفحة */}
                             {page < products?.pages && (
                                 <PaginationItem>
                                     <PaginationNext

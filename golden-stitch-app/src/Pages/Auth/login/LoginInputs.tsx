@@ -33,7 +33,7 @@ export default function LoginInput() {
 
   const handleClickVisibility = () => {
     setIsView(!isView);
-    console.log(isView)
+    // console.log(isView)
   }
 const form = useForm<loginFields>({
     resolver: zodResolver(loginSchema),

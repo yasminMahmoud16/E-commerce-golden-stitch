@@ -1,7 +1,7 @@
 import { Button } from "@/Components/ui/button";
 
 type BtnCommonProps = {
-  text: string;
+  text?: string;
   type?: "button" | "submit" | "reset";
   className?: string;
   loading?: boolean;

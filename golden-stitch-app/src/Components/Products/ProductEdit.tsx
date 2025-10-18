@@ -87,16 +87,17 @@ export default function ProductEdit({ product, onBack }: {
             onSuccess: () => {
                 onBack();
             },
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             onError: (error) => {
       toast.error("❌ Failed to update product");
-                  console.log("update product error:", error);
+                //   console.log("update product error:", error);
             }
         });
 
     };
 
 
-    console.log(errors,"form updated")
+    // console.log(errors,"form updated")
     return (
         <div className="flex flex-col justify-center items-center p-6">
             <div className="flex items-center justify-center gap-3 mb-4">

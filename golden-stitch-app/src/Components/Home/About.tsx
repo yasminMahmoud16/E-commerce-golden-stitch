@@ -17,9 +17,13 @@ export default function About() {
                             </p>
                         </div>
                         <div className="col-span-2 flex items-center justify-center">
-                            <img src={logo} alt={`${appName}`}   className="transition-all duration-300 ease-in-out hover:translate-y-2 " 
- />
-                        </div>
+  <img
+    src={logo}
+    alt={appName}
+    className="w-50 h-50 animate-upDown"
+  />
+</div>
+
                     </div>
                 </LayoutMotion>
             </div>

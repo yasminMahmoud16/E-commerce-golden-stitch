@@ -15,15 +15,15 @@ export default function useDashboardAdmin() {
                     headers: getAuthHeader()
                 }
             );
-            console.log({ dashRes: res });
+            // console.log({ dashRes: res });
             const users = res.data.data.result[0].value
-            console.log({ users });
+            // console.log({ users });
             return users;
 
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 
-                console.log({ dashError: error });
+                // console.log({ dashError: error });
     
                 const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
     

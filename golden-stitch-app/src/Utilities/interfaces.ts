@@ -121,6 +121,7 @@ export interface IProduct {
     description: string;
     stock: number;
     mainPrice: number;
+    salePrice?: number;
     discountPercent: number;
     category?: {
         id?: string;
@@ -220,6 +221,7 @@ export interface IUserData {
 export interface IOrderContextType {
     id?: string;
     // name: string;
+    loadingDetails?:boolean;
     page: number;
     setPage: React.Dispatch<React.SetStateAction<number>>;
     statusFilter: string;

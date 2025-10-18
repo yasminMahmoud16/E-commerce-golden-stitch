@@ -46,7 +46,7 @@ export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
           </div>
       </SidebarHeader>
       {/* <SidebarTrigger className='  text-white absolute left-65 top-6 md:left-2 md:top-9  z-10 ' /> */}
-<SidebarContent className="bg-dark-blue-nav pt-5 border-none overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+<SidebarContent className="bg-dark-blue-nav w-full pt-5 border-none overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
 
         <SidebarGroup className="" />
         <SidebarGroupContent className="flex flex-col justify-center mt-6   relative gap-3 ">

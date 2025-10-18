@@ -32,27 +32,22 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
       const user = res.data.data.user;
       // console.log("Fetched user with Bearer:", user);
       return user;
-    } catch (err) {
-      // if (err.response?.data.message === "invalid signature" ) {
-      //   try {
-      //     const res = await axiosInstance.get("/user", {
-      //       headers: getAuthHeader(),
-      //     });
-      //     const user = res.data.data.user;
-      //     console.log("Fetched user with System:", user);
-      //     return user;
+    } catch (error: unknown) {
+  if (axios.isAxiosError(error)) {
+    toast.error(error.response?.data?.message || error.message || "Something went wrong");
+  } else {
+    toast.error("Unexpected error occurred");
+  }
+  return [];
+}
 
 
-      //   } catch (innerErr) {
-      //     console.log("Profile fetch error (System attempt):", innerErr);
-      //     return null;
-      //   }
-      // }
+      
 
-      console.log("Profile fetch error:", err);
 
-      return null;
-    }
+      // console.log("Profile fetch error:", err);
+
+    
   };
 
 
@@ -138,7 +133,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
       const res = await axiosInstance.delete(`/user/${id}/freeze-account`, {
         headers: getAuthHeader(),
       });
-      console.log({ del: res });
+      // console.log({ del: res });
       if (res.data.message === "Done") {
 
         Swal.fire({
@@ -164,11 +159,11 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
 
       if (axios.isAxiosError(error)) {
         
-        console.log({ softDel: error });
-        console.log(" soft user delete error:", error?.response?.data || error);
+        // console.log({ softDel: error });
+        // console.log(" soft user delete error:", error?.response?.data || error);
         const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
         const generalError = error?.response?.data?.message;
-        console.log({generalErrorfromsoftDelUser:generalError});
+        // console.log({generalErrorfromsoftDelUser:generalError});
         
         //  if (generalError === "Not registered account") {
             
@@ -200,11 +195,15 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
 
 
         refetchProfile()
-        console.log(res);
+        // console.log(res);
       }
 
     } catch (err) {
-      console.log(err, 'wish context error');
+      if (axios.isAxiosError(err)) {
+        
+        toast.error("something went wrong")
+      }
+      // console.log(err, 'wish context error');
 
     }
   }
@@ -230,10 +229,14 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
         refetchProfile()
         // cartRefresh()
 
-        console.log({ Remove: res });
+        // console.log({ Remove: res });
       }
     } catch (err) {
-      console.log(err, 'wish context error');
+      if (axios.isAxiosError(err)) {
+        
+        toast.error("something went wrong")
+      }
+      // console.log(err, 'wish context error');
 
     }
   }

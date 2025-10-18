@@ -38,7 +38,7 @@ export default function ArchiveOrders() {
     // const [pendingCancelStatus, setPendingCancelStatus] = useState<string | null>(null);
     const [pendingStatus, setPendingStatus] = useState<Record<string, string>>({});
 
-    console.log({ ordersData });
+    // console.log({ ordersData });
     const Headers = [
         { id: 1, label: "Address" },
         { id: 2, label: "Payment-Type" },
@@ -59,8 +59,8 @@ export default function ArchiveOrders() {
 
 
         <AdminTitles
-            text="archive Products"
-            icon={Icons.IoMdArchive}
+            text="All Orders"
+            icon={Icons.BsBoxSeamFill}
         />
 
 

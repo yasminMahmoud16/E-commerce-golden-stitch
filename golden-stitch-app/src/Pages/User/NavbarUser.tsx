@@ -23,7 +23,7 @@ const [openCart, setOpenCart] =useState(false)
 const [openWishlist, setOpenWishlist] =useState(false)
 
 const handleToggle = (e:React.MouseEvent) => {
-  console.log("toggle");
+  // console.log("toggle");
 
   if (e.currentTarget.id === CardEnum.cart) {
     setOpenCart(true);

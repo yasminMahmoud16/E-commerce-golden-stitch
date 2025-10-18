@@ -71,7 +71,7 @@ const [, setSelectedData] = useState<string | null>(null);
 
     const handleDetailsClick = async (id: string) => {
         const category = await getCategoryById(id);
-        console.log("Fetched category:", category);
+        // console.log("Fetched category:", category);
         setSelectedCategory(category);
         setOpenDetails(true);
     };

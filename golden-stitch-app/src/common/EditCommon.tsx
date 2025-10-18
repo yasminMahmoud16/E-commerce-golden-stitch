@@ -48,8 +48,10 @@ export default function EditCommon({
         try {
             const updatedUser = await updateUserProfile(values);
             if (updatedUser && onSave) onSave(updatedUser);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
-            console.log("Submit failed:", err);
+
+            // console.log("Submit failed:", err);
         }
     };
 

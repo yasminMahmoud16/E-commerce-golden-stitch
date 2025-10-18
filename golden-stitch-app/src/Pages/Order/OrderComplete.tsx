@@ -24,7 +24,7 @@ export default function OrderComplete() {
     },
   });
   const handleSubmit = async (values: CreateOrder) => {
-    console.log("order data", values);
+    // console.log("order data", values);
 
     await createOrder(values)
     navigate("/")

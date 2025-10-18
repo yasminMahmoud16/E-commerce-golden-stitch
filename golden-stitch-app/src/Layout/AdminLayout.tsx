@@ -23,6 +23,11 @@ export default function AdminLayout() {
             icon: <Icons.BsBoxSeamFill />
 
         },
+        {
+            label: "Your Orders", path: "your-orders",
+            icon: <Icons.BsBoxSeamFill />
+
+        },
 
         {
             label: "Products", path: "products",

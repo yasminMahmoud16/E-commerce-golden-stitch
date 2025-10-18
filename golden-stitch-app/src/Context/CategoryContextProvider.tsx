@@ -44,9 +44,9 @@ export default function CategoryContextProvider({ children }: { children: ReactN
       
       const category=res.data.data.category
       return category;
-      
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.log({categoryDetailsErr:error});
+      // console.log({categoryDetailsErr:error});
       
     }
   };
@@ -106,10 +106,13 @@ export default function CategoryContextProvider({ children }: { children: ReactN
     try {
       const res = await axiosInstance.get(`/category/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
       const archiveCategory =res.data.data.categories.docs
-      console.log("archiveCategory=================", res.data.data.categories.docs);
+      // console.log("archiveCategory=================", res.data.data.categories.docs);
       return archiveCategory 
     } catch (error) {
-      console.log("product archive error", error);
+      if (axios.isAxiosError(error)) {
+        toast.error("something went wrong")
+        // console.log("product archive error", error);
+      }
       return []; 
     }
   }
@@ -131,7 +134,7 @@ const { data: archiveCategory = [] , refetch:ArchiveRefetch} = useQuery({
         const res = await axiosInstance.delete(`/category/${id}/freeze`, {
           headers: getAuthHeader(),
         });
-        console.log({ del: res });
+        // console.log({ del: res });
         if (res.data.message === "Done") {
   
           Swal.fire({
@@ -156,7 +159,7 @@ const { data: archiveCategory = [] , refetch:ArchiveRefetch} = useQuery({
         if (axios.isAxiosError(error)) {
           
           // console.log({ softDel: error });
-          console.log(" Product delete error:", error?.response?.data || error);
+          // console.log(" Product delete error:", error?.response?.data || error);
           const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
           const generalError = error?.response?.data?.message;
           toast.error(detailedError || generalError || "Something went wrong");
@@ -179,7 +182,7 @@ const { data: archiveCategory = [] , refetch:ArchiveRefetch} = useQuery({
         const res = await axiosInstance.delete(`/category/${id}`, {
           headers: getAuthHeader(),
         });
-        console.log({ del: res });
+        // console.log({ del: res });
         if (res.data.message === "Done") {
   
           Swal.fire({
@@ -202,8 +205,8 @@ const { data: archiveCategory = [] , refetch:ArchiveRefetch} = useQuery({
       } catch (error) {
         if (axios.isAxiosError(error)) {
           
-          console.log({ softDel: error });
-          console.log(" Product delete error:", error?.response?.data || error);
+          // console.log({ softDel: error });
+          // console.log(" Product delete error:", error?.response?.data || error);
           const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
           const generalError = error?.response?.data?.message;
           toast.error(detailedError || generalError || "Something went wrong");
@@ -219,7 +222,7 @@ const { data: archiveCategory = [] , refetch:ArchiveRefetch} = useQuery({
         const res = await axiosInstance.patch(`/category/${id}/restore`, {
           headers: getAuthHeader(),
         });
-        console.log({ restore: res });
+        // console.log({ restore: res });
         if (res.data.message === "Done") {
   
           Swal.fire({
@@ -239,8 +242,8 @@ const { data: archiveCategory = [] , refetch:ArchiveRefetch} = useQuery({
       } catch (error) {
         if (axios.isAxiosError(error)) {
           
-          console.log({ softDel: error });
-          console.log(" Product delete error:", error?.response?.data || error);
+          // console.log({ softDel: error });
+          // console.log(" Product delete error:", error?.response?.data || error);
           const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
           const generalError = error?.response?.data?.message;
           toast.error(detailedError || generalError || "Something went wrong");

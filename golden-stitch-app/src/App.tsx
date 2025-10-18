@@ -249,6 +249,16 @@ const router = createHashRouter([
         ),
       },
       {
+        path: "your-orders",
+        element: (
+          <Suspense fallback={<SpinnerCustomData />}>
+            <Guard>
+              <OrderDetails />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      {
         path: "category",
         element: (
           <Suspense fallback={<SpinnerCustomData />}>

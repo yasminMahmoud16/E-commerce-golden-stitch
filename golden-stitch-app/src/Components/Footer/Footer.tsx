@@ -1,6 +1,5 @@
 
 
-import { HashLink } from 'react-router-hash-link';
 
 import cornerBottomRight from "@/assets/Images/cornerBottomRight.png"
 import cornerBottomLeft from "@/assets/Images/cornerBottomLeft.png"
@@ -66,10 +65,10 @@ export default function Footer() {
                                 <Link to="/products">Products</Link>
                             </li>
                             <li className='transition-all duration-500 ease-in-out hover:text-gold-dark'>
-                                <HashLink  to="#about">About Us</HashLink>
+                                <p  to="#about">About Us</p>
                             </li>
                             <li className='transition-all duration-500 ease-in-out hover:text-gold-dark'>
-                                <HashLink  to="#contact">Contact Us</HashLink>
+                                <p   to="#contact">Contact Us</p>
                             </li>
                         </ul>
                     </div>

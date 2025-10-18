@@ -13,7 +13,7 @@ export function SwitchDemo({ role, id}: { role?: RoleEnum |undefined, id?: strin
     const axiosInstance = useAxios();
     const { getAuthHeader } = useAuthContext();
     const [currentRole, setCurrentRole] = useState<RoleEnum |undefined>(role);
-console.log({currentRole});
+// console.log({currentRole});
 
     const getNewRole = (role: RoleEnum) => {
         if (role === RoleEnum.user) {
@@ -37,12 +37,12 @@ console.log({currentRole});
     window.location.reload(); 
   }, 800);
             }
-            console.log(res);
+            // console.log(res);
         } catch (error:unknown) {
 
             if (axios.isAxiosError(error)) {
                 
-                console.log({ roleErr: error });
+                // console.log({ roleErr: error });
                 const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
     
                 const generalError = error?.response?.data?.message;

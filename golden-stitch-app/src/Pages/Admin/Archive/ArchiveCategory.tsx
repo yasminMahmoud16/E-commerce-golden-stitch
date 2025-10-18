@@ -23,7 +23,7 @@ export default function ArchiveCategory() {
 
     const { archiveCategory, page, setPage, search, setSearch, restoreCategory, hardDelCategory } = useCategoryContext();
     
-    console.log({ archiveCategory });
+    // console.log({ archiveCategory });
     const Headers = [
         { id: 2, label: "image" },
         { id: 3, label: "Product Name" },

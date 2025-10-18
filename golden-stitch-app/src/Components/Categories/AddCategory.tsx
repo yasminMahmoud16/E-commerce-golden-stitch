@@ -39,7 +39,7 @@ export default function AddCategory({ onBack }: { onBack: () => void }) {
 
 
     if (res.data.message === "Done") {
-      console.log({ addCategory: res });
+      // console.log({ addCategory: res });
       toast.success("Category added successfully!");
       reset();
       
@@ -54,7 +54,7 @@ export default function AddCategory({ onBack }: { onBack: () => void }) {
       const messageToShow = detailedError || generalError || "Add category issue";
       toast.error(messageToShow);
     }
-    console.log({ addCat: error });
+    // console.log({ addCat: error });
   } finally {
     setLoading(false)
   }
