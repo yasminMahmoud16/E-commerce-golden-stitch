@@ -37,7 +37,7 @@ export default function ProductsLanding() {
         queryFn: () => getCategories({ size: 50 }),
     });
 
-    console.log("catSize", catSize);
+    // console.log("catSize", catSize);
 
 
 
@@ -52,7 +52,7 @@ export default function ProductsLanding() {
                 categoryId,
             }),
     });
-    console.log({ products });
+    // console.log({ products });
 
     // const { data: products } = useQuery({
     //     queryKey: ["landingProducts", page],

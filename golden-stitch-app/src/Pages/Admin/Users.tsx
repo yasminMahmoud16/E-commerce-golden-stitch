@@ -20,7 +20,8 @@ export default function Users() {
     { id: 1, label: "Username" },
     { id: 2, label: "Email" },
     { id: 3, label: "Phone" },
-    { id: 3, label: "Role" },
+    { id: 7, label: "Role" },
+    { id: 5, label: "Freezed /Not" },
     { id: 4, label: "Gender" },
   ];
 

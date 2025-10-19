@@ -30,6 +30,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
       const res = await axiosInstance.get("/user", {
         headers: getAuthHeader(),
       });
+
       const user = res.data.data.user;
       // console.log("Fetched user with Bearer:", user);
       return user;
@@ -73,7 +74,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
       const res = await axiosInstance.patch("/user/", payload, {
         headers: getAuthHeader()
       });
-      console.log("Updated user:", res.data);
+      // console.log("Updated user:", res.data);
       // setUpdate(res.data);
       setProfile(res.data.data.user);
       toast.success(res.data.message)
@@ -81,9 +82,9 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.message || "An error occurred");
-        console.log("Axios Error:", error);
+        // console.log("Axios Error:", error);
       } else {
-        console.log("Unexpected error:", error);
+        // console.log("Unexpected error:", error);
         toast.error("Unexpected error");
       }
       return null;
@@ -102,7 +103,8 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
                 }
             );
             // console.log({ AllUsers: res });
-            const users = res.data.data.result[0].value
+          const users = res.data.data.result[0].value
+          
             // console.log({ users });
             return users;
 
@@ -147,6 +149,46 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
         //   confirmButtonColor: "#6B4129"
 
         // });
+
+        refetch()
+        // navigate("/login")
+
+        // await queryClient.invalidateQueries({ queryKey: ['allUsers'] });
+
+
+      }
+
+      return res.data.message
+    } catch (error) {
+
+      if (axios.isAxiosError(error)) {
+        
+        // console.log({ softDel: error });
+        // console.log(" soft user delete error:", error?.response?.data || error);
+        const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+        const generalError = error?.response?.data?.message;
+        // console.log({generalErrorfromsoftDelUser:generalError});
+        
+        //  if (generalError === "Not registered account") {
+            
+        //   }
+        toast.error(detailedError || generalError || "soft delete product issue ");
+        return detailedError || generalError || "soft delete product issue "
+      }
+      return "Unexpected error";
+
+    }
+  }
+  const restoreUsers = async (id: string): Promise<string> => {
+    try {
+      const res = await axiosInstance.patch(`/user/${id}/restore-account`, {
+        headers: getAuthHeader(),
+      });
+      // console.log({ del: res });
+      if (res.data.message === "Done") {
+
+        toast.success("The Account restored Successfully")
+
 
         refetch()
         // navigate("/login")
@@ -271,6 +313,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
       // currentRole,
       data,
       allUsers,
+      restoreUsers,
       softDelUsers,
       removeFromWishList,
       addToWishList,

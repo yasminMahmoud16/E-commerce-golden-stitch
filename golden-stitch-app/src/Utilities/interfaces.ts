@@ -20,6 +20,7 @@ export interface IProfileContextType {
     // getAuthHeader: () => Record<string, string>;
     updateUserProfile: (values: FormDataUpdate) => Promise<FormDataUpdate | null>;
     softDelUsers: (id: string) => Promise<string>;
+    restoreUsers: (id: string) => Promise<string>;
     addToWishList: (productId: string) => Promise<void>;
     // getAllUsers: () => Promise<Record<string, string>[]>;
     removeFromWishList: (productId: string) => Promise<void>;
@@ -249,6 +250,7 @@ export interface IUserData {
     gender: GenderEnum;
     role: RoleEnum;
     address: string;
+    freezedAt:string
 }
 export interface IOrderContextType {
     id?: string;

@@ -57,13 +57,16 @@ const login = async (
 
     return true; 
   } catch (error: unknown) {
+    // console.log({errorlogin:error});
+    
     if (axios.isAxiosError(error)) {
       
+      const message = error?.message;
       const cause = error?.response?.data?.cause;
       const validationMessage =
       cause?.validationErrors?.[0]?.issues?.[0]?.message;
       // console.log(validationMessage || error?.response?.data?.message);
-      toast.error(validationMessage || error?.response?.data?.message);
+      toast.error(validationMessage  || error?.response?.data?.message ||message );
     }
     return false; 
   } finally {

@@ -89,8 +89,8 @@ export default function ProductDetails() {
 
                             </div>
                         </div>
-                        <div className="col-span-4  ">
-                            <div className="flex flex-col justify-center gap-1 mt-3  h-72">
+                        <div className="col-span-4 capitalize  ">
+                            <div className="flex flex-col justify-center gap-1 mt-3  h-72 capitalize">
 
                                 <h2 className="text-3xl font-semibold text-dark-blue-nav capitalize">{product?.name}</h2>
                                 <p> {product?.category?.name}</p>
@@ -118,9 +118,9 @@ export default function ProductDetails() {
                                     <p className="text-4xl font-bold text-gold-dark mb-3">{product?.mainPrice} EGP</p>
                                     
                                 </div>
-                                <div >
-                                    <p className="text-4xl font-bold text-gold-dark mb-3">{product?.category?.name} </p>
-                                    
+                                <div  >
+                                    {/* <p className="text-lg capitalize font-bold text-gold-dark mb-3">                                    category: {product?.category?.name} </p>
+                                     */}
                                 </div>
                                 
 
