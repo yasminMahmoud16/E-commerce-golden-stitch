@@ -101,7 +101,7 @@ export default function ArchiveOrders() {
                 </TableHeader>
 
                 <TableBody>
-                    {ordersData?.map((data) => (
+                    {ordersData?.docs?.map((data) => (
                         <TableRow
                             key={data.id}
                             className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
@@ -109,7 +109,7 @@ export default function ArchiveOrders() {
 
                             <TableCell className="font-medium text-center">{data.address}</TableCell>
                             <TableCell className="font-medium text-center">{data.paymentType}</TableCell>
-                            <TableCell className="font-medium text-center">{data.createdBy.username}</TableCell>
+                            <TableCell className="font-medium text-center">{data.createdBy?.username}</TableCell>
                             <TableCell className="font-medium text-xs truncate max-w-[200px]">
                                 {String(data.note || "").slice(0, 60)}
                             </TableCell>
@@ -122,7 +122,7 @@ export default function ArchiveOrders() {
                                         if (value === StateEnum.cancel) {
                                             setSelectedOrderId(data.id);
                                             setPendingStatus((prev) => ({ ...prev, [data.id]: StateEnum.cancel }));
-                                            setOpen(true); // open modal for reason
+                                            setOpen(true);
                                         } else if (value === StateEnum.onWay) {
                                             setPendingStatus((prev) => ({ ...prev, [data.id]: StateEnum.onWay }));
                                             await onWayByAmin(data.id);
@@ -134,7 +134,7 @@ export default function ArchiveOrders() {
                                 >
                                     <SelectTrigger
                                         className={`w-[150px] bg-transparent border-gold-dark border-4
-      ${(pendingStatus[data.id] || data.status) === StateEnum.cancel
+                                        ${(pendingStatus[data.id] || data.status) === StateEnum.cancel
                                                 ? "text-red-500"
                                                 : (pendingStatus[data.id] || data.status) === StateEnum.delivered
                                                     ? "text-green-500"
@@ -150,17 +150,23 @@ export default function ArchiveOrders() {
                                         <SelectItem value={StateEnum.placed} className="text-blue-500">
                                             Placed
                                         </SelectItem>
+
                                         <SelectItem value={StateEnum.onWay} className="text-yellow-500">
                                             On Way
                                         </SelectItem>
+
                                         <SelectItem value={StateEnum.delivered} className="text-green-500">
                                             Delivered
                                         </SelectItem>
-                                        <SelectItem value={StateEnum.cancel} className="text-red-600">
-                                            Cancelled
-                                        </SelectItem>
+
+                                        {(pendingStatus[data.id] || data.status) !== StateEnum.delivered && (
+                                            <SelectItem value={StateEnum.cancel} className="text-red-600">
+                                                Cancelled
+                                            </SelectItem>
+                                        )}
                                     </SelectContent>
                                 </Select>
+
 
                             </TableCell>
 
@@ -176,32 +182,37 @@ export default function ArchiveOrders() {
 
 
 
-        <Pagination className="mt-3">
-            <PaginationContent>
-                <PaginationItem>
-                    <PaginationPrevious
-                        className="text-gold cursor-pointer hover:bg-transparent hover:text-gold-dark"
-                        onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
-                    />
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink
-                        onClick={() => setPage(1)}
-                        isActive={page === 1}
-                        className="cursor-pointer rounded-full"
-                    >
-                        {page}
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationNext
-                        className="cursor-pointer text-gold hover:bg-transparent hover:text-gold-dark"
-                        onClick={() => setPage((prev) => prev + 1)}
-                    />
-                </PaginationItem>
-            </PaginationContent>
-        </Pagination>
+ <Pagination className="mb-4">
+                            <PaginationContent>
+                                {page > 1 && (
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
+                                        />
+                                    </PaginationItem>
+                                )}
 
+                                <PaginationItem>
+                                    <PaginationLink isActive className="cursor-pointer rounded-full">
+                                        {page}
+                                    </PaginationLink>
+                                </PaginationItem>
+
+                                {page < (ordersData?.pages || 1) && (
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                                            onClick={() =>
+                                                setPage((prev) =>
+                                                    prev < (ordersData?.pages || 1) ? prev + 1 : prev
+                                                )
+                                            }
+                                        />
+                                    </PaginationItem>
+                                )}
+                            </PaginationContent>
+                        </Pagination>
 
         {open && (
             <Cancel open={open} onOpenChange={setOpen} orderId={selectedOrderId} onStatusChange={(id, status) => {

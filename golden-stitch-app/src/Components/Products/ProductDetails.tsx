@@ -34,7 +34,7 @@ const [parentImage, setParentImage] = useState<string | null>(null);
 
   const categoryName =
     typeof currentProduct?.category === "string"
-      ? allCategoriesData?.find((cat) => cat.id === currentProduct.category)
+      ? allCategoriesData?.docs?.find((cat) => cat.id === currentProduct.category)
           ?.name || "Unknown Category"
       : currentProduct?.category?.name || "Unknown Category";
 
@@ -83,11 +83,14 @@ const [parentImage, setParentImage] = useState<string | null>(null);
 
         <div className=" flex flex-col items-center justify-center">
 
+          <div className="w-2xl">
+
         <img
           src={`/${parentImage || currentProduct?.images?.[0]}`}
           alt={currentProduct?.name}
-          className="w-60 h-60 object-cover rounded-xl shadow-lg"
+          className="w-60 h-60 overflow-hidden object-cover rounded-xl shadow-lg"
         />
+          </div>
 
         <Carousel className="relative w-full md:w-[350px]">
           <CarouselPrevious className="cursor-pointer absolute left-1 z-10" />
@@ -95,7 +98,8 @@ const [parentImage, setParentImage] = useState<string | null>(null);
             {currentProduct?.images?.map((img, index) => (
               <CarouselItem
                 key={index}
-                className="pl-4 basis-1/3 shrink-0"
+                className="pl-4 basis-auto shrink-0 w-28"
+
                 onClick={() => handleGallery(img)}
               >
                 <div className="relative group cursor-pointer ">
@@ -135,7 +139,7 @@ const [parentImage, setParentImage] = useState<string | null>(null);
     open={isDelete}
     onOpenChange={setIsDelete}
     title="Are you sure you want to delete this product?"
-    text="Only Admin can restore the product after deletion."
+    // text="Only Admin can restore the product after deletion."
     classNameText="text-center text-gray-400"
     classNameTitle="!text-red-700 text-3xl text-center"
     image={deleteImage}

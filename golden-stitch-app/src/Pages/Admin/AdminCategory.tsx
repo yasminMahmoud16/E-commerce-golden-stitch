@@ -40,7 +40,7 @@ const [, setSelectedData] = useState<string | null>(null);
 
     const [isEditing, setIsEditing] = useState(false);
     // const [ setSelectedData] = useState<string>("");
-    const filteredCategory = allCategoriesData?.filter((category) => {
+    const filteredCategory = allCategoriesData?.docs?.filter((category) => {
         const term = (search || "").toLowerCase();
         return (
             category.name.toLowerCase().includes(term)
@@ -52,7 +52,7 @@ const [, setSelectedData] = useState<string | null>(null);
     const catHeaders = [
         { id: 2, label: "Image" },
         { id: 3, label: "Category Name" },
-        { id: 4, label: "Number of sale" },
+        // { id: 4, label: "Number of sale" },
         { id: 5, label: "Created By" },
         { id: 7, label: "Description" },
     ];
@@ -172,7 +172,7 @@ const [, setSelectedData] = useState<string | null>(null);
                                         </div>
                                     </TableCell>
                                     <TableCell className="font-medium text-center">{data.name}</TableCell>
-                                    <TableCell className="font-medium text-center">{data.numberOfSale}</TableCell>
+                                    {/* <TableCell className="font-medium text-center">{data.numberOfSale}</TableCell> */}
                                     <TableCell className="font-medium text-center">  {data.createdBy?.username || "Unknown"}</TableCell>
                                     <TableCell className="font-medium text-xs">
                                         {/* {data.description.slice(0, 60)} */}
@@ -184,31 +184,37 @@ const [, setSelectedData] = useState<string | null>(null);
                         </TableBody>
                     </Table>
 
-                    <Pagination>
-                        <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    className="text-gold cursor-pointer hover:bg-transparent hover:text-gold-dark"
-                                    onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
-                                />
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationLink
-                                    onClick={() => setPage(1)}
-                                    isActive={page === 1}
-                                    className="cursor-pointer rounded-full"
-                                >
-                                    {page}
-                                </PaginationLink>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationNext
-                                    className="cursor-pointer text-gold hover:bg-transparent hover:text-gold-dark"
-                                    onClick={() => setPage((prev) => prev + 1)}
-                                />
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
+                    <Pagination className="my-4">
+                            <PaginationContent>
+                                {page > 1 && (
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-gold"
+                                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
+                                        />
+                                    </PaginationItem>
+                                )}
+
+                                <PaginationItem>
+                                    <PaginationLink isActive className="cursor-pointer rounded-full">
+                                        {page}
+                                    </PaginationLink>
+                                </PaginationItem>
+
+                                {page < (allCategoriesData?.pages || 1) && (
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-gold"
+                                            onClick={() =>
+                                                setPage((prev) =>
+                                                    prev < (allCategoriesData?.pages || 1) ? prev + 1 : prev
+                                                )
+                                            }
+                                        />
+                                    </PaginationItem>
+                                )}
+                            </PaginationContent>
+                        </Pagination>
                 </>
             )}
         </>

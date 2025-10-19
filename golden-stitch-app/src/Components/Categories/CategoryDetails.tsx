@@ -64,11 +64,14 @@ export default function CategoryDetails({ category, onBack, onEdit, onDeleteSucc
       </div>
 
       <div className="flex flex-col items-center justify-center md:flex-row gap-6">
+        <div className="w-2xl ">
         <img
           src={`/${currentCategory?.image}`}
           alt={currentCategory?.name}
-          className="w-30 h-30 md:w-60 md:h-60 object-cover rounded-xl shadow-lg"
+          className="w-full  md:w-60 md:h-60 object-cover rounded-xl shadow-lg"
         />
+
+        </div>
 
         <div className="flex flex-col justify-center gap-5">
           <h2 className="text-xl md:text-3xl font-semibold text-[hsl(22,55%,44%)] k mb-2 capitalize">

@@ -15,6 +15,7 @@ export interface IProfileContextType {
     profile: Record<string, string> | null;
     allUsers: IUserData[] | null;
     data: Record<string, string> | null;
+    loadingProfile:boolean
     // role: RoleEnum;
     // getAuthHeader: () => Record<string, string>;
     updateUserProfile: (values: FormDataUpdate) => Promise<FormDataUpdate | null>;
@@ -48,9 +49,14 @@ export interface IAddProductResponse {
     message: string;
     product?: IProduct; 
 }
+export interface IAddCategoryResponse {
+    message: string;
+    categories?: ICategory; 
+}
 export interface IProductContextType {
-    allProductsData: IProduct[] | null;
-    archiveProducts: IProduct[] | null;
+    allProductsData: IProductsResponse | undefined;
+    // allProductsData: IProduct[] | null;
+    archiveProducts: IProductsResponse | undefined;
     page: number;
     isLoading: boolean;
     // size: number;
@@ -66,7 +72,31 @@ export interface IProductContextType {
     // addProduct: UseMutationResult<string, unknown, IProductUpdateInput, unknown>;
     addProduct: UseMutationResult<IAddProductResponse, unknown, IProductUpdateInput, unknown>;
     isUpdating: boolean;
+    getProducts: (params: { page?: number; size?: number; search?: string; categoryId?: string }) => Promise<IProductsResponse>;
+
     updateProduct: UseMutationResult<IProduct, unknown, IProductEditInput>;
+}
+
+export interface IProductsResponse {
+    currentPage: number;
+    docs: IProduct[];
+    docsCount: number;
+    limit: number;
+    pages: number;
+}
+export interface ICategoryResponse {
+    currentPage: number;
+    docs: ICategory[];
+    docsCount: number;
+    limit: number;
+    pages: number;
+}
+export interface IOrdersResponse {
+    currentPage: number;
+    docs: IOrder[];
+    docsCount: number;
+    limit: number;
+    pages: number;
 }
 export interface ICategoryContextType {
     isLoading: boolean;
@@ -75,12 +105,14 @@ export interface ICategoryContextType {
     setPage: React.Dispatch<React.SetStateAction<number>>;
     search: string;
     setSearch: React.Dispatch<React.SetStateAction<string>>;
-    allCategoriesData: ICategory[] | null;
-    archiveCategory: ICategory[] | null;
+    allCategoriesData: ICategoryResponse | undefined;
+    archiveCategory: ICategoryResponse | undefined;
     // categoryDetails/: ICategory | null;
     getCategoryById: (id: string) => Promise<ICategory>
-    getCategories: (params: { page?: number; size?: number; search?: string }) => Promise<ICategory[]>
+    getCategories: (params: { page?: number; size?: number; search?: string }) => Promise<ICategoryResponse>
     updateCategory: UseMutationResult<ICategory, unknown, ICategoryUpdateInput, unknown>;
+    addCategory: UseMutationResult<IAddCategoryResponse, unknown, ICategoryUpdateInput, unknown>;
+
     softDelCategory: (id: string) => Promise<string>
     restoreCategory: (id: string) => Promise<string>;
     hardDelCategory: (id: string) => Promise<string>;
@@ -138,7 +170,7 @@ export interface IProduct {
 export interface ICategory {
     id: string;
     name: string;
-    description: string;
+    description?: string;
     numberOfSale: number;
     // stock: number;
     // mainPrice: number;
@@ -155,7 +187,7 @@ export interface ICategory {
 export interface ICategoryUpdate {
     id?: string;
     name: string;
-    description?: string |undefined;
+    description?: string ;
 
     attachment?:  File[];
 
@@ -192,7 +224,7 @@ export interface IProductEditInput {
     removedAttachments?: string[];
 }
 export interface ICategoryUpdateInput {
-    id: string;
+    id?: string;
     name: string;
     description: string;
     // stock: string;
@@ -202,7 +234,7 @@ export interface ICategoryUpdateInput {
     //     id?: string;
     //     _id?: string;
     // };
-    attachment?: FileList | File[];
+    attachment?: FileList | File[] |undefined;
     removedAttachments?: string[];
 }
 
@@ -226,7 +258,7 @@ export interface IOrderContextType {
     setPage: React.Dispatch<React.SetStateAction<number>>;
     statusFilter: string;
     setStatusFilter: React.Dispatch<React.SetStateAction<string>>;
-    ordersData: IOrder[] | null;
+    ordersData: IOrdersResponse | null;
     createOrder: (values: CreateOrder) => Promise<string | undefined>
     onWayByAmin: (id: string) => Promise<string | undefined>
     // getAllOrders: () => Promise<IOrder>

@@ -8,13 +8,14 @@ import { useAuthContext } from "@/Hooks/useAppContexts";
 import {   type FormDataUpdate } from "@/Utilities/types";
 import axios from "axios";
 import { ProfileContext } from "./contextCreations/ProductContext";
-import Swal from "sweetalert2";
-
+// import Swal from "sweetalert2";
+// import { useNavigate } from "react-router-dom";
 
 
 
 export default function ProfileContextProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState< Record<string, string> |null>(null);
+  // const navigate = useNavigate()
   // const {cartRefresh} =useCartContext()
   const { token, getAuthHeader } = useAuthContext();
   const axiosInstance = useAxios();
@@ -36,7 +37,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
   if (axios.isAxiosError(error)) {
     toast.error(error.response?.data?.message || error.message || "Something went wrong");
   } else {
-    toast.error("Unexpected error occurred");
+    // toast.error("Unexpected error occurred");
   }
   return [];
 }
@@ -51,7 +52,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
   };
 
 
-  const { data, refetch: refetchProfile
+  const { data, refetch: refetchProfile, isLoading:loadingProfile 
   } = useQuery({
     queryKey: ["getProfile", token],
     queryFn: getProfile,
@@ -136,18 +137,19 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
       // console.log({ del: res });
       if (res.data.message === "Done") {
 
-        Swal.fire({
-          title: "The Account Deleted Successfully",
-          icon: "success",
-          draggable: true,
-          background: "#182129",
-          color: "#ffff",
-          confirmButtonColor: "#6B4129"
+        toast.success("The Account Deleted Successfully")
+        // Swal.fire({
+        //   title: "The Account Deleted Successfully",
+        //   icon: "success",
+        //   draggable: true,
+        //   background: "#182129",
+        //   color: "#ffff",
+        //   confirmButtonColor: "#6B4129"
 
-        });
+        // });
 
         refetch()
-        
+        // navigate("/login")
 
         // await queryClient.invalidateQueries({ queryKey: ['allUsers'] });
 
@@ -262,6 +264,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
   return (
     <ProfileContext.Provider value={{
       profile,
+      loadingProfile,
       updateUserProfile,
       // changeRoleByAdmin,
       // getNewRole,

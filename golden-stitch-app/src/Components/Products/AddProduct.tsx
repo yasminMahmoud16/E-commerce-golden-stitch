@@ -25,9 +25,9 @@ import { createProduct, type ProductFormValues } from "@/Pages/Auth/validation/p
 import type { ICategory, IProductUpdateInput } from "@/Utilities/interfaces";
 // import type { ProductFormValues } from "@/Utilities/types";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 
-export default function ProductEdit({
+export default function AddProducts({
   // product,
   onBack }: {
   // product?: IProduct,
@@ -69,7 +69,7 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
 
  
 
-  console.log("form errors:", errors);
+  // console.log("form errors:", errors);
 
   const onSubmit = (data: ProductFormValues) => {
     setIsLoading(true);
@@ -90,10 +90,10 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
     onSuccess: () => {
       onBack();
     },
-    onError: (error) => {
-      toast.error(`Add  product error:${error}`)
-      // console.log("Add product error:", error);
-    }
+    // onError: (error) => {
+    //   toast.error(`Add  product error:${error}`)
+    //   // console.log("Add product error:", error);
+    // }
   });
 
 };
@@ -143,7 +143,7 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
     <SelectTrigger className="text-gray-300">
       <SelectValue
         placeholder={
-          allCategoriesData?.find(
+          allCategoriesData?.docs?.find(
             (cat: ICategory) => cat.id === selectedCategoryId
           )?.name || "Select category"
         }
@@ -151,8 +151,8 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
     </SelectTrigger>
 
     <SelectContent className="bg-dark-blue-1 capitalize border-none text-white">
-      {catSize && catSize.length > 0 ? (
-        catSize.map((cat: ICategory) => (
+      {catSize && catSize?.docs?.length > 0 ? (
+        catSize?.docs?.map((cat: ICategory) => (
           <SelectItem key={cat.id} value={cat.id}>
             {cat.name}
           </SelectItem>
@@ -221,7 +221,7 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
             <span className="text-sm  text-gold">Upload Images</span>
           </label>
 
-          {/* ✅ PREVIEW MULTIPLE IMAGES */}
+          {/*  PREVIEW MULTIPLE IMAGES */}
           {preview && preview.length > 0 && (
             <div className="flex flex-wrap justify-center gap-3 mt-4">
               {preview.map((src, index) => (

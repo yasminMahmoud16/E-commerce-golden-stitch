@@ -91,7 +91,7 @@ export default function Users() {
         <PopupCommon
           open={openPopup}
           onOpenChange={setOpenPopup}
-          title="Are You Sure You Want To Delete Your Account ? "
+          title="Are You Sure You Want To Delete This Account ? "
           // text="Only Admin Can Restore The Account"
           classNameText="text-center text-gray-400"
 

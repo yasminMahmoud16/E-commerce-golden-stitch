@@ -77,15 +77,24 @@ export default function CartCommon({
                         <div className="grid grid-cols-6 gap-3">
                             <div className="col-span-3 ">
                                 <CardContent>
-                                    <div className="w-30">
+                                    <div className="overflow-hidden flex items-center justify-center bg-gray-100 rounded-md">
                                         {item.productId && item.productId.images?.[0] ? (
-                                            <img src={`/${item.productId.images[0]}`} alt={item.productId.name} />
+
+                                            <div className=" w-full h-20">
+
+                                                <img
+                                                    src={`/${item.productId.images[0]}`}
+                                                    alt={item.productId.name}
+                                                    className="w-full h-full object-fit transition-transform duration-500 group-hover:scale-105 overflow-hidden"
+                                                />
+                                            </div>
                                         ) : (
-                                            <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                            <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
                                                 No Image
                                             </div>
                                         )}
                                     </div>
+
 
                                 </CardContent>
                             </div>

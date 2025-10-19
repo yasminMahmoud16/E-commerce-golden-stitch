@@ -19,11 +19,9 @@ import { SpinnerCustomData } from "@/Loading/SpinnerCustomData";
 import { Icons } from "@/assets/Icons/icons";
 import { Input } from "../ui/input";
 import type { IProduct } from "@/Utilities/interfaces";
-import { useAxios } from "@/Hooks/useAxios";
 
 export default function ProductsLanding() {
-    const axiosInstance = useAxios();
-    const { getProductById, page, setPage, search, setSearch, allProductsData, categoryId, setCategoryId, isLoading } = useProductContext();
+    const { getProductById, page, setPage, search, setSearch, getProducts, categoryId, setCategoryId, isLoading } = useProductContext();
     const { addToCart } = useCartContext();
     const { addToWishList } = useProfileContext();
     const { getCategories } = useCategoryContext();
@@ -39,21 +37,37 @@ export default function ProductsLanding() {
         queryFn: () => getCategories({ size: 50 }),
     });
 
+    console.log("catSize", catSize);
+
 
 
 
     const { data: products } = useQuery({
-        queryKey: ["landingProducts", page],
-        queryFn: async () => {
-            const res = await axiosInstance.get(`/product?page=${page}&size=10`);
-            // console.log("response dataproooooooooooooo =>", res.data.data);
-            return res.data.data.products;
-        },
-
-
+        queryKey: ["landingProducts", page, categoryId, search],
+        queryFn: () =>
+            getProducts({
+                page,
+                size: 10,
+                search,
+                categoryId,
+            }),
     });
+    console.log({ products });
 
-    const filteredProducts = allProductsData?.filter((product: IProduct) => {
+    // const { data: products } = useQuery({
+    //     queryKey: ["landingProducts", page],
+    //     queryFn: async () => {
+    //         const res = await axiosInstance.get(`/product?page=${page}&size=10`);
+    //         // console.log("response dataproooooooooooooo =>", res.data.data);
+    //         console.log("allProductsData", res.data.data);
+    //         // const pagination =res.data.data
+    //         return res.data.data.products;
+    //     },
+
+    // });
+
+
+    const filteredProducts = products?.docs?.filter((product: IProduct) => {
         const term = (search || "").toLowerCase();
         return (
             product.name.toLowerCase().includes(term) ||
@@ -86,12 +100,12 @@ export default function ProductsLanding() {
 
                     <div className=" text-dark-blue-nav">
                         <h1 className="mb-4 text-center mt-6 text-3xl font-semibold text-dark-blue-2 capitalize">
-                        products & categories 
-                    </h1>
+                            products & categories
+                        </h1>
 
 
                     </div>
-                    
+
 
                     <div className=" relative mb-2 mt-8   items-center justify-center  flex flex-col ">
 
@@ -110,20 +124,20 @@ export default function ProductsLanding() {
                             <button
                                 onClick={() => setCategoryId("")}
                                 className={`cursor-pointer px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${categoryId === ""
-                                        ? "cursor-pointer bg-gold text-white shadow-lg"
-                                        : "cursor-pointer bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
+                                    ? "cursor-pointer bg-gold text-white shadow-lg"
+                                    : "cursor-pointer bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
                                     }`}
                             >
                                 All
                             </button>
 
-                            {catSize?.map((cat) => (
+                            {catSize?.docs?.map((cat) => (
                                 <button
                                     key={cat.id}
                                     onClick={() => setCategoryId(cat.id)}
                                     className={` cursor-pointer px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300 ${categoryId === cat.id
-                                            ? "cursor-pointer bg-gold text-white shadow-lg"
-                                            : " cursor-pointer bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
+                                        ? "cursor-pointer bg-gold text-white shadow-lg"
+                                        : " cursor-pointer bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
                                         }`}
                                 >
                                     {cat.name}
@@ -132,64 +146,65 @@ export default function ProductsLanding() {
                         </div>
                     </div>
                     <div className="flex   items-center justify-center flex-wrap gap-4 pb-4">
-                    <div className="flex flex-wrap justify-center gap-4 pb-4 items-center">
-  {isLoading ? (
-    <SpinnerCustomData />
-  ) : filteredProducts?.length === 0 ? (
-    <div className="text-center text-dark-blue-2 font-semibold text-lg mt-10">
-      No products found for this category
-    </div>
-  ) : (
-    filteredProducts?.map((product: IProduct) => (
-      <CardCommon
-        key={product.id}
-        image={`/${product.images?.[0]}`}
-        title={product.name}
-        description={product.description}
-        price={product.mainPrice}
-        onClickCard={() => handleOnClickProductDetails(product.id)}
-        onClickCart={() => handleOnClickCart(product.id, 1)}
-        onClickWishList={() => handleOnClickWishList(product.id)}
-      />
-    ))
-  )}
-</div>
+                        <div className="flex flex-wrap justify-center gap-4 pb-4 items-center">
+                            {isLoading ? (
+                                <SpinnerCustomData />
+                            ) : filteredProducts?.length === 0 ? (
+                                <div className="text-center text-dark-blue-2 font-semibold text-lg mt-10">
+                                    No products found for this category
+                                </div>
+                            ) : (
+                                filteredProducts?.map((product: IProduct) => (
+                                    <CardCommon
+                                        key={product.id}
+                                        image={`/${product.images?.[0]}`}
+                                        title={product.name}
+                                        description={product.description}
+                                        price={product.mainPrice}
+                                        onClickCard={() => handleOnClickProductDetails(product.id)}
+                                        onClickCart={() => handleOnClickCart(product.id, 1)}
+                                        onClickWishList={() => handleOnClickWishList(product.id)}
+                                    />
+                                ))
+                            )}
+                        </div>
 
                     </div>
 
-                    <Pagination className="mb-4">
-                        <PaginationContent>
+                    {filteredProducts && filteredProducts.length > 0 && (
+                        <Pagination className="mb-4">
+                            <PaginationContent>
+                                {page > 1 && (
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
+                                        />
+                                    </PaginationItem>
+                                )}
 
-                            {page > 1 && (
                                 <PaginationItem>
-                                    <PaginationPrevious
-                                        className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
-                                        onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
-                                    />
+                                    <PaginationLink isActive className="cursor-pointer rounded-full">
+                                        {page}
+                                    </PaginationLink>
                                 </PaginationItem>
-                            )}
 
-                            <PaginationItem>
-                                <PaginationLink isActive className="cursor-pointer rounded-full">
-                                    {page}
-                                </PaginationLink>
-                            </PaginationItem>
+                                {page < (products?.pages || 1) && (
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                                            onClick={() =>
+                                                setPage((prev) =>
+                                                    prev < (products?.pages || 1) ? prev + 1 : prev
+                                                )
+                                            }
+                                        />
+                                    </PaginationItem>
+                                )}
+                            </PaginationContent>
+                        </Pagination>
+                    )}
 
-                            {page < products?.pages && (
-                                <PaginationItem>
-                                    <PaginationNext
-                                        className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
-                                        onClick={() =>
-                                            setPage((prev) =>
-                                                prev < products.pages ? prev + 1 : prev
-                                            )
-                                        }
-                                    />
-                                </PaginationItem>
-                            )}
-
-                        </PaginationContent>
-                    </Pagination>
 
 
                 </LayoutMotion>

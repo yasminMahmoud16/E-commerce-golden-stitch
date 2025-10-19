@@ -67,7 +67,7 @@ const { data: catSize } = useQuery({
   ];
 
 
-  const filteredProducts = allProductsData?.filter((product) => {
+  const filteredProducts = allProductsData?.docs?.filter((product) => {
     const term = (search || "").toLowerCase();
     return (
       product.name.toLowerCase().includes(term) ||
@@ -164,7 +164,7 @@ const { data: catSize } = useQuery({
     All
   </button>
 
-  {catSize?.map((cat) => (
+  {catSize?.docs?.map((cat) => (
     <button
       key={cat.id}
       onClick={() => setCategoryId(cat.id)}
@@ -200,7 +200,7 @@ const { data: catSize } = useQuery({
               <div className=" overflow-x-auto hide-scrollbar"
               
               
-               
+              
 >
             <Table className="overflow-x-hidden scrollbar-hide ">
       <TableHeader>
@@ -247,31 +247,37 @@ const { data: catSize } = useQuery({
               </div>
 
 
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            className="text-gold cursor-pointer hover:bg-transparent hover:text-gold-dark"
-            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
-          />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink
-            onClick={() => setPage(1)}
-            isActive={page === 1}
-            className="cursor-pointer rounded-full"
-          >
-            {page}
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext
-            className="cursor-pointer text-gold hover:bg-transparent hover:text-gold-dark"
-            onClick={() => setPage((prev) => prev + 1)}
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+<Pagination className="mb-4">
+                            <PaginationContent>
+                                {page > 1 && (
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
+                                        />
+                                    </PaginationItem>
+                                )}
+
+                                <PaginationItem>
+                                    <PaginationLink isActive className="cursor-pointer rounded-full">
+                                        {page}
+                                    </PaginationLink>
+                                </PaginationItem>
+
+                                {page < (allProductsData?.pages || 1) && (
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                                            onClick={() =>
+                                                setPage((prev) =>
+                                                    prev < (allProductsData?.pages || 1) ? prev + 1 : prev
+                                                )
+                                            }
+                                        />
+                                    </PaginationItem>
+                                )}
+                            </PaginationContent>
+                        </Pagination>
             </div>
   </>
 )}

@@ -51,10 +51,10 @@ export default function ProductDetails() {
 
                 <div className="container relative z-20">
 
-                    <div className="grid grid-cols-1 md:grid-cols-6 items-center md:items-start justify-center pt-10 md:gap-4 relative z-20">
+                    <div className=" my-8 grid grid-cols-1 md:grid-cols-6 items-center md:items-start justify-center pt-10 md:gap-4 relative z-20">
                         <div className="col-span-2 mb-6 md:mb-0 ">
-                            <div>
-                                <img src={`/${parentImage || product?.images?.[0]}`} alt="" />
+                            <div className="w-80  overflow-hidden">
+                                <img src={`/${parentImage || product?.images?.[0]}`} alt=" " className="w-full overflow-hidden object-cover" />
 
                             </div>
                             <div>

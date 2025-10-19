@@ -40,7 +40,7 @@ export default function Footer() {
                         <p className='text-footer-items'>{`${appName}`}@gmail.com</p>
 
 
-
+{/* 
                         <div className="relative w-55 md:w-80">
                             <Icons.CiSearch
                                 className="absolute left-3 top-4 -translate-y-1/2 text-footer-items"
@@ -51,7 +51,7 @@ export default function Footer() {
                                 placeholder="search"
                                 className="w-60 md:w-80 border-footer-items  py-3 px-2 pl-10 mb-2 placeholder:text-footer-items rounded-4xl"
                             />
-                        </div>
+                        </div> */}
 
 
                     </div>
@@ -65,10 +65,10 @@ export default function Footer() {
                                 <Link to="/products">Products</Link>
                             </li>
                             <li className='transition-all duration-500 ease-in-out hover:text-gold-dark'>
-                                <p  to="#about">About Us</p>
+                                <p  >About Us</p>
                             </li>
                             <li className='transition-all duration-500 ease-in-out hover:text-gold-dark'>
-                                <p   to="#contact">Contact Us</p>
+                                <p  >Contact Us</p>
                             </li>
                         </ul>
                     </div>

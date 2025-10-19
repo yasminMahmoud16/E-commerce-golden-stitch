@@ -2,8 +2,10 @@ import BtnCommon from "@/common/BtnCommon";
 import PopupCommon from "@/common/PopupCommon";
 import useGlobal from "@/Hooks/useGlobal";
 import deleteImg from "@/assets/Images/delete_14725157.png"
+import {  useProfileContext } from "@/Hooks/useAppContexts";
 export default function AccountSetting() {
-  const {location, navigate, openPopup,setOpenPopup,deleteAccount} = useGlobal();
+  const {location, navigate, openPopup,setOpenPopup} = useGlobal();
+  const {softDelUsers, profile} = useProfileContext();
 
   const isAdminPath = location.pathname === "/admin/account-setting";
 
@@ -48,7 +50,16 @@ export default function AccountSetting() {
           {
             label: "Delete My Account",
             className:"bg-red-600",
-            onClick: () => deleteAccount(),
+            onClick: async () => {
+            const res = await softDelUsers(profile!.id);
+              if (res) {
+          localStorage.removeItem("token")
+          localStorage.removeItem("refreshToken")
+          localStorage.removeItem("role")
+          navigate("/login"); 
+        }
+
+            },
           },
           {
             label: "Cancel",

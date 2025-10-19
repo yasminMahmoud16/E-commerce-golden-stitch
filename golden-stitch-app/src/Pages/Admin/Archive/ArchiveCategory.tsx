@@ -71,7 +71,7 @@ export default function ArchiveCategory() {
                 </TableHeader>
 
                 <TableBody>
-                    {archiveCategory?.map((data) => (
+                    {archiveCategory?.docs?.map((data) => (
                         <TableRow
                             key={data.id}
                             className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
@@ -109,30 +109,36 @@ export default function ArchiveCategory() {
 
 
 
-        <Pagination className="mt-3">
-            <PaginationContent>
-                <PaginationItem>
-                    <PaginationPrevious
-                        className="text-gold cursor-pointer hover:bg-transparent hover:text-gold-dark"
-                        onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
-                    />
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink
-                        onClick={() => setPage(1)}
-                        isActive={page === 1}
-                        className="cursor-pointer rounded-full"
-                    >
-                        {page}
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationNext
-                        className="cursor-pointer text-gold hover:bg-transparent hover:text-gold-dark"
-                        onClick={() => setPage((prev) => prev + 1)}
-                    />
-                </PaginationItem>
-            </PaginationContent>
-        </Pagination>
+        <Pagination className="my-4">
+                            <PaginationContent>
+                                {page > 1 && (
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-gold"
+                                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
+                                        />
+                                    </PaginationItem>
+                                )}
+
+                                <PaginationItem>
+                                    <PaginationLink isActive className="cursor-pointer rounded-full">
+                                        {page}
+                                    </PaginationLink>
+                                </PaginationItem>
+
+                                {page < (archiveCategory?.pages || 1) && (
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-gold"
+                                            onClick={() =>
+                                                setPage((prev) =>
+                                                    prev < (archiveCategory?.pages || 1) ? prev + 1 : prev
+                                                )
+                                            }
+                                        />
+                                    </PaginationItem>
+                                )}
+                            </PaginationContent>
+                        </Pagination>
     </>
 }

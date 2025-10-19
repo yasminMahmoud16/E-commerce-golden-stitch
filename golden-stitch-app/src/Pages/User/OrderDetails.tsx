@@ -1,13 +1,15 @@
 import { Icons } from "@/assets/Icons/icons";
 import AdminTitles from "@/common/AdminTitles";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/Components/ui/pagination";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import { useOrderContext } from "@/Hooks/useAppContexts";
 import { SpinnerCustomData } from "@/Loading/SpinnerCustomData";
 import { StateEnum } from "@/Utilities/types";
 
 export default function OrderDetails() {
-  const { ordersData , loadingDetails} = useOrderContext();
+  const { ordersData ,page, setPage, statusFilter, setStatusFilter, loadingDetails} = useOrderContext();
 
-  // console.log({ ordersDataUser: ordersData });
+  console.log({ ordersDataUser: ordersData });
 
   return (
     <>
@@ -23,8 +25,26 @@ export default function OrderDetails() {
         {loadingDetails ? <>
         <SpinnerCustomData/>
         </> : <>
-        
-        {ordersData?.map((order) => (
+                <div className="relative mb-2 mr-4 flex justify-end">
+            <Select
+                value={statusFilter}
+                onValueChange={(value) => setStatusFilter(value)}
+            >
+                <SelectTrigger className="w-[150px] bg-transparent text-gold border-gold border-4">
+                    <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+
+                <SelectContent className="bg-dark-blue-nav border-gray-400 text-gray-400">
+
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value={StateEnum.placed}>Placed</SelectItem>
+                    <SelectItem value={StateEnum.onWay}>On Way</SelectItem>
+                    <SelectItem value={StateEnum.delivered}>Delivered</SelectItem>
+                    <SelectItem value={StateEnum.cancel}>Cancelled</SelectItem>
+                </SelectContent>
+            </Select>
+        </div>
+        {ordersData?.docs?.map((order) => (
           <div
             key={order.id}
             className="mb-6 bg-white/10 border w-full border-gold/30 rounded-2xl p-5 text-white shadow-md hover:shadow-lg transition-all duration-300"
@@ -63,7 +83,11 @@ export default function OrderDetails() {
               ))}
             </div>
 
-            <div className="mt-5 space-y-2 text-sm text-gray-200">
+            <div className="mt-5 space-y-2 text-sm text-gray-200 capitalize">
+              <p>
+                <span className="text-gold font-semibold">Username:</span>{" "}
+                {order.createdBy?.username}
+              </p>
               <p>
                 <span className="text-gold font-semibold">Address:</span>{" "}
                 {order.address}
@@ -96,7 +120,39 @@ export default function OrderDetails() {
             </div>
           </div>
         ))}
-        
+        {ordersData && ordersData?.docs?.length > 0 && (
+                        <Pagination className="mb-4">
+                            <PaginationContent>
+                                {page > 1 && (
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
+                                        />
+                                    </PaginationItem>
+                                )}
+
+                                <PaginationItem>
+                                    <PaginationLink isActive className="cursor-pointer rounded-full">
+                                        {page}
+                                    </PaginationLink>
+                                </PaginationItem>
+
+                                {page < (ordersData?.pages || 1) && (
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                                            onClick={() =>
+                                                setPage((prev) =>
+                                                    prev < (ordersData?.pages || 1) ? prev + 1 : prev
+                                                )
+                                            }
+                                        />
+                                    </PaginationItem>
+                                )}
+                            </PaginationContent>
+                        </Pagination>
+                    )}
         </>}
       </div>
     </>

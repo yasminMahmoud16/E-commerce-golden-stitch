@@ -5,7 +5,7 @@ import type { loginFields, logoutFlags } from "@/Utilities/types";
 import type {  ILoginResponse } from "@/Utilities/interfaces";
 import { toast } from "sonner";
 import axios from "axios";
-import { AuthContext } from "./contextCreations/AuthContex";
+import { AuthContext } from "./contextCreations/AuthContext";
 
 interface DecodedToken {
   id: string;

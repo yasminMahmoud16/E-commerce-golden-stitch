@@ -29,7 +29,8 @@ export default function ProductEdit({ product, onBack }: {
     category: { id: "", name: "" }, // 👈 مهم جدًا
   },
     });
-    const [preview, setPreview] = useState<string | null>(null);
+    const [preview, setPreview] = useState<string[]>([]);
+
 
     const { updateProduct } = useProductContext();
     const { getCategories, allCategoriesData } = useCategoryContext();
@@ -56,7 +57,8 @@ export default function ProductEdit({ product, onBack }: {
 
             if (product.images?.length) {
                 setExistingImages(product.images);
-                setPreview(`/${product.images[0]}`);
+                setPreview(product.images.map(img => `/${img}`));
+
             }
         }
     }, [product, setValue]);
@@ -165,7 +167,7 @@ export default function ProductEdit({ product, onBack }: {
                         text-sm">{errors.mainPrice.message}</p>}
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="discountPercent" className="capitalize text-gold-light font-semibold">Main Price</Label>
+                    <Label htmlFor="discountPercent" className="capitalize text-gold-light font-semibold">discountPercent</Label>
                     <Input id="discountPercent" placeholder="Enter product price" className="text-gray-300"{...register("discountPercent")} />
                     {errors.discountPercent && <p className="text-[hsl(22,55%,44%)] 
                         text-sm">{errors.discountPercent.message}</p>}
@@ -193,38 +195,54 @@ export default function ProductEdit({ product, onBack }: {
                     </div>
                 )}
 
-                {/* IMAGE UPLOAD */}
-                <div className="space-y-2 flex flex-col items-center justify-center">
-                    <input
-                        id="attachment"
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        {...register("attachments")}
-                        onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                                setValue("attachments", [file]);
-                                const reader = new FileReader();
-                                reader.onloadend = () => setPreview(reader.result as string);
-                                reader.readAsDataURL(file);
-                            }
-                        }}
-                    />
-                    <label
-                        htmlFor="attachment"
-                        className="flex flex-col items-center justify-center w-32 h-32 rounded-full border-2 border-dashed border-gold-light cursor-pointer hover:bg-gold-dark/10 hover:border-gold-dark transition-all duration-300"
-                    >
-                        {preview ? (
-                            <img src={preview} alt="Preview" className="w-full h-full rounded-full object-cover" />
-                        ) : (
-                            <>
-                                <Icons.FaCamera className="text-3xl mb-2 text-gold" />
-                                <span className="text-sm">Upload Image</span>
-                            </>
-                        )}
-                    </label>
-                </div>
+                       {/* MULTIPLE IMAGE UPLOAD */}
+        <div className="space-y-2 flex flex-col items-center justify-center">
+          <input
+            id="attachments"
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            {...register("attachments")}
+            onChange={(e) => {
+              const files = Array.from(e.target.files || []);
+              if (files.length > 0) {
+                setValue("attachments", files);
+                const previews = files.map((file) => URL.createObjectURL(file));
+                setPreview(previews);
+              }
+            }}
+          />
+
+          <label
+            htmlFor="attachments"
+            className="
+      flex flex-col items-center justify-center
+      w-32 h-32 rounded-full border-2 border-dashed
+      border-gold-light cursor-pointer
+      hover:bg-gold-dark/10 hover:border-gold-dark
+      transition-all duration-300
+    "
+          >
+            <Icons.FaCamera className="text-3xl mb-2 text-gold" />
+            <span className="text-sm  text-gold">Upload Images</span>
+          </label>
+
+          {/*  PREVIEW MULTIPLE IMAGES */}
+          {preview && preview.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-3 mt-4">
+              {preview.map((src, index) => (
+                <img
+                  key={index}
+                  src={src}
+                  alt={`Preview ${index + 1}`}
+                  className="w-24 h-24 rounded-lg object-cover border border-gold-light"
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
 
                 {/* BUTTONS */}
                 <div className="flex justify-between pt-4">

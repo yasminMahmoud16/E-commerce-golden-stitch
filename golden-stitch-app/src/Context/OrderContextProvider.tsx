@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
-import type { IOrder } from '@/Utilities/interfaces';
+import type { IOrder, IOrdersResponse } from '@/Utilities/interfaces';
 
 
 export default function OrderContextProvider({ children }: { children: ReactNode }) {
@@ -66,21 +66,27 @@ const getAllOrders = async ({ page = 1, size = 5, status = "all" }) => {
     const url = `/order?page=${page}&size=${size}${status !== "all" ? `&status=${status}` : ""}`;
 
     const res = await axiosInstance.get(url);
-    const allOrders = res.data.data.orders.docs;
+    const allOrders = res.data.data.orders as IOrdersResponse
 
     // console.log("allOrders=================", allOrders);
     return allOrders;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     // console.log("order fetch error", error);
-    return [];
+      return {
+      currentPage: 1,
+      docs: [],
+      docsCount: 0,
+      limit: size,
+      pages: 1,
+    } as IOrdersResponse;
   }
 };
 
 
 
   
-const { data: ordersData = [], isLoading:loadingDetails } = useQuery({
+const { data: ordersData = null, isLoading:loadingDetails } = useQuery({
   queryKey: ['ordersData', page, size, statusFilter],
   queryFn: () => getAllOrders({ page, size, status:statusFilter }),
   placeholderData: keepPreviousData,

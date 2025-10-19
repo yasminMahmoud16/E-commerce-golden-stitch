@@ -23,8 +23,13 @@ export default function CardCommon({
     <Card
 onClick={() => onClickCard?.()}
       className="group  cursor-pointer w-96 p-0 bg-transparent relative border-none overflow-hidden rounded-none">
-      <CardContent className=" p-0">
-        <img src={image} alt="card1" className="" />
+      <CardContent className=" w-full p-0">
+
+
+        <div className=" w-96 h-76">
+
+        <img src={image} alt="card1" className="w-full h-full object-fill  overflow-hidden" />
+        </div>
             <div
           className="
       

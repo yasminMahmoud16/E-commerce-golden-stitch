@@ -3,10 +3,11 @@ import { Icons } from "@/assets/Icons/icons";
 import EditCommon from "@/common/EditCommon"; //  import your edit component
 import type { FieldTypes, FormDataUpdate, GenderEnum } from "@/Utilities/types";
 import { useProfileContext } from "@/Hooks/useAppContexts";
+import { SpinnerCustomData } from "@/Loading/SpinnerCustomData";
 
 export default function Profile() {
     const [isEditing, setIsEditing] = useState(false);
-    const { profile } = useProfileContext()
+    const { profile,loadingProfile } = useProfileContext()
 
     const fields: FieldTypes<FormDataUpdate>[] = [
         { name: "firstName", label: "First Name", placeholder: "Enter your name" },
@@ -16,6 +17,12 @@ export default function Profile() {
         { name: "gender", label: "Gender", type: "select", placeholder: "Enter your gender" },
     ];
 
+
+     if (loadingProfile) {
+    return (
+      <SpinnerCustomData/>
+    );
+  }
     return (
         <>
             <div className="w-full">
@@ -53,6 +60,7 @@ export default function Profile() {
                             onCancel={() => setIsEditing(false)}
                         />
                     ) : (
+                            
                         <div className="grid grid-cols-1 md:grid-cols-6 ">
                             <div className="col-span-3">
                                 <div className="mb-3">

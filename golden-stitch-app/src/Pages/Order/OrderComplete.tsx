@@ -5,21 +5,23 @@ import { Input } from '@/Components/ui/input'
 
 import type { CreateOrder } from '@/Utilities/types'
 import { useForm } from 'react-hook-form'
-import { useOrderContext } from '@/Hooks/useAppContexts'
+import { useOrderContext, useProfileContext } from '@/Hooks/useAppContexts'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createProductSchema } from '../Auth/validation/orderValidation'
 import { useNavigate } from 'react-router-dom'
 
 
 export default function OrderComplete() {
+      const { profile } = useProfileContext()
+  
 
   const { createOrder } = useOrderContext();
   const navigate= useNavigate()
   const form = useForm<CreateOrder>({
     resolver: zodResolver(createProductSchema),
     defaultValues: {
-      address: "",
-      phone: "",
+      address: profile?.address || "",
+      phone:profile?.phone || "",
       note: "",
     },
   });
@@ -58,7 +60,10 @@ export default function OrderComplete() {
                     />
                   </div>
                 </FormControl>
-                <FormMessage className="mb-2" />
+                <div className='w-90'>
+
+                <FormMessage className="mb-2 text-xs text-gold-dark font-semibold " />
+                </div>
               </FormItem>
             )}
           />
@@ -86,7 +91,10 @@ export default function OrderComplete() {
                     />
                   </div>
                 </FormControl>
-                <FormMessage className="mb-2" />
+                <div className='w-90'>
+
+                <FormMessage className="mb-2 text-xs text-gold-dark font-semibold " />
+                </div>
               </FormItem>
             )}
           />
@@ -111,7 +119,10 @@ export default function OrderComplete() {
                     />
                   </div>
                 </FormControl>
-                <FormMessage className="mb-2" />
+                <div className='w-90'>
+
+                <FormMessage className="mb-2 text-xs text-gold-dark font-semibold " />
+                </div>
               </FormItem>
             )}
           />

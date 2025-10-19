@@ -6,7 +6,7 @@ import { useAuthContext } from '@/Hooks/useAppContexts';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { ProductContext } from './contextCreations/ProfileContext';
-import type { IAddProductResponse, IProduct, IProductEditInput, IProductUpdateInput } from '@/Utilities/interfaces';
+import type { IAddProductResponse, IProduct, IProductEditInput, IProductsResponse, IProductUpdateInput } from '@/Utilities/interfaces';
 
 // export const ProductContext = createContext<IProductContextType | undefined>(undefined);
 
@@ -19,6 +19,9 @@ export default function ProductContextProvider({ children }: { children: ReactNo
   const [isUpdating, setIsUpdating] = useState(false); 
   const { getAuthHeader ,token } = useAuthContext();
   const queryClient = useQueryClient();
+  const [isLoadingArchive, setIsLoadingArchive] = useState(false);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+
 
   //  Get All Products
   const getProducts = async ({ page = 1, size = 5, search = "", categoryId = "" }) => {
@@ -38,7 +41,7 @@ export default function ProductContextProvider({ children }: { children: ReactNo
     // console.log({ productWishList: res.data.data.products.docs });
 
 
-    return res.data.data.products.docs;
+    return res.data.data.products as IProductsResponse;
   };
 
   const { data: allProductsData, isLoading , refetch:refetchProducts } = useQuery({
@@ -51,26 +54,33 @@ export default function ProductContextProvider({ children }: { children: ReactNo
   // 🔹 Get Product by ID
   const getProductById = async (id: string) => {
     try {
+      setIsLoadingDetails(true)
       const res = await axiosInstance.get(`/product/${id}`);
       // console.log({spacifice : res.data.data.product});
       
       return res.data.data.product;
 
       
-    } catch (error:unknown) {
-          if (axios.isAxiosError(error)) {
-      // console.log("Product fetch error:", error.response?.data || error);
-      const detailedError =
-        error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
-      const generalError = error.response?.data?.message;
-      toast.error(detailedError || generalError || "Get Product issue");
-      return detailedError || generalError || "Get Product issue";
-    } else {
-      // console.log("Unexpected error from getProductById:", error);
-      toast.error("Unexpected error occurred getProductById");
-      return "Unexpected error occurred getProductById";
-    }
+    } catch (error: unknown) {
+      
+      if (isLoadingDetails) {
+        
+        if (axios.isAxiosError(error)) {
+    // console.log("Product fetch error:", error.response?.data || error);
+    const detailedError =
+      error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+    const generalError = error.response?.data?.message;
+    toast.error(detailedError || generalError || "Get Product issue");
+    return detailedError || generalError || "Get Product issue";
+  } else {
+    // console.log("Unexpected error from getProductById:", error);
+    // toast.error("Unexpected error occurred getProductById");
+    return "Unexpected error occurred getProductById";
+  }
+      }
 
+    } finally {
+       setIsLoadingDetails(true)
     }
   };
 
@@ -88,9 +98,11 @@ export default function ProductContextProvider({ children }: { children: ReactNo
       formData.append("discountPercent", data.discountPercent.toString());
 formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
 
-      if (data.attachments?.[0]) {
-        formData.append("attachments", data.attachments[0]);
-      }
+     if (Array.isArray(data.attachments) && data.attachments.length > 0) {
+  data.attachments.forEach((file) => {
+    formData.append("attachments", file);
+  });
+}
 
       if (Array.isArray(data.removedAttachments) && data.removedAttachments.length > 0) {
   data.removedAttachments.forEach((path, index) => {
@@ -116,15 +128,19 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
     onSuccess: async (updatedProduct) => {
       toast.success(" Product updated successfully!");
 
-      queryClient.setQueryData(['product', updatedProduct.id], updatedProduct);
+       queryClient.setQueryData(['product', updatedProduct.id], updatedProduct);
 
-      queryClient.setQueryData(['allProducts', page, size, search], (oldData: IProduct[]) => {
-        if (!oldData) return oldData;
-        return oldData?.map((prod: IProduct) =>
+    queryClient.setQueryData(['allProducts', page, size, search, categoryId], (oldData: IProductsResponse | undefined) => {
+      if (!oldData) return oldData;
+      return {
+        ...oldData,
+        docs: oldData.docs.map((prod) =>
           prod.id === updatedProduct.id ? updatedProduct : prod
-        );
-      });
+        ),
+      };
+    });
 
+    await queryClient.invalidateQueries({ queryKey: ['allProducts'] });
       
       await queryClient.invalidateQueries({ queryKey: ['product', updatedProduct.id] });
 
@@ -155,59 +171,133 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
   // Add
 
 
-
 const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput, unknown>({
   mutationFn: async (data: IProductUpdateInput) => {
-    const formData = new FormData();
-    formData.append("name", data.name);
-    formData.append("description", data.description ||"");
-    formData.append("mainPrice", data.mainPrice.toString());
-    formData.append("stock", data.stock.toString());
-    formData.append("discountPercent", data.discountPercent.toString());
-    formData.append("categoryId", data.category.id || "");
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("description", data.description || "");
+      formData.append("mainPrice", data.mainPrice.toString());
+      formData.append("stock", data.stock.toString());
+      formData.append("discountPercent", data.discountPercent.toString());
+      formData.append("categoryId", data.category.id || "");
 
-    if (data.attachments && data.attachments.length > 0) {
-      Array.from(data.attachments).forEach((file) => {
-        formData.append("attachments", file);
+      if (data.attachments && data.attachments.length > 0) {
+        Array.from(data.attachments).forEach((file) => {
+          formData.append("attachments", file);
+        });
+      }
+
+      const res = await axiosInstance.post("/product", formData, {
+        headers: getAuthHeader(),
       });
-    }
 
-    const res = await axiosInstance.post("/product", formData, {
-      headers: getAuthHeader(),
-    });
-    return res.data as IAddProductResponse
+      // ✅ تأكد إن الرد موجود قبل الوصول لـ data
+      if (!res || !res.data) {
+        throw new Error("No response from server");
+      }
+
+      return res.data as IAddProductResponse;
+
+    } catch (error: unknown) {
+      // ✅ خلي React Query يمرر الخطأ لـ onError
+      if (axios.isAxiosError(error)) {
+        // ارمي الخطأ عشان onError يمسكه
+        throw error;
+      } else {
+        throw new Error("Unexpected error during product upload");
+      }
+    }
   },
 
   onSuccess: (res) => {
-    // console.log(res);
     if (res.message === "Done") {
-      
       queryClient.invalidateQueries({ queryKey: ["allProductsData"] });
-      refetchProducts()
+      refetchProducts();
       toast.success("✅ Product added successfully!");
-      // onBack()
     }
-
-
   },
 
-
   onError: (error) => {
-    // console.log({ addproductError: error });
-     if (axios.isAxiosError(error)) {
-    const detailedError =
-      error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+    console.log({ addProductError: error });
 
-    const generalError = error.response?.data?.message;
+    if (axios.isAxiosError(error)) {
+      const backendMessage =
+        error.response?.data?.message ||
+        (typeof error.response?.data === "string" ? error.response?.data : null) ||
+        error.message;
 
-    toast.error(detailedError || generalError || "update product issue");
+      if (
+        error.response?.status === 413 ||
+        backendMessage?.toLowerCase().includes("file too large")
+      ) {
+        toast.error("The uploaded image is too large. Please choose a smaller file.");
+        return;
+      }
 
-  } else {
-    toast.error("Unexpected error from update product");
-  }
-    
-  }
+      toast.error(backendMessage || "Failed to add product.");
+    } else {
+      toast.error("file is too large");
+    }
+  },
 });
+
+// const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput, unknown>({
+//   mutationFn: async (data: IProductUpdateInput) => {
+//     const formData = new FormData();
+//     formData.append("name", data.name);
+//     formData.append("description", data.description ||"");
+//     formData.append("mainPrice", data.mainPrice.toString());
+//     formData.append("stock", data.stock.toString());
+//     formData.append("discountPercent", data.discountPercent.toString());
+//     formData.append("categoryId", data.category.id || "");
+
+//     if (data?.attachments && data?.attachments.length > 0) {
+//       Array.from(data?.attachments).forEach((file) => {
+//         formData.append("attachments", file);
+//       });
+//     }
+
+
+//       const res = await axiosInstance.post("/product", formData, {
+//         headers: getAuthHeader(),
+//       });
+//       return res.data as IAddProductResponse
+      
+
+//   },
+
+//   onSuccess: (res) => {
+//     // console.log(res);
+//     if (res.message === "Done") {
+      
+//       queryClient.invalidateQueries({ queryKey: ["allProductsData"] });
+//       refetchProducts()
+//       toast.success("✅ Product added successfully!");
+//       // onBack()
+//     }
+
+
+//   },
+
+
+//   onError: (error) => {
+
+//     console.log({ addproductError: error });
+//     if (axios.isAxiosError(error)) {
+//     const detailedError =
+//       error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+
+//     const generalError = error.response?.data?.message;
+
+//     toast.error(detailedError || generalError || "add product issue");
+
+//   } else {
+//     // toast.error("Unexpected error from add product");
+//   }
+    
+//   }
+// });
 
 
   // soft Delete
@@ -229,7 +319,10 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
           confirmButtonColor: "#6B4129"
         });
 
-        await queryClient.invalidateQueries({ queryKey: ['allProducts'] });
+        await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['allProducts'] }),
+        queryClient.invalidateQueries({ queryKey: ['archiveProducts'] }), 
+      ]);
 
 
       }
@@ -258,25 +351,36 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
   
   const productsArchives = async ({ page = 1, size = 5, search = "" }) => {
     try {
+      setIsLoadingArchive(true);
       const res = await axiosInstance.get(`/product/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
-      const archiveProducts =res.data.data.products.docs
+      const archiveProducts =res.data.data.products as IProductsResponse
       // console.log("productsArchives=================", res.data.data.products.docs);
       return archiveProducts 
 
     } catch (error: unknown) {
-  if (axios.isAxiosError(error)) {
-    toast.error(error.response?.data?.message || error.message || "Something went wrong");
-  } else {
-    toast.error("Unexpected error occurred");
+  if (!isLoadingArchive) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || error.message || "Something went wrong");
+      } else {
+        // toast.error("Unexpected error occurred");
+      }
+    }
+  return {
+        currentPage: 1,
+        docs: [],
+        docsCount: 0,
+        limit: size,
+        pages: 1,
+      } as IProductsResponse;
+}finally {
+    setIsLoadingArchive(false);
   }
-  return [];
-}
 
   }
 
 
   
-const { data: archiveProducts = [], refetch } = useQuery({
+const { data: archiveProducts , refetch } = useQuery({
   queryKey: ['archiveProducts', page, size, search],
   queryFn: () => productsArchives({ page, size, search }),
   placeholderData: keepPreviousData,
@@ -328,6 +432,7 @@ const { data: archiveProducts = [], refetch } = useQuery({
   return (
     <ProductContext.Provider
       value={{
+        getProducts,
         allProductsData,
         isLoading,
         isUpdating,

@@ -332,11 +332,11 @@ export default function App() {
                 <OrderContextProvider>
 
           <RouterProvider router={router} />
+          <Toaster richColors position="top-right" duration={1000} />
                 </OrderContextProvider>
                 
           </ProductContextProvider>
           </CategoryContextProvider>
-          <Toaster richColors position="top-right" />
         </ProfileContextProvider>
           </CartContextProvider>
       </AuthContextProvider>
