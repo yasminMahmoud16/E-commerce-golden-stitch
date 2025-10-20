@@ -52,7 +52,7 @@ export default function CreateNewPassword() {
                                         <FormControl  className=" flex items-center justify-center ">
                                             <div className="relative w-72 md:w-md  flex items-center justify-between">
                                                 <Icons.MdOutlineMail
-                                                    className="absolute left-20 top-5 -translate-y-1/2 text-gold"
+                                                    className="absolute left-2 md:left-20 top-5 -translate-y-1/2 text-gold"
                                                     size={23}
                                                 />
                                                 <Input
@@ -63,7 +63,10 @@ export default function CreateNewPassword() {
                                                 />
                                             </div>
                                         </FormControl>
-                                        <FormMessage  className="mb-2"/>
+                                         <div className="w-70  md:w-96">
+
+                  <FormMessage className="text-xs  ml-2 mb-2  text-red-950  capitalize" />
+                  </div>
                                     </FormItem>
 
 
@@ -131,10 +134,10 @@ export default function CreateNewPassword() {
                                     </div>
                                 </FormControl>
 
-                                <div className=" w-96 ml-5">
+                                 <div className="w-70  md:w-96">
 
-                                <FormMessage className="text-xs mb-2 text-red-950 font-semibold " />
-                                </div>
+                  <FormMessage className="text-xs  ml-2 mb-2  text-red-950  capitalize" />
+                  </div>
                             </FormItem>
                         )}
                     />
@@ -169,10 +172,10 @@ export default function CreateNewPassword() {
                                     </div>
                                 </FormControl>
 
-                                <div className=" w-96 ml-5">
+                                 <div className="w-70  md:w-96">
 
-                                <FormMessage className="text-xs mb-2 text-red-950 font-semibold  " />
-                                </div>
+                  <FormMessage className="text-xs  ml-2 mb-2  text-red-950  capitalize" />
+                  </div>
                             </FormItem>
                         )}
                     />

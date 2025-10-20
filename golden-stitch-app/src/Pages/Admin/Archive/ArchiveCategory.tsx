@@ -22,7 +22,7 @@ export default function ArchiveCategory() {
 
 
     const { archiveCategory, page, setPage, search, setSearch, restoreCategory, hardDelCategory } = useCategoryContext();
-    
+
     // console.log({ archiveCategory });
     const Headers = [
         { id: 2, label: "image" },
@@ -93,11 +93,11 @@ export default function ArchiveCategory() {
                             <TableCell className="font-medium text-center">{data.freezedAt}</TableCell>
                             <TableCell className="font-medium text-center flex gap-3 items-center justify-center mt-5" >
                                 <Icons.MdOutlineRestore className="text-2xl text-[hsl(22,55%,44%)] transition-all duration-300 ease-in-out hover:text-green-400"
-                                onClick={() => { restoreCategory(data.id) }}
-                            />
+                                    onClick={() => { restoreCategory(data.id) }}
+                                />
                                 <Icons.FaTrash className="text-lg text-red-800 shadow-2xl transition-all duration-300 ease-in-out hover:text-red-400"
-                                onClick={() => { hardDelCategory(data.id) }}
-                            />
+                                    onClick={() => { hardDelCategory(data.id) }}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}
@@ -109,36 +109,40 @@ export default function ArchiveCategory() {
 
 
 
-        <Pagination className="my-4">
-                            <PaginationContent>
-                                {page > 1 && (
-                                    <PaginationItem>
-                                        <PaginationPrevious
-                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-gold"
-                                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
-                                        />
-                                    </PaginationItem>
-                                )}
+        {(archiveCategory?.docs?.length ?? 0) > 0 && (
+            <Pagination className="my-4">
+                <PaginationContent>
+                    {page > 1 && (
+                        <PaginationItem>
+                            <PaginationPrevious
+                                className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-gold"
+                                onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
+                            />
+                        </PaginationItem>
+                    )}
 
-                                <PaginationItem>
-                                    <PaginationLink isActive className="cursor-pointer rounded-full">
-                                        {page}
-                                    </PaginationLink>
-                                </PaginationItem>
+                    <PaginationItem>
+                        <PaginationLink isActive className="cursor-pointer rounded-full">
+                            {page}
+                        </PaginationLink>
+                    </PaginationItem>
 
-                                {page < (archiveCategory?.pages || 1) && (
-                                    <PaginationItem>
-                                        <PaginationNext
-                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-gold"
-                                            onClick={() =>
-                                                setPage((prev) =>
-                                                    prev < (archiveCategory?.pages || 1) ? prev + 1 : prev
-                                                )
-                                            }
-                                        />
-                                    </PaginationItem>
-                                )}
-                            </PaginationContent>
-                        </Pagination>
+                    {page < (archiveCategory?.pages || 1) && (
+                        <PaginationItem>
+                            <PaginationNext
+                                className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-gold"
+                                onClick={() =>
+                                    setPage((prev) =>
+                                        prev < (archiveCategory?.pages || 1) ? prev + 1 : prev
+                                    )
+                                }
+                            />
+                        </PaginationItem>
+                    )}
+                </PaginationContent>
+            </Pagination>
+        )}
+
+
     </>
 }

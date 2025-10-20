@@ -29,7 +29,7 @@ export default function LandingPage() {
           />
 
           {/* About */}
-          <div className="relative z-10 my-10">
+          <div className="relative z-10 my-10 flex flex-col items-center justify-center">
             <About />
           </div>
 

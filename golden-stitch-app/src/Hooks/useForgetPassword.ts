@@ -1,5 +1,5 @@
 import {  useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios, { type AxiosResponse } from 'axios';
 import type { forgetPasswordField, OtpField, resetPassword } from '@/Utilities/types';
 import { toast } from 'sonner';
@@ -10,7 +10,9 @@ export default function useForgetPassword() {
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const baseUrl = import.meta.env.VITE_BASE_URL;
+    const location = useLocation();
 
+    const emailFromState = location.state?.email;
 
 
 
@@ -60,7 +62,15 @@ export default function useForgetPassword() {
                 values
             );
 
-            toast.success(res.data?.message);
+            
+            if (res && res.status === 200) {
+                navigate("/create-new-password", {
+                    state: { email: emailFromState, otp: values.otp },
+                });
+            } else {
+                toast.error(res?.data?.message || "invalid otp");
+            }
+            // toast.success(res.data?.message);
 
             // navigate("/create-new-password");
 

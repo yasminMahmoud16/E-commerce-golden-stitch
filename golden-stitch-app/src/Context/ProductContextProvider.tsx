@@ -37,10 +37,11 @@ export default function ProductContextProvider({ children }: { children: ReactNo
 
     const res = await axiosInstance.get(url
     );
-    // console.log({ product: res.data.data.products.docs });
-    // console.log({ productWishList: res.data.data.products.docs });
+    // console.log({ product: res.data.data.products });
+    // console.log({ productWishList: res.data.data.products });
 
 
+  
     return res.data.data.products as IProductsResponse;
   };
 

@@ -196,7 +196,7 @@ export default function AddCategory({ onBack }: { onBack: () => void }) {
             loading={loading}
             
             className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
-              hover:from-gold-dark hover:to-[55%] "/>
+              hover:from-gold-dark hover:to-[55%]  w-40"/>
                 
             </div>
           </form>

@@ -170,7 +170,7 @@ export default function EditCommon({
                     ))}
                 </div>
 
-                <div className="flex gap-3 mt-4">
+                <div className="flex gap-3  mt-6 md:mt-4">
                     <BtnCommon text="Save" type="submit"
                     />
                     <BtnCommon

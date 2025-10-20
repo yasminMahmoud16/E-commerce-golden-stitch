@@ -47,7 +47,7 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
     <div className="flex flex-col items-center justify-center mt-10  py-4">
       <h2 className="text-3xl capitalize font-bold text-center text-dark-blue-1 md:text-4xl">create account</h2>
       <Form {...form} >
-        <form className="p-8 flex flex-col   " method="POST" onSubmit={form.handleSubmit(handleSubmit)}>
+        <form className="p-8 flex flex-col items-center justify-center md:items-start   " method="POST" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
                 control={form.control}
                 name="username"
@@ -115,17 +115,17 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
                                 <Input
                                   type={isViewPassword  ? "text" : "password"}
                                   placeholder="password"
-                                  className="bg-white py-5 px-4  pl-10 mb-2 w-full"
+                                  className="bg-white py-5 px-4  pl-10 mb-2 w-73 md:w-full"
                                   {...field}
                                 />
                                 {isViewPassword  ? (
                                   <Icons.FaRegEye
-                                    className="absolute right-4 bottom-3 -translate-y-1/2 z-10 cursor-pointer text-gray-500"
+                                    className="absolute  right-9 md:right-4 bottom-3 -translate-y-1/2 z-10 cursor-pointer text-gray-500"
                                     onClick={handleTogglePassword}
                                   />
                                 ) : (
                                   <Icons.FaRegEyeSlash
-                                    className="absolute right-4 bottom-3 -translate-y-1/2 z-10 cursor-pointer text-gray-500"
+                                    className="absolute right-9 md:right-4 bottom-3 -translate-y-1/2 z-10 cursor-pointer text-gray-500"
                                     onClick={handleTogglePassword}
                                   />
                                 )}
@@ -153,17 +153,17 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
                                 <Input
                                   type={isViewConfirm ? "text" : "password"}
                                   placeholder="Confirm Password"
-                                  className="bg-white py-5 px-4  pl-10 mb-2 w-full"
+                                  className="bg-white py-5 px-4  pl-10 mb-2 w-73 md:w-full"
                                   {...field}
                                 />
                                 {isViewConfirm ? (
                                   <Icons.FaRegEye
-                                    className="absolute right-4 bottom-3 -translate-y-1/2 z-10 cursor-pointer text-gray-500"
+                                    className="absolute right-9 md:right-4 bottom-3 -translate-y-1/2 z-10 cursor-pointer text-gray-500"
                                     onClick={handleToggleConfirm}
                                   />
                                 ) : (
                                   <Icons.FaRegEyeSlash
-                                    className="absolute right-4 bottom-3 -translate-y-1/2 z-10 cursor-pointer text-gray-500"
+                                    className="absolute right-9 md:right-4 bottom-3 -translate-y-1/2 z-10 cursor-pointer text-gray-500"
                                     onClick={handleToggleConfirm}
                                   />
                                 )}
@@ -174,24 +174,25 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
                           </FormItem>
                         )}
                       />
-           <FormField
+          <FormField
+            
                 control={form.control}
                 name="phone"
 
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-dark-blue-nav">phone</FormLabel>
+                    <FormLabel className="text-dark-blue-nav ml-3 md:ml-0">phone</FormLabel>
                     <FormControl>
 
                       <div className="relative w-72 md:w-md">
                                                 <Icons.CiPhone
-                                                    className="absolute left-3 top-5 -translate-y-1/2 text-gray-400"
+                                                    className="absolute left-6 md:left-3 top-5 -translate-y-1/2 text-gray-400"
                                                     size={23}
                                                 />
                                                 <Input
                                                     type="text"
                                                     placeholder="phone"
-                                                    className="bg-white py-5 px-4 pl-10 mb-2 placeholder:text-gray-400" 
+                                                    className="bg-white py-5 px-4 pl-10 mb-2 placeholder:text-gray-400 ml-3 md:ml-0 w-73 md:w-full" 
                                                     {...field}
                                                 />
                                             </div>

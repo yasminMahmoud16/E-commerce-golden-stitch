@@ -79,7 +79,10 @@ const form = useForm<loginFields>({
                       />
                     </div>
                   </FormControl>
-                  <FormMessage className="mb-2 text-xs text-red-950  capitalize" />
+                  <div className="w-70  md:w-96">
+
+                  <FormMessage className="text-xs  ml-2 mb-2  text-red-950  capitalize" />
+                  </div>
                 </FormItem>
               )}
             />
@@ -100,7 +103,7 @@ const form = useForm<loginFields>({
                       <Input
                         type={isView ? "text" : "password"}
                         placeholder="password"
-                        className="bg-white py-5 px-4  pl-10 mb-2 w-full"
+                        className="bg-white py-5 px-4  pl-10 mb-2 w-73 md:w-full"
                         {...field}
                       />
                       {isView ? (
@@ -117,7 +120,10 @@ const form = useForm<loginFields>({
                     </div>
                   </FormControl>
 
-                  <FormMessage className="text-xs w-96 mb-2  text-red-950  capitalize" />
+                  <div className="w-70 md:w-96">
+
+                  <FormMessage className="text-xs  ml-2 mb-2  text-red-950  capitalize" />
+                  </div>
                 </FormItem>
               )}
             />
@@ -134,7 +140,7 @@ const form = useForm<loginFields>({
                 </label>
               </div> */}
               <Link to={"/forget-password"}>
-              <p className="cursor-pointer transition-all duration-300 ease-in-out hover:underline hover:text-gold-dark  underline">forget password? </p>
+              <p className="cursor-pointer transition-all duration-300 ease-in-out hover:underline hover:text-gold-dark  underline ml-2 md:ml-0">forget password? </p>
               </Link>
             </div>
 

@@ -25,7 +25,7 @@ export default function BtnCommon({
         cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed ${className}`}
       onClick={onClick}
     >
-            {Icon&& <Icon className="text-lg mr-3 " />}
+            {Icon&& <Icon className="text-lg md:mr-3 " />}
 
       {loading ? (
         <div className="flex items-center gap-2 ">

@@ -131,7 +131,7 @@ export default function ProductEdit({ product, onBack }: {
   value={selectedCategoryId}
   onValueChange={(value) => {
     setSelectedCategoryId(value);
-    const selectedCat = allCategoriesData?.find(cat => cat.id === value);
+    const selectedCat = allCategoriesData?.docs?.find(cat => cat.id === value);
     if (selectedCat) {
       setValue("category", { id: selectedCat.id, name: selectedCat.name }, { shouldValidate: true });
     }
@@ -140,15 +140,15 @@ export default function ProductEdit({ product, onBack }: {
   <SelectTrigger className="text-gray-300">
     <SelectValue
       placeholder={
-        allCategoriesData?.find(cat => cat.id === selectedCategoryId)?.name ||
-        product.category?.name || // ✅ fallback للكاتيجوري القديمة
+        allCategoriesData?.docs?.find(cat => cat.id === selectedCategoryId)?.name ||
+        product.category?.name || 
         "Select category"
       }
     />
   </SelectTrigger>
 
   <SelectContent className="bg-dark-blue-1 text-white capitalize border-none">
-    {catSize?.map((cat: ICategory) => (
+    {catSize?.docs?.map((cat: ICategory) => (
       <SelectItem key={cat.id} value={cat.id}>
         {cat.name}
       </SelectItem>
@@ -248,7 +248,7 @@ export default function ProductEdit({ product, onBack }: {
                 <div className="flex justify-between pt-4">
                     <Button type="button" variant="outline" onClick={onBack} className="rounded-xl cursor-pointer transition-all ease-in-out duration-300  hover:bg-gold-dark hover:text-white border-none">Cancel</Button>
                     <BtnCommon text="Update Product" type="submit" className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
-              hover:from-gold-dark hover:to-[55%] " />
+              hover:from-gold-dark hover:to-[55%] w-40 " />
                 </div>
             </form>
         </div>

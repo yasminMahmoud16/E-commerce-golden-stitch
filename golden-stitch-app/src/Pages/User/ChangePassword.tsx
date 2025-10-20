@@ -35,13 +35,13 @@ export default function ChangePassword() {
     };
     return <>
 
-        <div>
+        <div className=" flex flex-col items-center">
 
-            <h1 className=" text-4xl text-gray-300 capitalize mb-2">change password </h1>
+            <h1 className=" text-2xl md:text-4xl text-gray-300 capitalize mb-2">change password </h1>
             <p className="text-gray-500 capitalize">create your new password </p>
-            <div className="flex flex-col items-center gap-4 mt-4">
-                <Form {...form} >
-                    <form className="p-8 flex flex-col  " method="POST"
+            <div className="flex flex-col   justify-center gap-4 mt-4">
+                <Form {...form}  >
+                    <form className="p-8 flex flex-col justify-center  w-80 md:w-full " method="POST"
                         onSubmit={form.handleSubmit(handleSubmit)}
                     >
 
@@ -51,7 +51,7 @@ export default function ChangePassword() {
                             name="oldPassword"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-dark-blue-nav">
+                                    <FormLabel className="text-gold">
                                         Old password
                                     </FormLabel>
                                     <FormControl>
@@ -63,7 +63,7 @@ export default function ChangePassword() {
                                             <Input
                                                 type={isViewCurrent ? "text" : "password"}
                                                 placeholder="old password"
-                                                className="bg-white py-5 px-4  pl-10 mb-2 w-full"
+                                                className="bg-white py-5 px-4  pl-10 mb-1 md:mb-2 w-65 md:w-full"
                                                 {...field}
                                             />
                                             {isViewCurrent ? (
@@ -92,7 +92,7 @@ export default function ChangePassword() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-dark-blue-nav">
+                                    <FormLabel className="text-gold">
                                         password
                                     </FormLabel>
                                     <FormControl>
@@ -104,7 +104,7 @@ export default function ChangePassword() {
                                             <Input
                                                 type={isViewPassword ? "text" : "password"}
                                                 placeholder="password"
-                                                className="bg-white py-5 px-4  pl-10 mb-2 w-full"
+                                                className="bg-white py-5 px-4  pl-10 mb-1 md:mb-2 w-65 md:w-full"
                                                 {...field}
                                             />
                                             {isViewPassword ? (
@@ -133,7 +133,7 @@ export default function ChangePassword() {
                             name="confirmPassword"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-dark-blue-nav">
+                                    <FormLabel className="text-gold">
                                         Confirm Password
                                     </FormLabel>
                                     <FormControl>
@@ -145,7 +145,7 @@ export default function ChangePassword() {
                                             <Input
                                                 type={isViewConfirm ? "text" : "password"}
                                                 placeholder="Confirm Password"
-                                                className="bg-white py-5 px-4  pl-10 mb-2 w-full"
+                                                className="bg-white py-5 px-4  pl-10 mb-1 md:mb-2 w-65 md:w-full"
                                                 {...field}
                                             />
                                             {isViewConfirm ? (
@@ -173,16 +173,17 @@ export default function ChangePassword() {
                             control={form.control}
                             name="flag"
                             render={() => (
-                                <FormItem>
-                                    <FormLabel className="text-dark-blue-nav">
+                                <FormItem className="w-20">
+                                    <FormLabel className="text-gold">
                                         Logout Option
                                     </FormLabel>
-                                    <FormControl>
+                                    <FormControl className="">
                                         <Controller
+                                            
                                             name="flag"
                                             control={form.control}
                                             render={({ field: selectField }) => (
-                                                <Select onValueChange={selectField.onChange} value={selectField.value}>
+                                                <Select onValueChange={selectField.onChange} value={selectField.value} >
                                                     <SelectTrigger className="w-full bg-white text-gray-700">
                                                         <SelectValue placeholder="Logout from all devices or one device" />
                                                     </SelectTrigger>
@@ -215,7 +216,7 @@ export default function ChangePassword() {
                                 type="submit"
                                 // loading={loading}
                                 className="
-                                transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%]"
+                                transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%] mt-5"
                             />
                             <BtnCommon
                                 text="cancel"

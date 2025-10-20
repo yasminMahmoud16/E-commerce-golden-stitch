@@ -103,7 +103,7 @@ export type PopupCommonProps = {
   actionLink?: string;
   classNameTitle?: string
   classNameText?: string
-  
+
   
 };
 

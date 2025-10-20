@@ -64,7 +64,7 @@ export default function CategoryDetails({ category, onBack, onEdit, onDeleteSucc
       </div>
 
       <div className="flex flex-col items-center justify-center md:flex-row gap-6">
-        <div className="w-2xl ">
+        <div className=" w-50 mt-2  md:w-2xl ">
         <img
           src={`/${currentCategory?.image}`}
           alt={currentCategory?.name}

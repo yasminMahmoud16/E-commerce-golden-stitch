@@ -238,10 +238,12 @@ export default function Navbar() {
         text="Select what you want to do:"
         options={[
           {
+            className:"w-30 text-[8px] ",
             label: "Logout from this device",
             onClick: () => handleLogoutClick(logoutEnum.only),
           },
           {
+            className:"w-30 text-[8px]",
             label: "Logout from all devices",
             onClick: () => handleLogoutClick(logoutEnum.all),
           },

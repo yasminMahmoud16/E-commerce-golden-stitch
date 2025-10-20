@@ -147,14 +147,14 @@ export default function CartCommon({
                         <Link to={"/products"}>
                             <BtnCommon
                                 text="Add More Products"
-                                className="bg-transparent text-dark-blue-2 border border-dark-blue-1 rounded-md w-72 transition-all duration-300 ease-in-out hover:bg-dark-blue-nav hover:text-white"
+                                className="bg-transparent text-dark-blue-2 border border-dark-blue-1 rounded-md w-60 md:w-72 transition-all duration-300 ease-in-out hover:bg-dark-blue-nav hover:text-white"
                             />
                         </Link>
 
                         <Link to={"/confirm-order"}>
                             <BtnCommon
                                 text="Complete Your Order"
-                                className="bg-dark-blue-2 text-white border border-dark-blue-1 rounded-md w-72 transition-all duration-300 ease-in-out hover:bg-dark-blue-nav hover:text-white"
+                                className="bg-dark-blue-2 text-white border border-dark-blue-1 rounded-md w-60 md:w-72 transition-all duration-300 ease-in-out hover:bg-dark-blue-nav hover:text-white"
                             />
                         </Link>
                     </div>
@@ -163,7 +163,7 @@ export default function CartCommon({
                         <Link to={"/products"}>
                             <BtnCommon
                                 text="Add More Products"
-                                className="bg-transparent text-dark-blue-2 border border-dark-blue-1 rounded-md w-72 transition-all duration-300 ease-in-out hover:bg-dark-blue-nav hover:text-white"
+                                className="bg-transparent text-dark-blue-2 border border-dark-blue-1 rounded-md w-60 md:w-72 transition-all duration-300 ease-in-out hover:bg-dark-blue-nav hover:text-white"
                             />
                         </Link>
 

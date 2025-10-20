@@ -9,11 +9,10 @@ import { Icons } from "@/assets/Icons/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { verifyAccount } from "../validation/authValidation";
 import useForgetPassword from "@/Hooks/useForgetPassword";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function VerifyAccount() {
     const { verifyForgetPassword, loading } = useForgetPassword();
-    const navigate = useNavigate();
     const location = useLocation();
     const emailFromState = location.state?.email || "";
     const form = useForm<OtpField>({
@@ -26,9 +25,9 @@ export default function VerifyAccount() {
     
 
         
-        const handleSubmit = (values:OtpField) => {
-            verifyForgetPassword(values)
-            navigate("/create-new-password",{state:{email:emailFromState, otp:values.otp}});
+        const handleSubmit = async(values:OtpField) => {
+            await verifyForgetPassword(values)
+            // navigate("/create-new-password",{state:{email:emailFromState, otp:values.otp}});
         }
     return <>
         <WrapperBg title="Verify Your Identity" subtitle="We’ve sent a 6-digit code to your email, Please enter it below to verify your account">
@@ -42,7 +41,7 @@ export default function VerifyAccount() {
                                         <FormControl  className=" flex items-center justify-center ">
                                             <div className="relative w-72 md:w-md  flex items-center justify-between">
                                                 <Icons.MdOutlineMail
-                                                    className="absolute left-20 top-5 -translate-y-1/2 text-gold"
+                                                    className="absolute left-2 md:left-20 top-5 -translate-y-1/2 text-gold"
                                                     size={23}
                                                 />
                                                 <Input
@@ -65,33 +64,36 @@ export default function VerifyAccount() {
                                 render={({ field }) => (
                                     <FormItem className=" flex flex-col items-center justify-center mt-2 md:p-2 ml-4 md:ml-0">
                                         <FormControl >
-                                            <div className="px-4">
+                                            <div className="px-4 mb-2">
                                             <InputOTP
                                                 maxLength={6}
                                                 value={field.value}       
                                                 onChange={field.onChange} 
                                             >
                                                 <InputOTPGroup>
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={0} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4  p-3 md:p-5" index={0} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={1} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4  p-3 md:p-5" index={1} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={2} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4  p-3 md:p-5" index={2} />
                                                 </InputOTPGroup>
 
                                                 <InputOTPGroup>
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={3} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4  p-3 md:p-5" index={3} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={4} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4  p-3 md:p-5" index={4} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4  p-3 md:p-5" index={5} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4  p-3 md:p-5" index={5} />
                                                 </InputOTPGroup>
 
                                             </InputOTP>
 
                                             </div>
                                         </FormControl>
-                                        <FormMessage  className="mb-2"/>
+                                         <div className="w-70  md:w-96 text-center">
+
+                  <FormMessage className="text-xs  ml-2 mb-2  text-red-950  capitalize" />
+                  </div>
                                     </FormItem>
                                 )}
                             />

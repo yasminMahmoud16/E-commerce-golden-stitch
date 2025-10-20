@@ -43,7 +43,7 @@ export default function ProductDetails() {
     return <>
 
         <PagesWrapper>
-            <section className="relative min-h-screen">
+            <section className="relative min-h-screen mb-6">
                 {/* Top corners */}
                 <img src={secCornerRight} alt="secCornerRight" className="absolute right-2 top-0 z-0" />
                 <img src={secCornerLeft} alt="secCornerLeft" className="absolute left-0 top-0" />
@@ -52,8 +52,8 @@ export default function ProductDetails() {
                 <div className="container relative z-20">
 
                     <div className=" my-8 grid grid-cols-1 md:grid-cols-6 items-center md:items-start justify-center pt-10 md:gap-4 relative z-20">
-                        <div className="col-span-2 mb-6 md:mb-0 ">
-                            <div className="w-80  overflow-hidden">
+                        <div className="col-span-2 mb-6 md:mb-0  flex flex-col items-center justify-center">
+                            <div className="w-80  overflow-hidden ">
                                 <img src={`/${parentImage || product?.images?.[0]}`} alt=" " className="w-full overflow-hidden object-cover" />
 
                             </div>

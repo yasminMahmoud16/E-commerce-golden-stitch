@@ -81,9 +81,9 @@ const [parentImage, setParentImage] = useState<string | null>(null);
 
       <div className="flex flex-col md:flex-row gap-6 ">
 
-        <div className=" flex flex-col items-center justify-center">
+        <div className=" flex flex-col items-center justify-center ">
 
-          <div className="w-2xl">
+          <div className="w-50 md:w-96 flex flex-col items-center justify-center">
 
         <img
           src={`/${parentImage || currentProduct?.images?.[0]}`}

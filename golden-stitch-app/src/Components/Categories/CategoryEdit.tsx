@@ -96,7 +96,7 @@ export default function CategoryEdit({ category, onBack }:categoryEdit) {
         <div className="flex justify-between pt-4">
           <Button type="button" variant="outline" onClick={onBack} className="rounded-xl">Back</Button>
           <BtnCommon
-            text="Update Category" type="submit" className="rounded-xl w-40" />
+            text="Update Category" type="submit" className="rounded-xl  md:w-40" />
         </div>
       </form>
     </div>

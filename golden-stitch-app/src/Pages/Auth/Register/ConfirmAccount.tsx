@@ -56,7 +56,7 @@ export default function ConfirmAccount() {
                                 control={form.control}
                                 name="otp"
                                 render={({ field }) => (
-                                    <FormItem className=" flex items-center justify-center mt-2 p-2">
+                                    <FormItem className=" flex items-center justify-center mt-2 p-2 ">
                                         <FormControl >
                                             <InputOTP
 
@@ -65,19 +65,19 @@ export default function ConfirmAccount() {
                                                 onChange={field.onChange} // update RHF
                                             >
                                                 <InputOTPGroup>
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4 p-3 md:p-5" index={0} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4 p-3 md:p-5" index={0} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4 p-3 md:p-5" index={1} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4 p-3 md:p-5" index={1} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4 p-3 md:p-5" index={2} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4 p-3 md:p-5" index={2} />
                                                 </InputOTPGroup>
 
                                                 <InputOTPGroup>
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4 p-3 md:p-5" index={3} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4 p-3 md:p-5" index={3} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4 p-3 md:p-5" index={4} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4 p-3 md:p-5" index={4} />
 
-                                                    <InputOTPSlot className="bg-white rounded-md mr-4 p-3 md:p-5" index={5} />
+                                                    <InputOTPSlot className="bg-white rounded-md mr-2 md:mr-4 p-3 md:p-5" index={5} />
                                                 </InputOTPGroup>
 
                                             </InputOTP>

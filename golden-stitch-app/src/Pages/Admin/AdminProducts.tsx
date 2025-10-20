@@ -146,7 +146,7 @@ const { data: catSize } = useQuery({
         <Input
           type="text"
           placeholder="search"
-          className="w-60 md:w-80 border-footer-items py-3 px-2 pl-10 mb-2 text-white placeholder:text-footer-items rounded-4xl"
+          className="w-50 md:w-80 border-footer-items py-3 px-2 pl-10 mb-2 text-white placeholder:text-footer-items rounded-4xl"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
                   />
@@ -182,12 +182,12 @@ const { data: catSize } = useQuery({
 
       </div>
                 
-                <div className="absolute -top-4 right-0 mr-8 py-4">
+                <div className="absolute -top-4 -right-6 md:right-0 mr-8 py-4">
         {showAddBtn && (
           <BtnCommon
             text={"add"}
             onClick={handleAddClick}
-            className="rounded-xl shadow w-30 transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%]"
+            className="w-20 rounded-xl shadow md:w-30 transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%]"
             icon={Icons.AiOutlinePlusCircle}
           />
         )}
