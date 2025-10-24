@@ -15,6 +15,7 @@ import type { signupFields } from "@/Utilities/types";
 import useSignup from "@/Hooks/useSignup";
 import { signupSchema } from "../validation/authValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router-dom";
 
 
 
@@ -238,7 +239,10 @@ const handleToggleConfirm = () => setIsViewConfirm((prev) => !prev);
   "
 />
         </form>
+
+
       </Form>
+     <Link to={"/login"} className="block underline  md:hidden capitalize text-sm text-dark-blue-nav transition-all duration-300 ease-in-out hover:text-gold hover:underline">already have account</Link>
     </div>
   </>
 }

@@ -226,6 +226,8 @@ export type cartProps = {
 export type cardProps = cartProps & {
   title?: string;
   price?: number
+  mainPrice?: number
+  discount?: number
   image?: string;
   description: string;
   onClickCard?: () => void;

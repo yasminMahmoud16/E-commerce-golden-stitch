@@ -51,7 +51,7 @@ const form = useForm<loginFields>({
   };
   return (
     <>
-      <div className="flex flex-col items-center justify-center mt-10  py-4 ">
+      <div className="flex flex-col items-center justify-center mt-10  py-4  w-70 md:w-full ">
         <h2 className="text-3xl capitalize font-bold text-center text-dark-blue-1 md:text-4xl">
           Sign in
         </h2>
@@ -163,6 +163,7 @@ const form = useForm<loginFields>({
             </div>
           </form>
         </Form>
+         <Link to={"/register"} className="block underline  md:hidden capitalize text-sm text-dark-blue-nav transition-all duration-300 ease-in-out hover:text-gold hover:underline">create your account</Link>
       </div>
     </>
   );

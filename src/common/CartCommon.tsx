@@ -130,8 +130,11 @@ export default function CartCommon({
                                     )}
 
                                 </CardHeader>
-                                <CardFooter>
-                                    <p className="font-bold text-xl text-gold-dark w-30">{item.productId.mainPrice} EGP</p>
+                                <CardFooter className="  flex w-full items-center mt-2">
+                                    <del className="font-light text-xs text-gold-dark w-30">
+                                        {item.productId.mainPrice}
+                                        EGP</del>
+                                    <p className="font-bold text-md text-gold-dark w-50 ">{item.productId.salePrice} EGP</p>
                                 </CardFooter>
                             </div>
                         </div>

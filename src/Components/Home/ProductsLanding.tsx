@@ -165,7 +165,9 @@ export default function ProductsLanding() {
                                         image={`/${product.images?.[0]}`}
                                         title={product.name}
                                         description={product.description}
-                                        price={product.mainPrice}
+                                        mainPrice={product.mainPrice}
+                                        discount={product.discountPercent}
+                                        price={product.salePrice}
                                         onClickCard={() => handleOnClickProductDetails(product.id)}
                                         onClickCart={() => handleOnClickCart(product.id, 1)}
                                         onClickWishList={() => handleOnClickWishList(product.id)}

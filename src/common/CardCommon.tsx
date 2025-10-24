@@ -14,6 +14,8 @@ export default function CardCommon({
     title,
   description,
   price,
+  mainPrice,
+  discount,
   onClickCard,
   onClickCart,
   onClickWishList
@@ -68,11 +70,25 @@ onClick={() => onClickCard?.()}
           </span>
     </div>
       </CardContent>
-      <CardHeader className="absolute opacity-0  -bottom-10 bg-gray-600/30 w-full p-2 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:bottom-0">
-        <CardTitle className="text-gray-300 font-semibold text-xl capitalize">{title}</CardTitle>
-        <CardDescription className="flex items-center justify-center" >
-          <p className="capitalize text-gray-300">{description.slice(0,60) }</p>
-          <p className="font-bold text-xl text-[#fdd888] w-30">{price} EGP</p>
+      <CardHeader className="absolute opacity-0  -bottom-10 bg-gray-900/30 w-full p-2 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:bottom-0">
+        <CardTitle className="text-gray-300 font-semibold text-xl capitalize flex justify-between px-3">
+          <p>
+
+          {title}
+          </p>
+          <p className="text-[hsl(22,55%,44%)] ">
+
+          {discount}%
+          </p>
+
+        </CardTitle>
+        <CardDescription className="flex items-center justify-center " >
+          <p className="capitalize text-gray-300">{description.slice(0, 60)}</p>
+          <div>
+
+          <del className="font-light text-sm text-[hsl(22,55%,44%)]  w-25">{mainPrice} EGP</del>
+          <p className="font-bold text-lg text-[#fdd888] w-25 ">{price} EGP</p>
+          </div>
         </CardDescription>
         
         {/* <CardAction>Card Action</CardAction> */}

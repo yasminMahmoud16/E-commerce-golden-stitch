@@ -21,9 +21,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/uploads': {
-        // target: 'http://localhost:3000',
+        target: 'http://localhost:3000',
         // target: 'https://carletta-nonchimerical-hilda.ngrok-free.dev',
-        target: 'http://18.234.168.49/',
+        // target: 'http://18.234.168.49',
         changeOrigin: true,
       },
     },

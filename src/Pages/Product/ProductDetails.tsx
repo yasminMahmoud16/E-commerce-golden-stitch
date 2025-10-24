@@ -103,17 +103,7 @@ export default function ProductDetails() {
                                     </span> {product?.stock} </p>
                                     
                                 </div>
-                                <div >
-                                    <p className="text-md font-semibold text-gold-dark mb-1">
-                                        <span className="text-dark-blue-2 font-light">
-                                        sale Price:
-
-                                        </span>
-                                            
-                                        
-                                        {product?.salePrice} </p>
-                                    
-                                </div>
+                                
                                 <div >
                                     <p className="text-md font-semibold text-gold-dark mb-1">
                                         <span className="text-dark-blue-2 font-light">
@@ -125,7 +115,23 @@ export default function ProductDetails() {
                                     
                                 </div>
                                 <div >
-                                    <p className="text-4xl font-bold text-gold-dark mb-1">{product?.mainPrice} EGP</p>
+                                    <del>
+
+                                    <p className="text-md font-semibold text-gold-dark mb-1 ">
+                                        main Price:
+                                        <span className="text-dark-blue-2 font-light">
+                                        {product?.mainPrice}
+
+                                        </span>
+                                            
+                                        
+                                    </p>
+                                    </del>
+
+                                    
+                                </div>
+                                <div >
+                                    <p className="text-4xl font-bold text-gold-dark mb-1">{product?.salePrice} EGP</p>
                                     
                                 </div>
                                 <div  >
