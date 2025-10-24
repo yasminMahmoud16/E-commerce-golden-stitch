@@ -107,44 +107,49 @@ export default function ProductsLanding() {
                     </div>
 
 
-                    <div className=" relative mb-2 mt-8   items-center justify-center  flex flex-col ">
+                    <div className="relative mb-2 mt-8 flex flex-col items-center justify-center">
+  <div className="relative w-60 md:w-80">
+    <Input
+      type="text"
+      placeholder="search"
+      className="w-full border-dark-blue-1 py-3 pl-10 pr-3 text-dark-blue-nav placeholder:text-gray-500 rounded-4xl ring-bg-gold-dark shadow"
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+    <Icons.CiSearch
+      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+      size={23}
+    />
+  </div>
 
-                        <Input
-                            type="text"
-                            placeholder="search"
-                            className=" w-60 md:w-80 border-dark-blue-1 py-3 px-2 pl-10 mb-2 text-dark-blue-nav placeholder:text-gray-500 rounded-4xl ring-bg-gold-dark shadow"
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                        <Icons.CiSearch
-                            className="absolute  right-186 top-4 -translate-y-1/2 text-gray-500"
-                            size={23}
-                        />
-                        <div className="flex flex-wrap gap-3 justify-center my-3">
-                            <button
-                                onClick={() => setCategoryId("")}
-                                className={`cursor-pointer px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${categoryId === ""
-                                    ? "cursor-pointer bg-gold text-white shadow-lg"
-                                    : "cursor-pointer bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
-                                    }`}
-                            >
-                                All
-                            </button>
+  <div className="flex flex-wrap gap-3 justify-center my-3">
+    <button
+      onClick={() => setCategoryId("")}
+      className={`cursor-pointer px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+        categoryId === ""
+          ? "bg-gold text-white shadow-lg"
+          : "bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
+      }`}
+    >
+      All
+    </button>
 
-                            {catSize?.docs?.map((cat) => (
-                                <button
-                                    key={cat.id}
-                                    onClick={() => setCategoryId(cat.id)}
-                                    className={` cursor-pointer px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300 ${categoryId === cat.id
-                                        ? "cursor-pointer bg-gold text-white shadow-lg"
-                                        : " cursor-pointer bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
-                                        }`}
-                                >
-                                    {cat.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+    {catSize?.docs?.map((cat) => (
+      <button
+        key={cat.id}
+        onClick={() => setCategoryId(cat.id)}
+        className={`cursor-pointer px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300 ${
+          categoryId === cat.id
+            ? "bg-gold text-white shadow-lg"
+            : "bg-dark-blue-2 border border-gold text-gold hover:bg-gold-dark hover:text-white"
+        }`}
+      >
+        {cat.name}
+      </button>
+    ))}
+  </div>
+</div>
+
                     <div className="flex   items-center justify-center flex-wrap gap-4 pb-4">
                         <div className="flex flex-wrap justify-center gap-4 pb-4 items-center">
                             {isLoading ? (

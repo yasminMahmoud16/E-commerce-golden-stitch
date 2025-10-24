@@ -30,9 +30,14 @@ export const changePasswordUser = z.strictObject({
     confirmPassword: z.string(),
 
     flag: z.enum(logoutEnum).default(logoutEnum.only),
+    // flag: z.enum([logoutEnum.only, logoutEnum.all]).default(logoutEnum.only)
+
 
 }).refine((data) =>
     data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
 });
+
+
+export type changePasswordFields = z.infer<typeof changePasswordUser>;

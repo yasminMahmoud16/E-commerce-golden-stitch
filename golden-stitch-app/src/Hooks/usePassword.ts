@@ -1,10 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAxios } from "./useAxios";
-import type { changePasswordFields } from "@/Utilities/types";
+// import type { changePasswordFields } from "@/Utilities/types";
 import { toast } from "sonner";
 import type { AxiosResponse } from "axios";
 import { useAuthContext } from "./useAppContexts";
 import axios from "axios";
+// import type { changePasswordFields } from "@/Pages/Auth/validation/userValidation";
+import type { changePasswordType } from "@/Utilities/types";
 export default function usePassword() {
     const axiosInstance = useAxios()
     const { getAuthHeader } = useAuthContext()
@@ -25,7 +27,7 @@ export default function usePassword() {
 
     // API for change password
 
-    const changePassword = async (values: changePasswordFields): Promise<AxiosResponse<changePasswordFields> | undefined> => {
+    const changePassword = async (values: changePasswordType): Promise<AxiosResponse<changePasswordType> | undefined> => {
         try {
             const res = await axiosInstance.patch("/user/password", values, {
                 headers: getAuthHeader()
@@ -40,7 +42,7 @@ export default function usePassword() {
 
             if (axios.isAxiosError(error)) {
 
-                // console.log({ changePasswordError: error });
+                console.log({ changePasswordError: error });
     
                 const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
     

@@ -5,7 +5,7 @@ import {  useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuthContext } from "@/Hooks/useAppContexts";
 // import { ProfileContext } from "./contextCreations/ProfileContext";
-import {   type FormDataUpdate } from "@/Utilities/types";
+import {  type FormDataUpdate } from "@/Utilities/types";
 import axios from "axios";
 import { ProfileContext } from "./contextCreations/ProductContext";
 // import Swal from "sweetalert2";
@@ -14,7 +14,8 @@ import { ProfileContext } from "./contextCreations/ProductContext";
 
 
 export default function ProfileContextProvider({ children }: { children: ReactNode }) {
-  const [profile, setProfile] = useState< Record<string, string> |null>(null);
+  const [profile, setProfile] = useState<Record<string, string> | null>(null);
+  
   // const navigate = useNavigate()
   // const {cartRefresh} =useCartContext()
   const { token, getAuthHeader } = useAuthContext();
@@ -59,6 +60,8 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
     queryFn: getProfile,
     enabled: !!token,
   });
+
+
 
 
 

@@ -36,6 +36,9 @@ export default function ArchiveProducts() {
         { id: 2, label: "image" },
         { id: 3, label: "Product Name" },
         { id: 4, label: "Price" },
+        { id: 10, label: "Stock" },
+        { id: 11, label: "Discount Percent" },
+        { id: 12, label: "Sale Price" },
         { id: 6, label: "Customer Name" },
         { id: 8, label: "Description" },
         { id: 7, label: "Canceled At" },
@@ -44,6 +47,10 @@ export default function ArchiveProducts() {
 
     ];
 
+  // const handleClickArchiveDetails = (id:string) => {
+  //           navigate(`/admin/archive-products/product-details/${id}`); 
+
+  // }
     return <>
 
 
@@ -66,33 +73,7 @@ export default function ArchiveProducts() {
                 onChange={(e) => setSearch(e.target.value)}
         />
         
-        {/* CATEGORY FILTER BUTTONS */}
-{/* <div className="flex flex-wrap gap-3 justify-center my-3">
-  <button
-    onClick={() => setCategoryId("")} 
-    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-      categoryId === ""
-        ? "bg-gold text-white"
-        : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
-    }`}
-  >
-    All
-  </button>
 
-  {catSize?.map((cat) => (
-    <button
-      key={cat.id}
-      onClick={() => setCategoryId(cat.id)}
-      className={`px-4 py-2 rounded-full text-sm font-semibold capitalize transition-all duration-300 ${
-        categoryId === cat.id
-          ? "bg-gold text-white"
-          : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
-      }`}
-    >
-      {cat.name}
-    </button>
-  ))}
-</div> */}
         </div>
 <div className="w-full overflow-x-hidden hide-scrollbar">
   <Table className="overflow-x-hidden scrollbar-hide">
@@ -112,8 +93,10 @@ export default function ArchiveProducts() {
     <TableBody>
       {archiveProducts?.docs?.map((data) => (
         <TableRow
+          // onClick={() => handleClickArchiveDetails(data.id)}
+
           key={data.id}
-          className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
+          className=" border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
         >
           <TableCell className="font-medium my-2 w-20 h-8 ">
             <div className="flex justify-center items-center">
@@ -126,14 +109,22 @@ export default function ArchiveProducts() {
           </TableCell>
           <TableCell className="font-medium text-center">{data.name}</TableCell>
           <TableCell className="font-medium text-center">{data.mainPrice}</TableCell>
-          <TableCell className="font-medium text-center">{data.createdBy.username}</TableCell>
+          <TableCell className="font-medium text-center">{data.stock}</TableCell>
+          <TableCell className="font-medium text-center">{data.discountPercent}</TableCell>
+          <TableCell className="font-medium text-center">{data.salePrice}</TableCell>
+          <TableCell className="font-medium text-center text-xs">{data.createdBy.username}</TableCell>
           <TableCell className="font-medium text-xs truncate max-w-[200px]">
             {String(data.description || "").slice(0, 60)}
           </TableCell>
-          <TableCell className="font-medium text-center">{data.freezedAt}</TableCell>
+          <TableCell className="font-medium text-center text-xs">
+            {new Date(data.freezedAt).toLocaleString()}
+          </TableCell>
                       {/* <TableCell className="font-medium text-center">{data.category?.name}</TableCell> */}
 
-          <TableCell className="font-medium text-center flex items-center justify-center mt-5" ><Icons.MdOutlineRestore className="text-2xl text-gold-dark transition-all duration-300 ease-in-out hover:text-green-400" onClick={()=>{restoreProduct(data.id)}}/></TableCell>
+          <TableCell className="font-medium text-center flex items-center justify-center mt-5" ><Icons.MdOutlineRestore className="text-2xl text-gold-dark transition-all duration-300 ease-in-out hover:text-green-400 hover:cursor-pointer" onClick={(e) => {
+             e.stopPropagation();
+            restoreProduct(data.id)
+          }} /></TableCell>
         </TableRow>
       ))}
     </TableBody>

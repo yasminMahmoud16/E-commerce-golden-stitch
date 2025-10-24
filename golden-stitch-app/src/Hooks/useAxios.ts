@@ -63,8 +63,8 @@ export function useAxios() {
         
         
         // console.log(msg);
+        return null;
       }
-      return null;
     }
   };
 
@@ -94,7 +94,7 @@ export function useAxios() {
         }
       }
 
-      // return Promise.reject(error);
+      return Promise.reject(error);
     }
   );
 

@@ -57,7 +57,7 @@ export default function ProductEdit({ product, onBack }: {
 
             if (product.images?.length) {
                 setExistingImages(product.images);
-                setPreview(product.images.map(img => `/${img}`));
+                // setPreview(product.images.map(img => `/${img}`));
 
             }
         }
@@ -230,7 +230,7 @@ export default function ProductEdit({ product, onBack }: {
 
           {/*  PREVIEW MULTIPLE IMAGES */}
           {preview && preview.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-3 mt-4">
+            <div className="flex flex-wrap justify-center gap-3 mt-4 ">
               {preview.map((src, index) => (
                 <img
                   key={index}

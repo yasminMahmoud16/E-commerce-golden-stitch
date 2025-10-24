@@ -129,7 +129,7 @@ export type AppSidebarProps = {
 }
 
 
-export type changePasswordFields = {
+export type changePasswordType = {
 
   oldPassword: string;
   password: string;

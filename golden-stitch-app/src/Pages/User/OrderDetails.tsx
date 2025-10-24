@@ -104,6 +104,13 @@ export default function OrderDetails() {
                 <span className="text-gold font-semibold">Note:</span>{" "}
                 {order.note || "No notes"}
               </p>
+              <p  className="text-gold font-bold text-lg">
+                    Total:
+                    <span className=" text-gray-300 ml-2 font-bold text-lg">
+                        {order.subtotal}
+                    </span>{" "}
+                    
+                </p>
               <p>
                 <span className="text-gold font-semibold">Status:</span>{" "}
                 <span
@@ -115,8 +122,10 @@ export default function OrderDetails() {
                   }`}
                 >
                   {order.status}
+
                 </span>
               </p>
+                  Last Updated: {new Date(order.updatedAt).toLocaleString()}
             </div>
           </div>
         ))}

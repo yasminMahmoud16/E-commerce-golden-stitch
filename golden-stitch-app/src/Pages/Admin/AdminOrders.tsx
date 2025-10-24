@@ -29,6 +29,7 @@ import { Icons } from "@/assets/Icons/icons";
 import { useState } from "react";
 import Cancel from "@/Components/cancel/Cancel";
 import { StateEnum } from "@/Utilities/types";
+import { useNavigate } from "react-router-dom";
 export default function ArchiveOrders() {
 
 
@@ -37,23 +38,25 @@ export default function ArchiveOrders() {
     const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
     // const [pendingCancelStatus, setPendingCancelStatus] = useState<string | null>(null);
     const [pendingStatus, setPendingStatus] = useState<Record<string, string>>({});
-
-    // console.log({ ordersData });
+ const navigate = useNavigate(); 
+    console.log({ ordersData });
     const Headers = [
-        { id: 1, label: "Address" },
-        { id: 2, label: "Payment-Type" },
         { id: 3, label: "Customer Name" },
+        { id: 1, label: "Address" },
+        { id: 9, label: "Product Name" },
+        { id: 9, label: "Total Price" },
+        { id: 2, label: "Payment-Type" },
         { id: 4, label: "note" },
         { id: 5, label: "Phone" },
         { id: 8, label: "Status" },
 
     ];
 
-    // const handelCancelClick = async (id: string) => {
-    //     setSelectedOrderId(id);
-    //     setOpen(true)
+     const handleRowClick = (id: string) => {
+        navigate(`/admin/order/order-details/${id}`); 
+    };
 
-    // }
+
 
     return <>
 
@@ -100,22 +103,35 @@ export default function ArchiveOrders() {
                     </TableRow>
                 </TableHeader>
 
-                <TableBody>
+                <TableBody className="overflow-hidden scrollbar-hide">
                     {ordersData?.docs?.map((data) => (
                         <TableRow
+                            onClick={() => handleRowClick(data.id)}
                             key={data.id}
-                            className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
+                            className=" cursor-pointer border-none  transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize
+                            "
                         >
+                            <TableCell className="font-medium text-center ">{data.createdBy?.username}</TableCell>
 
-                            <TableCell className="font-medium text-center">{data.address}</TableCell>
-                            <TableCell className="font-medium text-center">{data.paymentType}</TableCell>
-                            <TableCell className="font-medium text-center">{data.createdBy?.username}</TableCell>
-                            <TableCell className="font-medium text-xs truncate max-w-[200px]">
+                            <TableCell className="font-medium text-center ">{data.address}</TableCell>
+                            <TableCell className="font-medium text-center  ">
+                                {data.products?.length
+                                    ? `${data.products[0].productId?.name}${data.products.length > 1 ? " ..." : ""
+                                    }`
+                                    : "-"}
+
+                            </TableCell>
+                            <TableCell className="font-medium text-center ">{data.subtotal.toFixed(2)}</TableCell>
+
+
+
+                            <TableCell className="font-medium text-center ">{data.paymentType}</TableCell>
+                            <TableCell className="font-medium text-xs truncate max-w-20">
                                 {String(data.note || "").slice(0, 60)}
                             </TableCell>
-                            <TableCell className="font-medium text-center">{data.phone}</TableCell>
+                            <TableCell className="font-medium text-center ">{data.phone}</TableCell>
 
-                            <TableCell className="font-medium text-center">
+                            <TableCell className="font-medium text-center ">
                                 <Select
                                     value={pendingStatus[data.id] || data.status || StateEnum.placed}
                                     onValueChange={async (value) => {
@@ -133,7 +149,7 @@ export default function ArchiveOrders() {
                                     }}
                                 >
                                     <SelectTrigger
-                                        className={`w-[150px] bg-transparent border-gold-dark border-4
+                                        className={`w-31 bg-transparent border-gold-dark border-4
                                         ${(pendingStatus[data.id] || data.status) === StateEnum.cancel
                                                 ? "text-red-500"
                                                 : (pendingStatus[data.id] || data.status) === StateEnum.delivered
@@ -147,6 +163,58 @@ export default function ArchiveOrders() {
                                     </SelectTrigger>
 
                                     <SelectContent>
+                                        {(() => {
+                                            const currentStatus = pendingStatus[data.id] || data.status;
+
+                                            if (currentStatus === StateEnum.cancel) {
+                                                return (
+                                                    <SelectItem value={StateEnum.cancel} className="text-red-600">
+                                                        Cancelled
+                                                    </SelectItem>
+                                                );
+                                            }
+
+                                            if (currentStatus === StateEnum.delivered) {
+                                                return (
+                                                    <SelectItem value={StateEnum.delivered} className="text-green-500">
+                                                        Delivered
+                                                    </SelectItem>
+                                                );
+                                            }
+
+                                            return (
+                                                <>
+                                                    {currentStatus !== StateEnum.onWay &&
+                                                        currentStatus !== StateEnum.delivered && (
+                                                            <SelectItem value={StateEnum.placed} className="text-blue-500">
+                                                                Placed
+                                                            </SelectItem>
+                                                        )}
+
+                                                    {currentStatus !== StateEnum.delivered && (
+                                                        <SelectItem value={StateEnum.onWay} className="text-yellow-500">
+                                                            On Way
+                                                        </SelectItem>
+                                                    )}
+
+                                                    {currentStatus !== StateEnum.cancel && (
+                                                        <SelectItem value={StateEnum.delivered} className="text-green-500">
+                                                            Delivered
+                                                        </SelectItem>
+                                                    )}
+
+                                                    {currentStatus !== StateEnum.delivered && (
+                                                        <SelectItem value={StateEnum.cancel} className="text-red-600">
+                                                            Cancelled
+                                                        </SelectItem>
+                                                    )}
+                                                </>
+                                            );
+                                        })()}
+                                    </SelectContent>
+
+
+                                    {/* <SelectContent>
                                         <SelectItem value={StateEnum.placed} className="text-blue-500">
                                             Placed
                                         </SelectItem>
@@ -164,7 +232,7 @@ export default function ArchiveOrders() {
                                                 Cancelled
                                             </SelectItem>
                                         )}
-                                    </SelectContent>
+                                    </SelectContent> */}
                                 </Select>
 
 
@@ -182,38 +250,39 @@ export default function ArchiveOrders() {
 
 
 
- <Pagination className="mb-4">
-                            <PaginationContent>
-                                {page > 1 && (
-                                    <PaginationItem>
-                                        <PaginationPrevious
-                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
-                                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
-                                        />
-                                    </PaginationItem>
-                                )}
+        <Pagination className="my-4">
+            <PaginationContent>
+                {page > 1 && (
+                    <PaginationItem>
+                        <PaginationPrevious
+                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
+                        />
+                    </PaginationItem>
+                )}
 
-                                <PaginationItem>
-                                    <PaginationLink isActive className="cursor-pointer rounded-full">
-                                        {page}
-                                    </PaginationLink>
-                                </PaginationItem>
+                <PaginationItem>
+                    <PaginationLink isActive className="cursor-pointer rounded-full">
+                        {page}
+                    </PaginationLink>
+                </PaginationItem>
 
-                                {page < (ordersData?.pages || 1) && (
-                                    <PaginationItem>
-                                        <PaginationNext
-                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
-                                            onClick={() =>
-                                                setPage((prev) =>
-                                                    prev < (ordersData?.pages || 1) ? prev + 1 : prev
-                                                )
-                                            }
-                                        />
-                                    </PaginationItem>
-                                )}
-                            </PaginationContent>
-                        </Pagination>
+                {page < (ordersData?.pages || 1) && (
+                    <PaginationItem>
+                        <PaginationNext
+                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                            onClick={() =>
+                                setPage((prev) =>
+                                    prev < (ordersData?.pages || 1) ? prev + 1 : prev
+                                )
+                            }
+                        />
+                    </PaginationItem>
+                )}
+            </PaginationContent>
+        </Pagination>
 
+        
         {open && (
             <Cancel open={open} onOpenChange={setOpen} orderId={selectedOrderId} onStatusChange={(id, status) => {
                 setPendingStatus(prev => ({ ...prev, [id]: status }));

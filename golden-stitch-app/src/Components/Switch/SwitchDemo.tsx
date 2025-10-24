@@ -35,7 +35,7 @@ export function SwitchDemo({ role, id}: { role?: RoleEnum |undefined, id?: strin
                 toast.success("User Role Changed Successfully");
                 setTimeout(() => {
     window.location.reload(); 
-  }, 800);
+  }, 1000);
             }
             // console.log(res);
         } catch (error:unknown) {

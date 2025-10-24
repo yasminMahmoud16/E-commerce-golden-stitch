@@ -292,6 +292,7 @@ export interface IOrder {
     status: string;
     customId?: string;
     createdAt: string;
+    subtotal: number;
     products: IOrderProduct[];
     // stock: number;
     // mainPrice: number;
@@ -300,6 +301,7 @@ export interface IOrder {
         id?: string;
         username?: string;
     };
+    updatedAt:string
     // image: string;
     // freezedAt: string;
 }

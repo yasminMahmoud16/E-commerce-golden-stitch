@@ -32,12 +32,15 @@ export default function Profile() {
                             account information
                         </h1>
 
-                        <span>
-                            <Icons.FaEdit
-                                className="text-gray-300 transition-all duration-300 ease-in-out  hover:cursor-pointer hover:text-gold"
-                                onClick={() => setIsEditing(true)}
-                            />
-                        </span>
+                        {!isEditing && (
+  <span>
+    <Icons.FaEdit
+      className="text-gray-300 transition-all duration-300 ease-in-out hover:cursor-pointer hover:text-gold"
+      onClick={() => setIsEditing(true)}
+    />
+  </span>
+)}
+
                     </div>
 
                     {isEditing ? (

@@ -24,7 +24,7 @@ export default function AdminLayout() {
 
         },
         {
-            label: "Your Orders", path: "your-orders",
+            label: "My Orders", path: "your-orders",
             icon: <Icons.BsBoxSeamFill />
 
         },

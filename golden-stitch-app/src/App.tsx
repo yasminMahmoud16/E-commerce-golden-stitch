@@ -20,6 +20,7 @@ import CartContextProvider from "./Context/CartContextProvider.js";
 import OrderContextProvider from "./Context/OrderContextProvider.js";
 import ArchiveCategory from "./Pages/Admin/Archive/ArchiveCategory.js";
 import ArchiveProducts from "./Pages/Admin/Archive/ArchiveProducts.js";
+import AdminOrderDetails from "./Pages/Admin/AdminOrderDetails.js";
 
 
 // Lazy-loaded components
@@ -248,6 +249,26 @@ const router = createHashRouter([
           </Suspense>
         ),
       },
+      {
+        path: "order/order-details/:id",
+        element: (
+          <Suspense fallback={<SpinnerCustomData />}>
+            <Guard>
+              <AdminOrderDetails />
+            </Guard>
+          </Suspense>
+        ),
+      },
+      // {
+      //   path: "archive-products/product-details/:id",
+      //   element: (
+      //     <Suspense fallback={<SpinnerCustomData />}>
+      //       <Guard>
+      //         <ArchiveProductDetails />
+      //       </Guard>
+      //     </Suspense>
+      //   ),
+      // },
       {
         path: "your-orders",
         element: (

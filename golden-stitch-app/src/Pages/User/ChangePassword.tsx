@@ -3,7 +3,8 @@ import BtnCommon from "@/common/BtnCommon";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/Components/ui/form";
 import { Input } from "@/Components/ui/input";
 import usePassword from "@/Hooks/usePassword";
-import { logoutEnum, type changePasswordFields } from "@/Utilities/types";
+import { logoutEnum, type changePasswordType } from "@/Utilities/types";
+// import  type {changePasswordFields } from "@/Utilities/types";
 import { Controller, useForm } from "react-hook-form";
 import {
     Select,
@@ -18,8 +19,12 @@ import useGlobal from "@/Hooks/useGlobal";
 export default function ChangePassword() {
     const { handelCancelClick, changePassword } = usePassword();
     const { isViewPassword, isViewConfirm, isViewCurrent, handleTogglePassword, handleToggleConfirm, handleToggleCurrent } = useGlobal();
-    const form = useForm<changePasswordFields>({
+    const form = useForm<changePasswordType>({
         resolver: zodResolver(changePasswordUser),
+//         resolver: async (values) => {
+//   console.log("ZOD VALIDATION RUNNING ===>", values);
+//   return { values: {}, errors: { password: { message: "test error", type: "manual" } } };
+// },
         defaultValues: {
             oldPassword: "",
             password: "",
@@ -28,11 +33,42 @@ export default function ChangePassword() {
 
         }
     });
-    const handleSubmit = async (values: changePasswordFields) => {
+    const handleSubmit = async (values: changePasswordType) => {
         await changePassword(values);
         // console.log({ changeValue: values });
 
     };
+//     const handleSubmit = async (values: changePasswordType) => {
+//   try {
+//     const res = await changePassword(values);
+
+//     // لو رجع Done يبقى مفيش مشكلة
+//     if (res?.data?.message === "Done") return;
+
+//   } catch (error: any) {
+//     // هنا نمسك الخطأ اللي طالع من API (لو الـhook مررته)
+//     const apiMessage =
+//       error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message ||
+//       error?.response?.data?.message ||
+//       "Something went wrong";
+
+//     // نعرضه في مكان مناسب في الفورم
+//     if (apiMessage.toLowerCase().includes("old password")) {
+//       form.setError("oldPassword", {
+//         type: "server",
+//         message: apiMessage,
+//       });
+//     } else {
+//       // Error عام
+//       form.setError("root", {
+//         type: "server",
+//         message: apiMessage,
+//       });
+//     }
+//   }
+// };
+
+    console.log(form.formState.errors);
     return <>
 
         <div className=" flex flex-col items-center">
@@ -82,7 +118,7 @@ export default function ChangePassword() {
 
                                     <div className="w-96 ml-3 mb-3">
 
-                                    <FormMessage className="text-xs font-semibold text-gold capitalize" />
+                                    <FormMessage className="text-xs font-semibold text-[hsl(22,55%,44%)]  capitalize" />
                                     </div>
                                 </FormItem>
                             )}
@@ -123,7 +159,7 @@ export default function ChangePassword() {
 
                                     <div className="w-96 ml-3 mb-3">
 
-                                    <FormMessage className="text-xs font-semibold text-gold capitalize" />
+                                    <FormMessage className="text-xs font-semibold text-[hsl(22,55%,44%)]  capitalize" />
                                     </div>
                                 </FormItem>
                             )}
@@ -164,7 +200,7 @@ export default function ChangePassword() {
 
                                     <div className="w-96 ml-3 mb-3">
 
-                                    <FormMessage className="text-xs font-semibold text-gold capitalize" />
+                                    <FormMessage className="text-xs font-semibold text-[hsl(22,55%,44%)]  capitalize" />
                                     </div>
                                 </FormItem>
                             )}

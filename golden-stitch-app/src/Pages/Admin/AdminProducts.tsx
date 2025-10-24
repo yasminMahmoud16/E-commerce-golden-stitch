@@ -58,10 +58,11 @@ const { data: catSize } = useQuery({
   const productHeaders = [
     { id: 2, label: "image" },
     { id: 3, label: "Product Name" },
+    { id: 7, label: "Category Name" },
     { id: 4, label: "Price" },
+    { id: 10, label: "Sale Price" },
     { id: 6, label: "Customer Name" },
     { id: 5, label: "Stock" },
-    { id: 7, label: "Category Name" },
     { id: 8, label: "Description" },
 
   ];
@@ -202,7 +203,7 @@ const { data: catSize } = useQuery({
               
               
 >
-            <Table className="overflow-x-hidden scrollbar-hide ">
+            <Table  className="overflow-x-hidden scrollbar-hide ">
       <TableHeader>
         <TableRow>
           {productHeaders.map((header) => (
@@ -220,26 +221,28 @@ const { data: catSize } = useQuery({
 
       <TableBody>
         {filteredProducts?.map((data) => (
-          <TableRow
+          <TableRow 
+            
             onClick={() => handleDetailsClick(data.id)}
             key={data.id}
-            className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
+            className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize "
           >
-            <TableCell className="font-medium my-2">
-              <div className="flex justify-center items-center">
+            <TableCell className="font-medium my-1">
+              <div className="flex justify-center items-center overflow-hidden w-15 h-15">
                 <img
                   src={`/${data.images[0]}`}
                   alt="image"
-                  className="w-15 h-15 rounded-md"
+                  className="w-full h-full rounded-md overflow-hidden"
                 />
               </div>
             </TableCell>
-            <TableCell className="font-medium text-center">{data.name}</TableCell>
-            <TableCell className="font-medium text-center">{data.stock}</TableCell>
-            <TableCell className="font-medium text-center">{data.createdBy.username}</TableCell>
-            <TableCell className="font-medium text-center">{data.mainPrice}</TableCell>
-            <TableCell className="font-medium text-center">{data.category?.name}</TableCell>
-            <TableCell className="font-medium text-xs">{data.description.slice(0, 60)}</TableCell>
+            <TableCell className="font-medium  text-sm text-center">{data.name}</TableCell>
+            <TableCell className="font-medium  text-sm text-center">{data.category?.name}</TableCell>
+            <TableCell className="font-medium  text-sm text-center">{data.mainPrice}</TableCell>
+            <TableCell className="font-medium  text-sm text-center">{data.salePrice}</TableCell>
+            <TableCell className="font-medium  text-sm text-center">{data.createdBy.username}</TableCell>
+            <TableCell className="font-medium text-sm text-center">{data.stock}</TableCell>
+            <TableCell className="font-medium text-xs">{data.description.slice(0, 30)}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -247,7 +250,7 @@ const { data: catSize } = useQuery({
               </div>
 
 
-<Pagination className="mb-4">
+<Pagination className="my-4">
                             <PaginationContent>
                                 {page > 1 && (
                                     <PaginationItem>

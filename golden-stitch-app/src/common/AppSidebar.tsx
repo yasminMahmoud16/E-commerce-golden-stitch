@@ -89,7 +89,7 @@ export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
 
             <BtnCommon
               text="Logout"
-              className="absolute -bottom-10 left-0 bg-transparent rounded-xl transition-all duration-500 ease-in-out hover:translate-x-4 hover:bg-gold-dark    "
+              className="absolute w-30 -bottom-10 left-0 bg-transparent rounded-xl transition-all duration-500 ease-in-out hover:translate-x-4 hover:bg-gold-dark    "
               icon={Icons.IoLogOut}
               onClick={()=>{setOpenPopup(true);}}
             />
