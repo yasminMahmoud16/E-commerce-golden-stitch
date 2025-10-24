@@ -18,7 +18,7 @@ interface DecodedToken {
 
 export default function AuthContextProvider({ children }: { children: ReactNode }) {
   const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
+    baseURL: import.meta.env.VITE_BASE_URL || "https://carletta-nonchimerical-hilda.ngrok-free.dev",
   });
 
   const [token, setToken] = useState<string | null>(null);

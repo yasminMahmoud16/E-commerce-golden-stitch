@@ -12,7 +12,7 @@ export function useAxios() {
   } = useAuthContext();
 
   const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
+    baseURL: import.meta.env.VITE_BASE_URL || "https://carletta-nonchimerical-hilda.ngrok-free.dev",
   });
 
   axiosInstance.interceptors.request.use(
