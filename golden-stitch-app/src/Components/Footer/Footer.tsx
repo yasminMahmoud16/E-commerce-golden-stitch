@@ -4,7 +4,6 @@
 import cornerBottomRight from "@/assets/Images/cornerBottomRight.png"
 import cornerBottomLeft from "@/assets/Images/cornerBottomLeft.png"
 import { Icons } from '@/assets/Icons/icons'
-import { Input } from '../ui/input'
 import { Link } from 'react-router-dom'
 export default function Footer() {
     const appName = import.meta.env.VITE_APPLICATION_NAME;
@@ -32,28 +31,22 @@ export default function Footer() {
                         <div className='flex items-center justify-center gap-2 mt-2'>
 
                             <span className='w-8 h-8 rounded-full flex items-center justify-center  '><Icons.FaFacebook size={20} className='text-footer-items transition-all duration-500 ease-in-out hover:text-blue-600' /></span>
-                            <span className='w-8 h-8 rounded-full flex items-center justify-center  '><Icons.FaXTwitter size={20} className='text-footer-items transition-all duration-500 ease-in-out hover:text-black' /></span>
+                            <a href="https://wa.me/01119866111"
+                                target="_blank"
+                                rel="noopener noreferrer" className='w-8 h-8 rounded-full flex items-center justify-center  '><Icons.FaWhatsapp size={22} className='text-footer-items transition-all duration-500 ease-in-out hover:text-green-400' /></a>
                             <span className='w-8 h-8 rounded-full flex items-center justify-center  '><Icons.FaInstagram size={20} className='text-footer-items transition-all duration-500 ease-in-out hover:text-pink-700' /></span>
                         </div>
                     </div>
-                    <div className="col-span-2 flex  flex-col items-center justify-center gap-4">
-                        <p className='text-footer-items'>{`${appName}`}@gmail.com</p>
+                    <div className="col-span-2 flex  flex-col  items-center justify-center gap-2">
+                        <div className="flex  items-center justify-center gap-2">
 
-
-{/* 
-                        <div className="relative w-55 md:w-80">
-                            <Icons.CiSearch
-                                className="absolute left-3 top-4 -translate-y-1/2 text-footer-items"
-                                size={23}
-                            />
-                            <Input
-                                type="text"
-                                placeholder="search"
-                                className="w-60 md:w-80 border-footer-items  py-3 px-2 pl-10 mb-2 placeholder:text-footer-items rounded-4xl"
-                            />
-                        </div> */}
-
-
+                            <Icons.MdOutlineMail className="text-lg text-footer-items" />
+                            <a href="mailto:stitchgolden30@gmail.com" className='text-footer-items text-sm'>stitchgolden30@gmail.com</a>
+                        </div>
+                        <div className=" flex   items-center justify-center gap-2">
+                            <Icons.FaPhoneAlt className="text-md text-footer-items" />
+                            <a href="tel:01119866111" className='text-footer-items text-sm'>01119866111</a>
+                        </div>
                     </div>
                     <div className="col-span-2 flex flex-col items-center justify-center">
                         <ul className='capitalize text-[#c4b5a0f3] cursor-pointer '>
@@ -73,7 +66,7 @@ export default function Footer() {
                         </ul>
                     </div>
                 </div>
-                                        <p className='text-center text-footer-items text-sm pb-4'>copyright@ {`${appName}`}</p>
+                <p className='text-center text-footer-items text-sm pb-4'>copyright@ {`${appName}`}</p>
 
 
 

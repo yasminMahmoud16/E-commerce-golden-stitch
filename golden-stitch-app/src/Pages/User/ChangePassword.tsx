@@ -68,7 +68,7 @@ export default function ChangePassword() {
 //   }
 // };
 
-    console.log(form.formState.errors);
+    // console.log(form.formState.errors);
     return <>
 
         <div className=" flex flex-col items-center">

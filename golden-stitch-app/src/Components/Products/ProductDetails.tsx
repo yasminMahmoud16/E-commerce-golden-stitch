@@ -123,19 +123,35 @@ const [parentImage, setParentImage] = useState<string | null>(null);
           <h2 className="text-xl md:text-3xl font-semibold text-gold-dark mb-2 capitalize">
             {currentProduct?.name}
           </h2>
-          <p className="text-gray-400 mb-3 capitalize">{currentProduct?.description}</p>
-          <p className="text-gray-400 capitalize">
+
+              <p className="text-gray-400 mb-3 capitalize">{currentProduct?.description}</p>
+          <div className="grid grid-cols-1 md:grid-cols-6 ">
+
+            <div className="col-span-3 ">
+          <p className="text-gray-400 capitalize mb-2">
             <strong>Price :</strong> {currentProduct?.mainPrice}
           </p>
-          <p className="text-gray-400 capitalize">
-            <strong>Stock :</strong> {currentProduct?.discountPercent}
+          <p className="text-gray-400 capitalize mb-2">
+            <strong>Stock :</strong> {currentProduct?.stock}
           </p>
-          <p className="text-gray-400 capitalize">
+               <p className="text-gray-400 capitalize mb-2">
+            <strong>Sale Price :</strong> {currentProduct?.salePrice}
+          </p>
+            </div>
+
+
+
+            <div className="col-span-3">
+          <p className="text-gray-400 capitalize mb-2">
             <strong>Category :</strong> {categoryName}
           </p>
-          <p className="text-gray-400 capitalize">
+          <p className="text-gray-400 capitalize mb-2">
             <strong>Discount Percent :</strong> {currentProduct?.discountPercent}
           </p>
+            </div>
+          </div>
+          
+         
         </div>
       </div>
     </div>

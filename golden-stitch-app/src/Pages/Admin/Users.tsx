@@ -14,7 +14,7 @@ export default function Users() {
   // const { users, isLoading } = useDashboardAdmin(); 
   const { openPopup, setOpenPopup, navigate } = useGlobal();
   const { allUsers, softDelUsers, data } = useProfileContext();
-  console.log({ allUsers });
+  // console.log({ allUsers });
 
   const usersHeaders = [
     { id: 1, label: "Username" },

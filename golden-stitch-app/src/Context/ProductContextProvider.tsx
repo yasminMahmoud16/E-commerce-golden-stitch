@@ -96,6 +96,7 @@ export default function ProductContextProvider({ children }: { children: ReactNo
       formData.append("name", data.name);
       formData.append("description", data.description ||"");
       formData.append("mainPrice", data.mainPrice.toString());
+      formData.append("stock", data.stock.toString());
       formData.append("discountPercent", data.discountPercent.toString());
 formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
 

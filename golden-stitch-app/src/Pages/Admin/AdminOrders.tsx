@@ -39,7 +39,7 @@ export default function ArchiveOrders() {
     // const [pendingCancelStatus, setPendingCancelStatus] = useState<string | null>(null);
     const [pendingStatus, setPendingStatus] = useState<Record<string, string>>({});
  const navigate = useNavigate(); 
-    console.log({ ordersData });
+    // console.log({ ordersData });
     const Headers = [
         { id: 3, label: "Customer Name" },
         { id: 1, label: "Address" },
@@ -88,7 +88,7 @@ export default function ArchiveOrders() {
             </Select>
         </div>
 
-        <div className="w-full overflow-x-auto scrollbar-hide">
+        <div className="w-full overflow-x-hidden scrollbar-hide">
             <Table className="min-w-full">
                 <TableHeader>
                     <TableRow>
@@ -111,10 +111,10 @@ export default function ArchiveOrders() {
                             className=" cursor-pointer border-none  transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize
                             "
                         >
-                            <TableCell className="font-medium text-center ">{data.createdBy?.username}</TableCell>
+                            <TableCell className="font-medium text-center p-0 text-sm ">{data.createdBy?.username}</TableCell>
 
-                            <TableCell className="font-medium text-center ">{data.address}</TableCell>
-                            <TableCell className="font-medium text-center  ">
+                            <TableCell className="font-medium text-center  pl-4">{data.address.slice(1,20)}</TableCell>
+                            <TableCell className="font-medium text-center  p-0">
                                 {data.products?.length
                                     ? `${data.products[0].productId?.name}${data.products.length > 1 ? " ..." : ""
                                     }`
@@ -126,10 +126,10 @@ export default function ArchiveOrders() {
 
 
                             <TableCell className="font-medium text-center ">{data.paymentType}</TableCell>
-                            <TableCell className="font-medium text-xs truncate max-w-20">
-                                {String(data.note || "").slice(0, 60)}
+                            <TableCell className="font-medium text-xs truncate text-center ">
+                                {String(data.note || "no note for this order")}
                             </TableCell>
-                            <TableCell className="font-medium text-center ">{data.phone}</TableCell>
+                            <TableCell className="font-medium text-center text-xs   ">{data.phone}</TableCell>
 
                             <TableCell className="font-medium text-center ">
                                 <Select

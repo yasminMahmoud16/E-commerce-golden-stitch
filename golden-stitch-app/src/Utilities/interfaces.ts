@@ -214,7 +214,7 @@ export interface IProductEditInput {
     id?: string;
     name: string;
     description?: string;
-    // stock: number;
+    stock: number;
     mainPrice: number;
     discountPercent: number;
     category: {

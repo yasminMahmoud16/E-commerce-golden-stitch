@@ -37,7 +37,7 @@ onClick={() => onClickCard?.()}
         before:content-[''] before:absolute 
         before:top-[100%] before:left-[-100%]
         before:w-[200%] before:h-[200%] 
-        before:bg-gradient-to-br before:from-transparent before:via-white/20 before:to-transparent
+        before:bg-gradient-to-br before:from-transparent before:via-white/10 before:to-transparent
         before:rotate-0
         before:transition-transform before:duration-900
         group-hover:before:translate-x-[50%] 
@@ -68,7 +68,7 @@ onClick={() => onClickCard?.()}
           </span>
     </div>
       </CardContent>
-      <CardHeader className="absolute opacity-0  -bottom-10 bg-gray-50/15 w-full p-2 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:bottom-0">
+      <CardHeader className="absolute opacity-0  -bottom-10 bg-gray-600/30 w-full p-2 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:bottom-0">
         <CardTitle className="text-gray-300 font-semibold text-xl capitalize">{title}</CardTitle>
         <CardDescription className="flex items-center justify-center" >
           <p className="capitalize text-gray-300">{description.slice(0,60) }</p>

@@ -26,7 +26,7 @@ export default function ProductEdit({ product, onBack }: {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<UpdateProductForm>({
         resolver: zodResolver(updateProductSchema) as unknown as Resolver<UpdateProductForm>,
          defaultValues: {
-    category: { id: "", name: "" }, // 👈 مهم جدًا
+    category: { id: "", name: "" }, 
   },
     });
     const [preview, setPreview] = useState<string[]>([]);
@@ -50,6 +50,7 @@ export default function ProductEdit({ product, onBack }: {
             setValue("name", product.name);
             setValue("description", product.description);
             setValue("mainPrice", product.mainPrice);
+            setValue("stock", product.stock);
                     setValue("category", { id: product.category?.id || "", name: product.category?.name || "" });
 
 
@@ -77,7 +78,7 @@ export default function ProductEdit({ product, onBack }: {
             name: data.name,
             description: data.description,
             mainPrice: Number(data.mainPrice),
-            // stock: Number(data.stock),
+            stock: Number(data.stock),
             discountPercent: Number(data.discountPercent),
             category: data.category || { id: "", name: "" },
             attachments: data.attachments || [],
@@ -165,6 +166,14 @@ export default function ProductEdit({ product, onBack }: {
                     <Input id="mainPrice" placeholder="Enter product price" className="text-gray-300" {...register("mainPrice")} />
                     {errors.mainPrice && <p className="text-[hsl(22,55%,44%)] 
                         text-sm">{errors.mainPrice.message}</p>}
+          </div>
+          
+          {/* stock */}
+                <div className="space-y-2">
+                    <Label htmlFor="stock" className="capitalize text-gold-light font-semibold">stock</Label>
+                    <Input id="stock" placeholder="stock" className="text-gray-300" {...register("stock")} />
+                    {errors.stock && <p className="text-[hsl(22,55%,44%)] 
+                        text-sm">{errors.stock?.message}</p>}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="discountPercent" className="capitalize text-gold-light font-semibold">discountPercent</Label>

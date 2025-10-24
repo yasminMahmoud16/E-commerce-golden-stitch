@@ -176,7 +176,7 @@ const [, setSelectedData] = useState<string | null>(null);
                                     <TableCell className="font-medium text-center">  {data.createdBy?.username || "Unknown"}</TableCell>
                                     <TableCell className="font-medium text-xs">
                                         {/* {data.description.slice(0, 60)} */}
-                                          {String(data.description || "").slice(0, 60)}
+                                        {String(data.description || "").slice(0, 60)}
 
                                     </TableCell>
                                 </TableRow>

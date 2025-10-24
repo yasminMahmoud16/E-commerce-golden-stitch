@@ -58,7 +58,7 @@ export default function ProductDetails() {
 
                             </div>
                             <div>
-                                <Carousel className=" relative">
+                                <Carousel className=" relative  w-80 p-5">
                                     <CarouselPrevious className="cursor-pointer absolute left-1 z-10" />
                                     <CarouselContent className="-ml-4 flex mt-3">
                                         {product?.images?.map((img, index) => (
@@ -97,14 +97,14 @@ export default function ProductDetails() {
                                 <p> {product?.description}</p>
 
                                 <div >
-                                    <p className="text-md font-semibold text-gold-dark mb-2">
+                                    <p className="text-md font-semibold text-gold-dark mb-1">
                                         <span className="text-dark-blue-2 font-light">
                                             stock:
                                     </span> {product?.stock} </p>
                                     
                                 </div>
                                 <div >
-                                    <p className="text-md font-semibold text-gold-dark mb-3">
+                                    <p className="text-md font-semibold text-gold-dark mb-1">
                                         <span className="text-dark-blue-2 font-light">
                                         sale Price:
 
@@ -115,7 +115,17 @@ export default function ProductDetails() {
                                     
                                 </div>
                                 <div >
-                                    <p className="text-4xl font-bold text-gold-dark mb-3">{product?.mainPrice} EGP</p>
+                                    <p className="text-md font-semibold text-gold-dark mb-1">
+                                        <span className="text-dark-blue-2 font-light">
+                                        Discount Percent:
+                                        </span>
+                                            
+                                        
+                                        {product?.discountPercent} %</p>
+                                    
+                                </div>
+                                <div >
+                                    <p className="text-4xl font-bold text-gold-dark mb-1">{product?.mainPrice} EGP</p>
                                     
                                 </div>
                                 <div  >

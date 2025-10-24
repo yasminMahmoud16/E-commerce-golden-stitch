@@ -90,7 +90,7 @@ export default function ArchiveCategory() {
                             <TableCell className="font-medium text-xs truncate max-w-[200px]">
                                 {String(data.description || "").slice(0, 60)}
                             </TableCell>
-                            <TableCell className="font-medium text-center">{data.freezedAt}</TableCell>
+                            <TableCell className="font-medium text-center">{new Date(data.freezedAt).toLocaleString()}</TableCell>
                             <TableCell className="font-medium text-center flex gap-3 items-center justify-center mt-5" >
                                 <Icons.MdOutlineRestore className="text-2xl text-[hsl(22,55%,44%)] transition-all duration-300 ease-in-out hover:text-green-400"
                                     onClick={() => { restoreCategory(data.id) }}
