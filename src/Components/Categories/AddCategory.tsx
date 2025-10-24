@@ -1,0 +1,206 @@
+import { useForm } from "react-hook-form";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
+import { Button } from "@/Components/ui/button";
+import { toast } from "sonner";
+import {  useState } from "react";
+import { Icons } from "@/assets/Icons/icons";
+import BtnCommon from "@/common/BtnCommon";
+import { useCategoryContext } from "@/Hooks/useAppContexts";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createCategory, type CategoryFormValues } from "@/Pages/Auth/validation/categoryValidation";
+// import type { ICategory } from "@/Utilities/interfaces";
+import type { ICategoryUpdateInput } from "@/Utilities/interfaces";
+
+export default function AddCategory({ onBack }: { onBack: () => void }) {
+  const { register, handleSubmit,  setValue, formState: { errors },  } = useForm({
+   resolver:zodResolver(createCategory)
+ });
+  const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const {addCategory} = useCategoryContext()
+  
+
+
+    const onSubmit = (data: CategoryFormValues) => {
+      setLoading(true);
+    const payload: ICategoryUpdateInput = {
+      // id: data?.id || "",
+      name: data.name,
+      description: data.description ||"",
+  
+      attachment: data.attachment,
+    };
+  
+    addCategory.mutate(payload, {
+      onSuccess: () => {
+        setLoading(false);
+        onBack();
+      },
+      onError: (error) => {
+              setLoading(false);
+
+        toast.error(`Add  category error:${error}`)
+        // console.log("Add product error:", error);
+      }
+    });
+  
+  };
+  
+//   const onSubmit = async (data: { name: string; description?: string; attachment?: string }) => {
+//     try {
+//     setLoading(true);
+//     const formData = new FormData();
+//     formData.append("name", data.name);
+//     formData.append("description", data.description || "");
+//     if (data.attachment?.[0]) {
+//       formData.append("attachment", data.attachment[0]);
+//     }
+
+//     const res = await axiosInstance.post("/category", formData, {
+//       headers: getAuthHeader(),
+//     });
+
+
+//     if (res.data.message === "Done") {
+//       // console.log({ addCategory: res });
+//       toast.success("Category added successfully!");
+//       reset();
+//       setPreview(null);
+//       onBack();
+//     }
+//   } catch (error) {
+//     if (axios.isAxiosError(error)) {
+//       const detailedError =
+//         error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+//       const generalError = error?.response?.data?.message;
+//       const messageToShow = detailedError || generalError || "Add category issue";
+//       toast.error(messageToShow);
+//     }
+//     // console.log({ addCat: error });
+//   } finally {
+//     setLoading(false)
+//   }
+// };
+
+
+
+  return (
+    <div className="flex flex-col justify-center items-center p-6">
+
+      
+
+
+      <div className="flex items-center justify-center gap-3 mb-4">
+        <Icons.BiSolidCategoryAlt className="text-3xl text-gold"/>
+      <h1 className=" text-3xl text-gold font-semibold capitalize">Add category</h1>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
+
+            {/* Name */}
+            <div className="space-y-2 ">
+              <Label htmlFor="name" className="capitalize text-gold-light font-semibold">Name</Label>
+              <Input
+                id="name"
+            type="text"
+            className=" placeholder:text-gray-400 text-gray-300"
+                placeholder="Enter category name"
+                {...register("name", { required: true })}
+          />
+          {errors.name && <p className="text-[hsl(22,55%,44%)] font-semibold text-sm">{errors.name.message}</p>}
+            </div>
+
+            {/* Description */}
+            <div className="space-y-2">
+              <Label htmlFor="description" className="capitalize text-gold font-semibold text-sm">Description</Label>
+              <Input
+            id="description"
+            className="placeholder:text-gray-400 text-gray-300"
+                placeholder="Enter category description"
+                {...register("description")}
+          />
+          {errors.description && <p className="text-[hsl(22,55%,44%)] font-semibold  text-sm">{errors.description.message}</p>}
+            </div>
+
+            {/* Image Upload + Preview */}
+
+        <div className="space-y-2  flex items-center flex-col justify-center">
+
+
+  <input
+    id="attachment"
+    type="file"
+    accept="image/*"
+    className="hidden"
+    {...register("attachment")}
+    onChange={(e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        setValue("attachment", [file])
+        const reader = new FileReader();
+        reader.onloadend = () => setPreview(reader.result as string);
+        reader.readAsDataURL(file);
+      }
+    }}
+          />
+          
+
+  <label
+    htmlFor="attachment"
+    className="
+      flex flex-col items-center justify-center
+      w-32 h-32 rounded-full 
+      border-2 border-dashed border-gold-light
+      text-gold-light cursor-pointer
+      hover:bg-gold-dark/10 hover:border-gold-dark
+      transition-all duration-300 ease-in-out
+    "
+  >
+    {preview ? (
+      <img
+        src={preview}
+        alt="Preview"
+        className="w-full h-full rounded-full object-cover"
+      />
+    ) : (
+      <>
+        <Icons.FaCamera className="text-3xl mb-2 text-gold" />
+        <span className="text-sm">Upload Image</span>
+      </>
+    )}
+          </label>
+      
+
+
+</div>
+
+            {/* Buttons */}
+            <div className="flex justify-between pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onBack}
+                className="rounded-xl cursor-pointer transition-all ease-in-out duration-300  hover:bg-gold-dark hover:text-white border-none"
+              >
+                Cancel
+          </Button>
+          {/* {loading ? <>
+            <BtnCommon text="Category adding ...."
+              type="submit"
+              className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
+                hover:from-gold-dark hover:to-[55%] "/>
+          </> :
+          } */}
+          <BtnCommon text="Add Category "
+            type="submit"
+            loading={loading}
+            
+            className="rounded-xl cursor-pointer transition-all duration-700 ease-in-out 
+              hover:from-gold-dark hover:to-[55%]  w-40"/>
+                
+            </div>
+          </form>
+  
+    </div>
+  );
+}
