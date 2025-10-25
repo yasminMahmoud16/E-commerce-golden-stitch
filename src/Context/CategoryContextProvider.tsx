@@ -27,7 +27,7 @@ const addCategory = useMutation<IAddCategoryResponse, unknown, ICategoryUpdateIn
     try {
       if (!data.attachment || data.attachment.length === 0) {
         // toast.error("image rrequired");
-        throw new Error("image required"); // ← مهم جداً علشان يعتبرها فشل
+        throw new Error("image required");
       }
 
       const formData = new FormData();
@@ -164,7 +164,6 @@ const addCategory = useMutation<IAddCategoryResponse, unknown, ICategoryUpdateIn
     } catch (error) {
       if (!localStorage.getItem("token")) return;
 
-      // ✅ الشرط ده يمنع الـ toast أثناء أول تحميل فقط
       if (firstLoad) {
         if (axios.isAxiosError(error)) {
           // toast.error("something went wrong");
