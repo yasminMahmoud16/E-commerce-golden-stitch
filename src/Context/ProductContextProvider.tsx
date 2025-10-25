@@ -22,6 +22,7 @@ export default function ProductContextProvider({ children }: { children: ReactNo
   const [isLoadingArchive, setIsLoadingArchive] = useState(false);
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
   const firstLoad = useRef(true);
+console.log({isLoadingArchive});
 
 
   //  Get All Products
