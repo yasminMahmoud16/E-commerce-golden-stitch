@@ -1,4 +1,4 @@
-import {  useState, type ReactNode } from 'react'
+import {  useRef, useState, type ReactNode } from 'react'
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { useAxios } from '@/Hooks/useAxios';
 import { toast } from 'sonner';
@@ -17,7 +17,8 @@ export default function CategoryContextProvider({ children }: { children: ReactN
   const [isUpdating, setIsUpdating] = useState(false); 
   const { getAuthHeader, token } = useAuthContext();
   const queryClient = useQueryClient();
-
+  const firstLoad = useRef(true);
+    // const [isLoadingArchive, setIsLoadingArchive] = useState(false);
 
 
 
@@ -149,27 +150,58 @@ const addCategory = useMutation<IAddCategoryResponse, unknown, ICategoryUpdateIn
   });
 
 // Archive category
-
-      const categoryArchives = async ({ page = 1, size = 5, search = "" }) => {
+  const categoryArchives = async ({ page = 1, size = 5, search = "" }) => {
     try {
+      if (!localStorage.getItem("token")) return;
+
+      // // ✅ سطر بسيط يمنع الـ toast أول تحميل
+      // const isFirstLoad = !isLoadingArchive; 
+
       const res = await axiosInstance.get(`/category/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
-      const archiveCategory =res.data.data.categories as ICategoryResponse
+      const archiveCategory = res.data.data.categories as ICategoryResponse;
       // console.log("archiveCategory=================", res.data.data.categories.docs);
-      return archiveCategory 
+      return archiveCategory;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error("something went wrong")
-        // console.log("product archive error", error);
+      if (!localStorage.getItem("token")) return;
+
+      // ✅ الشرط ده يمنع الـ toast أثناء أول تحميل فقط
+      if (firstLoad) {
+        if (axios.isAxiosError(error)) {
+          // toast.error("something went wrong");
+          // console.log("product archive error", error);
+        }
       }
+
       return {
-            currentPage: 1,
-            docs: [],
-            docsCount: 0,
-            limit: size,
-            pages: 1,
-          } as ICategoryResponse; 
+        currentPage: 1,
+        docs: [],
+        docsCount: 0,
+        limit: size,
+        pages: 1,
+      } as ICategoryResponse; 
     }
   }
+
+  //     const categoryArchives = async ({ page = 1, size = 5, search = "" }) => {
+  //   try {
+  //     const res = await axiosInstance.get(`/category/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
+  //     const archiveCategory =res.data.data.categories as ICategoryResponse
+  //     // console.log("archiveCategory=================", res.data.data.categories.docs);
+  //     return archiveCategory 
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       toast.error("something went wrong")
+  //       // console.log("product archive error", error);
+  //     }
+  //     return {
+  //           currentPage: 1,
+  //           docs: [],
+  //           docsCount: 0,
+  //           limit: size,
+  //           pages: 1,
+  //         } as ICategoryResponse; 
+  //   }
+  // }
 
 
   

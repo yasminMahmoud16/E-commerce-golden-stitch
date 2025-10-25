@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { useAxios } from "@/Hooks/useAxios";
 import {  useQuery } from "@tanstack/react-query";
@@ -22,6 +22,7 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
   const axiosInstance = useAxios();
   // const queryClient = useQueryClient();
   // const [localUsers, setLocalUsers] = useState<Record<string, string>[]>([]);
+const isFirstRender = useRef(true);
 
 
   const getProfile = async () => {
@@ -98,34 +99,60 @@ export default function ProfileContextProvider({ children }: { children: ReactNo
 
   // get all users
   
-      const getAllUsers = async () => {
-        try {
-            const res = await axiosInstance.get('/user/dashboard',
-                {
-                    headers: getAuthHeader()
-                }
-            );
-            // console.log({ AllUsers: res });
-          const users = res.data.data.result[0].value
+    //   const getAllUsers = async () => {
+    //     try {
+    //         const res = await axiosInstance.get('/user/dashboard',
+    //             {
+    //                 headers: getAuthHeader()
+    //             }
+    //         );
+    //         // console.log({ AllUsers: res });
+    //       const users = res.data.data.result[0].value
           
-            // console.log({ users });
-            return users;
+    //         // console.log({ users });
+    //         return users;
 
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
+    //     } catch (error) {
+          
+    //         if (axios.isAxiosError(error)) {
                 
-                // console.log({ dashError: error });
+    //             // console.log({ dashError: error });
     
-                const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+    //             const detailedError = error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
     
-                const generalError = error?.response?.data?.message;
+    //             const generalError = error?.response?.data?.message;
     
-                const messageToShow = detailedError || generalError || "Something went wrong";
-                toast.error(messageToShow);
-            }
-        }
+    //             const messageToShow = detailedError || generalError || "Something went wrong";
+    //             toast.error(messageToShow);
+    //       }
+    //         return []; 
+    //     }
+    // }
+const getAllUsers = async () => {
+  try {
+    const res = await axiosInstance.get("/user/dashboard", {
+      headers: getAuthHeader(),
+    });
+    const users = res.data.data.result[0].value;
+    return users;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      
+      if (!isFirstRender.current) {
+        const detailedError =
+          error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+        const generalError = error?.response?.data?.message;
+        const messageToShow =
+          detailedError || generalError || "Something went wrong";
+        // toast.error(messageToShow);
+      }
     }
-
+    return [];
+  } finally {
+    // بعد أول محاولة تحميل، نخلي الفلاج false
+    isFirstRender.current = false;
+  }
+};
 
   const { data:allUsers, refetch} = useQuery({
     queryKey: ["getAllUsers", token],

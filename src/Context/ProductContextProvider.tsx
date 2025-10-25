@@ -1,4 +1,4 @@
-import {  useState, type ReactNode } from 'react'
+import {  useRef, useState, type ReactNode } from 'react'
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { useAxios } from '@/Hooks/useAxios';
 import { toast } from 'sonner';
@@ -21,6 +21,7 @@ export default function ProductContextProvider({ children }: { children: ReactNo
   const queryClient = useQueryClient();
   const [isLoadingArchive, setIsLoadingArchive] = useState(false);
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+  const firstLoad = useRef(true);
 
 
   //  Get All Products
@@ -196,7 +197,6 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
         headers: getAuthHeader(),
       });
 
-      // ✅ تأكد إن الرد موجود قبل الوصول لـ data
       if (!res || !res.data) {
         throw new Error("No response from server");
       }
@@ -204,9 +204,7 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
       return res.data as IAddProductResponse;
 
     } catch (error: unknown) {
-      // ✅ خلي React Query يمرر الخطأ لـ onError
       if (axios.isAxiosError(error)) {
-        // ارمي الخطأ عشان onError يمسكه
         throw error;
       } else {
         throw new Error("Unexpected error during product upload");
@@ -353,34 +351,74 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
   
 
   
-  const productsArchives = async ({ page = 1, size = 5, search = "" }) => {
-    try {
-      setIsLoadingArchive(true);
-      const res = await axiosInstance.get(`/product/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
-      const archiveProducts =res.data.data.products as IProductsResponse
-      // console.log("productsArchives=================", res.data.data.products.docs);
-      return archiveProducts 
+//   const productsArchives = async ({ page = 1, size = 5, search = "" }) => {
+//     try {
+//       if (!localStorage.getItem("token")) return;
+//       setIsLoadingArchive(true);
+//       const res = await axiosInstance.get(`/product/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`);
+//       const archiveProducts =res.data.data.products as IProductsResponse
+//       // console.log("productsArchives=================", res.data.data.products.docs);
+//       return archiveProducts
 
-    } catch (error: unknown) {
-  if (!isLoadingArchive) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || error.message || "Something went wrong");
-      } else {
-        // toast.error("Unexpected error occurred");
-      }
+//     } catch (error: unknown) {
+//       if (!localStorage.getItem("token")) return;
+//   if (!isLoadingArchive) {
+//     if (axios.isAxiosError(error)) {
+        
+//         toast.error(error.response?.data?.message || error.message || "Something went wrong");
+//       } else {
+//         // toast.error("Unexpected error occurred");
+//       }
+//     }
+//   return {
+//         currentPage: 1,
+//         docs: [],
+//         docsCount: 0,
+//         limit: size,
+//         pages: 1,
+//       } as IProductsResponse;
+// }finally {
+//     setIsLoadingArchive(false);
+//   }
+
+  //   }
+  
+
+const productsArchives = async ({ page = 1, size = 5, search = "" }) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    setIsLoadingArchive(true);
+
+    const res = await axiosInstance.get(
+      `/product/archive?page=${page}&size=${size}${search ? `&search=${search}` : ""}`
+    );
+
+    const archiveProducts = res.data.data.products as IProductsResponse;
+    return archiveProducts;
+  } catch (error: unknown) {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    
+    if (!firstLoad.current && axios.isAxiosError(error)) {
+      // toast.error(error.response?.data?.message || error.message || "Something went wrong");
     }
-  return {
-        currentPage: 1,
-        docs: [],
-        docsCount: 0,
-        limit: size,
-        pages: 1,
-      } as IProductsResponse;
-}finally {
+  } finally {
     setIsLoadingArchive(false);
+    firstLoad.current = false; 
   }
 
-  }
+  return {
+    currentPage: 1,
+    docs: [],
+    docsCount: 0,
+    limit: size,
+    pages: 1,
+  } as IProductsResponse;
+};
+
 
 
   
