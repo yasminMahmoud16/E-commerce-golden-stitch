@@ -1,1 +1,0 @@
-const e="/E-commerce-golden-stitch/assets/secCornerRight-BUwBCZ0y.png",t="/E-commerce-golden-stitch/assets/secCornerLeft-DOnO-R8O.png",s="/E-commerce-golden-stitch/assets/cornerBottomLeftHero-CUct058n.png";export{t as a,s as c,e as s};
