@@ -34,7 +34,9 @@ export default function Footer() {
                             <a href="https://wa.me/01119866111"
                                 target="_blank"
                                 rel="noopener noreferrer" className='w-8 h-8 rounded-full flex items-center justify-center  '><Icons.FaWhatsapp size={22} className='text-footer-items transition-all duration-500 ease-in-out hover:text-green-400' /></a>
-                            <span className='w-8 h-8 rounded-full flex items-center justify-center  '><Icons.FaInstagram size={20} className='text-footer-items transition-all duration-500 ease-in-out hover:text-pink-700' /></span>
+                            <a href="https://www.instagram.com/gsl3_0/" target="_blank" className='w-8 h-8 rounded-full flex items-center justify-center  '>
+                                <Icons.FaInstagram size={20} className='text-footer-items transition-all duration-500 ease-in-out hover:text-pink-700' />
+                            </a>
                         </div>
                     </div>
                     <div className="col-span-2 flex  flex-col  items-center justify-center gap-2">
