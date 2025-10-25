@@ -1,22 +1,15 @@
-
-
 import axios from "axios";
 import { useAuthContext } from "./useAppContexts";
 
 export function useAxios() {
-  const {
-    setToken,
-    setRefreshToken,
-    getAuthHeader,
-    getRefreshHeader,
-  } = useAuthContext();
+  const { setToken, setRefreshToken, getAuthHeader, getRefreshHeader } =
+    useAuthContext();
 
   const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL ,
+    baseURL: "http://54.221.212.74/api",
     // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
   });
   // console.log({axiosInstance});
-  
 
   axiosInstance.interceptors.request.use(
     (config) => {
@@ -35,7 +28,7 @@ export function useAxios() {
     if (!refreshHeader?.Authorization) return null;
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/user/refresh-token`,
+        `http://54.221.212.74/api/user/refresh-token`,
         {},
         { headers: getRefreshHeader() }
       );
@@ -66,8 +59,6 @@ export function useAxios() {
         //   error?.response?.data?.message ||
         //   "get new credentials issue";
 
-        
-        
         // console.log(msg);
         return null;
       }
@@ -90,13 +81,15 @@ export function useAxios() {
         if (newCredentials?.access_token) {
           const role = localStorage.getItem("role");
           const signature = role === "System" ? "System" : "Bearer";
-          originalRequest.headers["Authorization"] = `${signature} ${newCredentials.access_token}`;
+          originalRequest.headers[
+            "Authorization"
+          ] = `${signature} ${newCredentials.access_token}`;
 
           return axiosInstance(originalRequest);
         } else {
           localStorage.removeItem("token");
           localStorage.removeItem("refreshToken");
-          return Promise.resolve({ data: null }); 
+          return Promise.resolve({ data: null });
         }
       }
 

@@ -29,7 +29,7 @@ console.log({isLoadingArchive:isLoadingArchive});
   const getProducts = async ({ page = 1, size = 5, search = "", categoryId = "" }) => {
   let url = `/product?page=${page}&size=${size}`;
 
-  console.log("Full request URL:", import.meta.env.VITE_BASE_URL + url);
+  console.log("Full request URL:",  "http://54.221.212.74/api"+ url);
     
   if (categoryId) {
     url += `&categoryId=${categoryId}`;
