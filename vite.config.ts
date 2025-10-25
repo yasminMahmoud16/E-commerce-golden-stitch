@@ -23,7 +23,8 @@ export default defineConfig({
       '/uploads': {
         // target: 'http://localhost:3000',
         // target: 'https://carletta-nonchimerical-hilda.ngrok-free.dev',
-        target: 'http://18.234.168.49',
+        // target: 'http://18.234.168.49',
+        target: 'http://54.221.212.74/api',
         changeOrigin: true,
       },
     },

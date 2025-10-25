@@ -12,7 +12,7 @@ export function useAxios() {
   } = useAuthContext();
 
   const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL || "http://18.234.168.49",
+    baseURL: import.meta.env.VITE_BASE_URL || "http://54.221.212.74/api",
     // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
   });
   // console.log({axiosInstance});
