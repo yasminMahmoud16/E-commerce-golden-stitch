@@ -16,7 +16,7 @@ export default defineConfig({
     }
   },
 
-  base: "/E-commerce-golden-stitch/",
+  base: "./",
 
   server: {
     proxy: {

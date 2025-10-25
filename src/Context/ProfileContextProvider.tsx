@@ -144,6 +144,8 @@ const getAllUsers = async () => {
         const generalError = error?.response?.data?.message;
         const messageToShow =
           detailedError || generalError || "Something went wrong";
+          console.log({messageToShow:messageToShow?.length});
+          
         // toast.error(messageToShow);
       }
     }
