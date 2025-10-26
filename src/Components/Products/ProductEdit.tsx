@@ -53,7 +53,8 @@ export default function ProductEdit({ product, onBack }: {
             setValue("description", product.description);
             setValue("mainPrice", product.mainPrice);
             setValue("stock", product.stock);
-            setValue("category", { id: product.category?.id || "", name: product.category?.name || "" });
+            setValue("discountPercent", product.discountPercent ?? undefined);
+              setValue("category", { id: product.category?.id || "", name: product.category?.name || "" });
 
 
                 setSelectedCategoryId(product.category?.id || "");
@@ -81,7 +82,11 @@ export default function ProductEdit({ product, onBack }: {
             description: data.description,
             mainPrice: Number(data.mainPrice),
             stock: Number(data.stock),
-            discountPercent: Number(data.discountPercent),
+          // discountPercent: Number(data.discountPercent),
+          ...(data.discountPercent !== undefined && data.discountPercent !== null 
+      ? { discountPercent: Number(data.discountPercent) }
+      : {}),
+            
             category: data.category || { id: "", name: "" },
             attachments: data.attachments || [],
             removedAttachments,
@@ -94,7 +99,7 @@ export default function ProductEdit({ product, onBack }: {
             },
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             onError: (_error) => {
-      toast.error("❌ Failed to update product");
+      // toast.error(" Failed to update product");
                 //   console.log("update product error:", error);
             }
         });
@@ -180,8 +185,7 @@ export default function ProductEdit({ product, onBack }: {
                 <div className="space-y-2">
                     <Label htmlFor="discountPercent" className="capitalize text-gold-light font-semibold">discountPercent</Label>
                     <Input id="discountPercent" placeholder="Enter product price" className="text-gray-300"{...register("discountPercent")} />
-                    {errors.discountPercent && <p className="text-[hsl(22,55%,44%)] 
-                        text-sm">{errors.discountPercent.message}</p>}
+                    
                 </div>
 
 

@@ -11,6 +11,8 @@ export function useAxios() {
     getRefreshHeader,
   } = useAuthContext();
 
+  let refreshing = false; //follow the res 
+
   const axiosInstance = axios.create({
     baseURL:"http://54.221.212.74/api" ,
     // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
@@ -78,31 +80,81 @@ export function useAxios() {
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
-
+      // check token expired
       const isTokenExpired =
         error.response?.status === 401 ||
         error.response?.data?.message?.toLowerCase()?.includes("jwt expired");
 
+      // retry if token end
       if (isTokenExpired && !originalRequest._retry) {
         originalRequest._retry = true;
-        const newCredentials = await getNewCredentials();
+        refreshing = true;
 
+        const newCredentials = await getNewCredentials();
+        refreshing = false;
+
+        // refresh token success
+        
         if (newCredentials?.access_token) {
           const role = localStorage.getItem("role");
           const signature = role === "System" ? "System" : "Bearer";
           originalRequest.headers["Authorization"] = `${signature} ${newCredentials.access_token}`;
 
+          // req re-back
           return axiosInstance(originalRequest);
         } else {
-          localStorage.removeItem("token");
-          localStorage.removeItem("refreshToken");
-          return Promise.resolve({ data: null }); 
+          // silent error
+          return Promise.reject({ ...error, silent: true });
         }
       }
+
+      // don't show jwt 
+
+      const jwtMsg = error?.response?.data?.message?.toLowerCase?.() || "";
+      if (jwtMsg.includes("jwt expired")) {
+        return Promise.reject({ ...error, silent: true });
+      }
+      // return author errors
 
       return Promise.reject(error);
     }
   );
+
+  // axiosInstance.interceptors.response.use(
+  //   (response) => response,
+  //   async (error) => {
+  //     const originalRequest = error.config;
+
+  //     const isTokenExpired =
+  //       error.response?.status === 401 ||
+  //       error.response?.data?.message?.toLowerCase()?.includes("jwt expired");
+
+  //     if (isTokenExpired && !originalRequest._retry) {
+  //       originalRequest._retry = true;
+  //       refreshing = true; //start refresh
+  //       const newCredentials = await getNewCredentials();
+  //       refreshing = false; //refresh ending 
+
+  //       if (newCredentials?.access_token) {
+  //         const role = localStorage.getItem("role");
+  //         const signature = role === "System" ? "System" : "Bearer";
+  //         originalRequest.headers["Authorization"] = `${signature} ${newCredentials.access_token}`;
+
+  //         return axiosInstance(originalRequest);
+  //       } else {
+  //         // localStorage.removeItem("token");
+  //         // localStorage.removeItem("refreshToken");
+  //         // return Promise.resolve({ data: null }); 
+  //         // return Promise.reject(error)
+  //         // return Promise.reject({ ...error, silent: true });
+  //       }
+  //     }
+      
+  //     // return Promise.resolve({ data: null }); 
+  //     return Promise.reject(error);
+  //     // return Promise.reject({ ...error, silent: true });
+  //   }
+  // );
 
   return axiosInstance;
 }

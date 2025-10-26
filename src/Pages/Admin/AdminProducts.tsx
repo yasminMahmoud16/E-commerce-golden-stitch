@@ -63,6 +63,7 @@ const { data: catSize } = useQuery({
     { id: 7, label: "Category Name" },
     { id: 4, label: "Price" },
     { id: 10, label: "Sale Price" },
+    { id: 10, label: "Discount Percent" },
     { id: 6, label: "Customer Name" },
     { id: 5, label: "Stock" },
     { id: 8, label: "Description" },
@@ -242,6 +243,7 @@ const { data: catSize } = useQuery({
             <TableCell className="font-medium  text-sm text-center">{data.category?.name}</TableCell>
             <TableCell className="font-medium  text-sm text-center">{data.mainPrice}</TableCell>
             <TableCell className="font-medium  text-sm text-center">{data.salePrice}</TableCell>
+            <TableCell className="font-medium  text-sm text-center">{data.discountPercent ||0}</TableCell>
             <TableCell className="font-medium  text-sm text-center">{data.createdBy.username}</TableCell>
             <TableCell className="font-medium text-sm text-center">{data.stock}</TableCell>
             <TableCell className="font-medium text-xs">{data.description.slice(0, 30)}</TableCell>

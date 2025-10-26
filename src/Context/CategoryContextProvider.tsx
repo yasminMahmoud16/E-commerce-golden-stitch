@@ -53,6 +53,7 @@ const addCategory = useMutation<IAddCategoryResponse, unknown, ICategoryUpdateIn
           error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
         const generalError = error?.response?.data?.message;
         const messageToShow = detailedError || generalError;
+
         toast.error(messageToShow);
       } else if (error instanceof Error) {
         // toast.error(error.message); 

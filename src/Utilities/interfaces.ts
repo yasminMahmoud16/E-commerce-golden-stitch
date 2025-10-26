@@ -155,7 +155,7 @@ export interface IProduct {
     stock: number;
     mainPrice: number;
     salePrice?: number;
-    discountPercent: number;
+    discountPercent?: number |undefined;
     category?: {
         id?: string;
         name?: string;
@@ -202,7 +202,7 @@ export interface IProductUpdateInput {
     description?: string;
     stock: number;
     mainPrice: number;
-    discountPercent: number;
+    discountPercent?: number |undefined;
     category: {
         id?: string;
         name?: string;
@@ -216,7 +216,7 @@ export interface IProductEditInput {
     description?: string;
     stock: number;
     mainPrice: number;
-    discountPercent: number;
+    discountPercent?: number |undefined;
     category: {
         id?: string;
         name?: string;

@@ -41,7 +41,7 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
     name: "",
     mainPrice: 0,
     stock: 0,
-    discountPercent: 0,
+    discountPercent: undefined ,
     description: "",
     categoryId: "",
     attachments: undefined,
@@ -79,26 +79,35 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
     description: data.description,
     mainPrice: Number(data.mainPrice),   
     stock: Number(data.stock),
-    discountPercent: Number(data.discountPercent),
-    // category: { id: data.categoryId || "" },
-      category: { id: selectedCategoryId || "" },
+    ...(data.discountPercent && data.discountPercent > 0
+    ? { discountPercent: Number(data.discountPercent) }
+    : {}),
+  // discountPercent: Number(data.discountPercent ?? 0),
+  // discountPercent:
+  //   data.discountPercent !== undefined && data.discountPercent !== null
+  //     ? Number(data.discountPercent)
+  //     : undefined,
+  // category: { id: data.categoryId || "" },
+    category: { id: selectedCategoryId || "" },
 
-    attachments: data.attachments || [],
+  attachments: data.attachments || [],
   };
 
   addProduct.mutate(payload, {
     onSuccess: () => {
       onBack();
     },
-    // onError: (error) => {
-    //   toast.error(`Add  product error:${error}`)
-    //   // console.log("Add product error:", error);
-    // }
+    onError: (_error) => {
+      setIsLoading(false)
+      // toast.error(`Add  product error:${error}`)
+      // console.log("Add product error:", error);
+    }
   });
 
 };
 
 
+console.log(errors);
 
 
   return (
@@ -181,11 +190,14 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
           <Input id="stock" placeholder="Enter product price" {...register("stock",{ valueAsNumber: true })} className="text-gray-300" />
           {errors.stock && <p className="text-[hsl(22,55%,44%)]  text-sm">{errors.stock.message}</p>}
         </div>
-        {/* stock */}
+        {/* discountPercent */}
         <div className="space-y-2">
           <Label htmlFor="discountPercent" className="capitalize text-gold-light font-semibold">discountPercent</Label>
-          <Input id="discountPercent" placeholder="Enter product price" className="text-gray-300" {...register("discountPercent",{ valueAsNumber: true })} />
-          {errors.discountPercent && <p className="text-[hsl(22,55%,44%)]  text-sm">{errors.discountPercent.message}</p>}
+          <Input type="number" id="discountPercent" placeholder="Enter product price" className="text-gray-300" {...register("discountPercent",
+            // { valueAsNumber: true }
+          )}
+          />
+          {/* {errors.discountPercent && <p className="text-[hsl(22,55%,44%)]  text-sm">{errors.discountPercent.message}</p>} */}
         </div>
 
         {/* MULTIPLE IMAGE UPLOAD */}

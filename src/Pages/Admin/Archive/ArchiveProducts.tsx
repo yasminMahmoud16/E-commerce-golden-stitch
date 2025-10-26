@@ -112,7 +112,7 @@ export default function ArchiveProducts() {
           <TableCell className="font-medium text-center">{data.name}</TableCell>
           <TableCell className="font-medium text-center">{data.mainPrice}</TableCell>
           <TableCell className="font-medium text-center">{data.stock}</TableCell>
-          <TableCell className="font-medium text-center">{data.discountPercent}</TableCell>
+          <TableCell className="font-medium text-center">{data.discountPercent || 0}</TableCell>
           <TableCell className="font-medium text-center">{data.salePrice}</TableCell>
           <TableCell className="font-medium text-center text-xs">{data.createdBy.username}</TableCell>
           <TableCell className="font-medium text-xs truncate max-w-[200px]">

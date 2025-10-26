@@ -28,8 +28,8 @@ export default function ProductContextProvider({ children }: { children: ReactNo
   const getProducts = async ({ page = 1, size = 5, search = "", categoryId = "" }) => {
   let url = `/product?page=${page}&size=${size}`;
 
-  console.log("Full request URL:", "http://54.221.212.74/api" + url);
-    
+  // console.log("Full request URL:", "http://54.221.212.74/api" + url);
+
   if (categoryId) {
     url += `&categoryId=${categoryId}`;
   }
@@ -100,7 +100,12 @@ export default function ProductContextProvider({ children }: { children: ReactNo
       formData.append("description", data.description ||"");
       formData.append("mainPrice", data.mainPrice.toString());
       formData.append("stock", data.stock.toString());
-      formData.append("discountPercent", data.discountPercent.toString());
+      // formData.append("discountPercent", data.discountPercent.toString());
+      if (data.discountPercent !== undefined && data.discountPercent !== null) {
+  formData.append("discountPercent", data.discountPercent.toString());
+} else {
+  formData.append("discountPercent", "0");
+}
 formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
 
      if (Array.isArray(data.attachments) && data.attachments.length > 0) {
@@ -150,20 +155,33 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
       await queryClient.invalidateQueries({ queryKey: ['product', updatedProduct.id] });
 
     },
-
-   onError: (error: unknown) => {
+onError: (error) => {
   if (axios.isAxiosError(error)) {
-    const detailedError =
-      error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+    const issue = error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0];
 
-    const generalError = error.response?.data?.message;
+    if (issue) {
+      const field = issue.path?.[0];
+      const message = issue.message;
+      toast.error(`${field ? `${field}: ` : ""}${message}`);
+      return;
+    }
 
-    toast.error(detailedError || generalError || "update product issue");
+    const backendMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to add product.";
 
-    // console.log("Axios Error:", error);
+    if (
+      error.response?.status === 413 ||
+      backendMessage.toLowerCase().includes("file too large")
+    ) {
+      toast.error("The uploaded image is too large. Please choose a smaller file.");
+      return;
+    }
+
+    toast.error(backendMessage);
   } else {
-    // console.error("Unexpected error from update product :", error);
-    toast.error("Unexpected error from update product");
+    toast.error("Unexpected error occurred. Please try again.");
   }
 },
 
@@ -184,7 +202,15 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
       formData.append("description", data.description || "");
       formData.append("mainPrice", data.mainPrice.toString());
       formData.append("stock", data.stock.toString());
-      formData.append("discountPercent", data.discountPercent.toString());
+      // formData.append("discountPercent", data.discountPercent.toString());
+      // formData.append("discountPercent", (data.discountPercent ?? 0).toString());
+//       if (data.discountPercent !== undefined && data.discountPercent !== null ) {
+//   formData.append("discountPercent", data.discountPercent.toString());
+      // }
+      if (data.discountPercent && data.discountPercent > 0) {
+  formData.append("discountPercent", data.discountPercent.toString());
+}
+
       formData.append("categoryId", data.category.id || "");
 
       if (data.attachments && data.attachments.length > 0) {
@@ -220,28 +246,36 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
     }
   },
 
-  onError: (error) => {
-    console.log({ addProductError: error });
+onError: (error) => {
+  if (axios.isAxiosError(error)) {
+    const issue = error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0];
 
-    if (axios.isAxiosError(error)) {
-      const backendMessage =
-        error.response?.data?.message ||
-        (typeof error.response?.data === "string" ? error.response?.data : null) ||
-        error.message;
-
-      if (
-        error.response?.status === 413 ||
-        backendMessage?.toLowerCase().includes("file too large")
-      ) {
-        toast.error("The uploaded image is too large. Please choose a smaller file.");
-        return;
-      }
-
-      toast.error(backendMessage || "Failed to add product.");
-    } else {
-      toast.error("file is too large");
+    if (issue) {
+      const field = issue.path?.[0];
+      const message = issue.message;
+      toast.error(`${field ? `${field}: ` : ""}${message}`);
+      return;
     }
-  },
+
+    const backendMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to add product.";
+
+    if (
+      error.response?.status === 413 ||
+      backendMessage.toLowerCase().includes("file too large")
+    ) {
+      toast.error("The uploaded image is too large. Please choose a smaller file.");
+      return;
+    }
+
+    toast.error(backendMessage);
+  } else {
+    toast.error("Unexpected error occurred. Please try again.");
+  }
+},
+
 });
 
 // const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput, unknown>({

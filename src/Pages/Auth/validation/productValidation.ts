@@ -5,7 +5,9 @@ export const createProduct = z.strictObject({
     description: z.string().max(10000).optional(),
     mainPrice: z.coerce.number().positive().min(1),
     stock: z.coerce.number().positive().int().min(1),
-    discountPercent: z.coerce.number().positive().default(0),
+    // discountPercent: z.coerce.number().positive().optional().default(0),
+    discountPercent: z.coerce.number().nonnegative().optional(),
+
     categoryId: z.string().optional(),
     attachments: z.any().optional(),
     category: z.object({
@@ -23,7 +25,8 @@ export const updateProductSchema = z.strictObject({
     description: z.string().max(10000).optional(),
     mainPrice: z.coerce.number().positive().min(1),
     stock: z.coerce.number().positive().int().min(1),
-    discountPercent: z.coerce.number().positive(),
+    // discountPercent: z.coerce.number().positive(),
+    discountPercent: z.coerce.number().nonnegative().optional(),
     attachments: z.any().optional(),
     categoryId: z.string().optional(),
     category: z
