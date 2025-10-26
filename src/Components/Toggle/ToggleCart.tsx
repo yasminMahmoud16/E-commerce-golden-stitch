@@ -74,11 +74,11 @@ export default function ToggleCart({ openCart, setOpenCart, title }: ToggleCommo
 
 
 
-                    <img
+                    {/* <img
                         src={cornerBottomRightHero}
                         alt="cornerBottomRightHero"
                         className="absolute bottom-0 right-0 z-0"
-                    />
+                    /> */}
                 </SheetContent>
 
 

@@ -19,42 +19,7 @@ export default function CartContextProvider({ children }: { children: ReactNode 
 
     const queryClient = useQueryClient();
 
-    const addToCart = async (productId: string, quantity: number, showToast: boolean = true) => {
-        try {
-            const res = await axiosInstance.post(
-                "/cart",
-                { productId, quantity },
-                { headers: getAuthHeader() }
-            );
-
-            if (res.data.message === "Done") {
-                if (showToast) toast.success("Product Added To Cart");
-                cartRefresh();
-            }
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-            // toast.error("Something Went Wrong", error);
-            // if (axios.isAxiosError(error)) {
-
-            // }
-            // console.log(err, "cart context error");
-        }
-    };
-
-    // incrementQuantity
-    const incrementQuantity = (productId: string, currentQuantity: number) => {
-        const newQuantity = currentQuantity + 1;
-        addToCart(productId, newQuantity, false);
-    };
-
-    // decrementQuantity
-    const decrementQuantity = (productId: string, currentQuantity: number) => {
-        const newQuantity = Math.max(1, currentQuantity - 1);
-        addToCart(productId, newQuantity, false);
-    };
-
-
-    // get user cart items
+        // get user cart items
     const getCartItems = async () => {
 
         try {
@@ -85,6 +50,63 @@ export default function CartContextProvider({ children }: { children: ReactNode 
         queryFn: getCartItems,
         enabled: !!token,
     });
+
+
+    const addToCart = async (productId: string, quantity: number, showToast: boolean = true) => {
+        try {
+            const res = await axiosInstance.post(
+                "/cart",
+                { productId, quantity },
+                { headers: getAuthHeader() }
+            );
+
+            if (res.data.message === "Done") {
+                if (showToast) toast.success("Product Added To Cart");
+                cartRefresh();
+            }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            // console.log({cart:error});
+            if (axios.isAxiosError(error)) {
+                const issue = error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0];
+
+                if (issue) {
+                    const field = issue.path?.[0];
+                    const message = issue.message;
+                    toast.error(`${field ? `${field}: ` : ""}${message}`);
+                    return;
+                }
+
+                const backendMessage =
+                    error.response?.data?.message ||
+                    error.message ||
+                    "Failed to add product.";
+                    toast.error(backendMessage);
+            }
+            
+
+            // toast.error("Something Went Wrong", error);
+            // if (axios.isAxiosError(error)) {
+
+            // }
+            // console.log(err, "cart context error");
+        }
+    };
+
+    // incrementQuantity
+    const incrementQuantity = (productId: string, currentQuantity: number) => {
+        const newQuantity = currentQuantity + 1;
+        addToCart(productId, newQuantity, false);
+    };
+
+    // decrementQuantity
+    const decrementQuantity = (productId: string, currentQuantity: number) => {
+        const newQuantity = Math.max(1, currentQuantity - 1);
+        addToCart(productId, newQuantity, false);
+    };
+
+
+
 
     // remove item
     const removeFromCart = async (productId: string) => {

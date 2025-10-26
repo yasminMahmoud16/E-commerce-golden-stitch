@@ -16,7 +16,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProductSchema, type UpdateProductForm } from "@/Pages/Auth/validation/productValidation";
 import type { ICategory, IProduct, IProductEditInput } from "@/Utilities/interfaces";
-import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 
 

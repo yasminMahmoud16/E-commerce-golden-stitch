@@ -171,7 +171,7 @@ export default function ProductsLanding() {
                                         discount={product.discountPercent}
                                         price={product.salePrice}
                                         onClickCard={() => handleOnClickProductDetails(product.id)}
-                                        onClickCart={() => handleOnClickCart(product.id, 1)}
+                                        onClickCart={() =>  handleOnClickCart(product.id, 1)}
                                         onClickWishList={() => handleOnClickWishList(product.id)}
                                     />
                                 ))

@@ -79,9 +79,9 @@ export default function CategoryDetails({ category, onBack, onEdit, onDeleteSucc
             {currentCategory?.name}
           </h2>
           <p className="text-gray-400 mb-3">{currentCategory?.description}</p>
-          <p className="text-gray-400">
+          {/* <p className="text-gray-400">
             <strong>Number Of Sale:</strong> {currentCategory?.numberOfSale}
-          </p>
+          </p> */}
           <p className="text-gray-400">
             <strong>CreatedBy:</strong> {currentCategory?.createdBy?.username || "N/A"}
           </p>

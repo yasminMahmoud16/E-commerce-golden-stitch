@@ -26,15 +26,16 @@ export default function ToggleWishList({ openCart, setOpenCart, title }: ToggleC
 
     return (
         <>
-            <Sheet open={openCart} onOpenChange={setOpenCart}>
+
+            <Sheet open={openCart} onOpenChange={setOpenCart} >
 
 
                 <SheetContent
                     side="right"
-                    className="bg-radial from-[#E6D7B6] to-[#DBC8A0] flex flex-col min-h-screen"
+                    className=" bg-radial from-[#E6D7B6] to-[#DBC8A0] flex flex-col min-h-screen"
                 >
                     <SheetHeader>
-                        <div className='flex items-center'>
+                        <div className='flex items-center relative '>
                             <img src={logo} alt="" className='w-15' />
                             <div className='bg-gradient-to-r from-gold-dark to-gold-light bg-clip-text text-transparent uppercase font-bold text-xl'>
                                 golden stitch
@@ -59,17 +60,18 @@ export default function ToggleWishList({ openCart, setOpenCart, title }: ToggleC
                         </SheetDescription>
                     </div>
 
-
-
-                    <img
+                    {/* <img
                         src={cornerBottomRightHero}
                         alt="cornerBottomRightHero"
-                        className="absolute bottom-0 right-0 z-0"
-                    />
+                        className="absolute bottom-0 right-0 -z-10"
+                    /> */}
+
                 </SheetContent>
 
 
+
             </Sheet>
+            
 
         </>
     );
