@@ -33,7 +33,9 @@ export default function ProductEdit({ product, onBack }: {
 
 
     const { updateProduct } = useProductContext();
-    const { getCategories, allCategoriesData } = useCategoryContext();
+  const { getCategories, allCategoriesData } = useCategoryContext();
+      const baseUrlImage ="http://54.221.212.74/api"
+
 
     const { data: catSize } = useQuery({
         queryKey: ["allCategories"],
@@ -51,7 +53,7 @@ export default function ProductEdit({ product, onBack }: {
             setValue("description", product.description);
             setValue("mainPrice", product.mainPrice);
             setValue("stock", product.stock);
-                    setValue("category", { id: product.category?.id || "", name: product.category?.name || "" });
+            setValue("category", { id: product.category?.id || "", name: product.category?.name || "" });
 
 
                 setSelectedCategoryId(product.category?.id || "");
@@ -188,7 +190,7 @@ export default function ProductEdit({ product, onBack }: {
                         {existingImages.map((img, index) => (
                             <div key={index} className="relative w-24 h-24">
                                 <img
-                                    src={`/${img}`}
+                                    src={`${baseUrlImage}/${img}`}
                                     alt="product"
                                     className="w-full h-full rounded-lg object-cover border border-gold-light"
                                 />

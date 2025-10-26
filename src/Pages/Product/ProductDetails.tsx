@@ -19,7 +19,9 @@ export default function ProductDetails() {
     const { getProductById } = useProductContext()
     const [parentImage, setParentImage] = useState<string | null>(null);
     const {  addToCart } = useCartContext();
-    const { addToWishList  } = useProfileContext();
+    const { addToWishList } = useProfileContext();
+    const baseUrlImage = "http://54.221.212.74/api";
+
 
     
     const { id } = useParams();
@@ -54,7 +56,7 @@ export default function ProductDetails() {
                     <div className=" my-8 grid grid-cols-1 md:grid-cols-6 items-center md:items-start justify-center pt-10 md:gap-4 relative z-20">
                         <div className="col-span-2 mb-6 md:mb-0  flex flex-col items-center justify-center">
                             <div className="w-80  overflow-hidden ">
-                                <img src={`/${parentImage || product?.images?.[0]}`} alt=" " className="w-full overflow-hidden object-cover" />
+                                <img src={`${baseUrlImage}/${parentImage || product?.images?.[0]}`} alt=" " className="w-full overflow-hidden object-cover" />
 
                             </div>
                             <div>
@@ -69,7 +71,7 @@ export default function ProductDetails() {
                                             >
                                                 <div className="relative group cursor-pointer ">
                                                     <img
-                                                        src={`/${img}`}
+                                                        src={`${baseUrlImage}/${img}`}
                                                         alt={`thumbnail-${index}`}
                                                         className="w-full h-28 md:h-20 object-cover rounded-md overflow-hidden"
 

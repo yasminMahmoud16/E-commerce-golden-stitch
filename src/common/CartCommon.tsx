@@ -29,7 +29,7 @@ export default function CartCommon({
     const { getProductById } = useProductContext();
     // const [quantity , setQuantity]= useState(item.quantity);
     const navigate = useNavigate();
-
+    const baseUrlImage = "http://54.221.212.74/api";
     // console.log(wishListItems,"ffom wishhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
 
@@ -83,7 +83,7 @@ export default function CartCommon({
                                             <div className=" w-full h-20">
 
                                                 <img
-                                                    src={`/${item.productId.images[0]}`}
+                                                    src={`${baseUrlImage}/${item.productId.images[0]}`}
                                                     alt={item.productId.name}
                                                     className="w-full h-full object-fit transition-transform duration-500 group-hover:scale-105 overflow-hidden"
                                                 />

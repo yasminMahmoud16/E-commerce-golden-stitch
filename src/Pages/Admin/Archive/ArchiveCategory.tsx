@@ -22,6 +22,8 @@ export default function ArchiveCategory() {
 
 
     const { archiveCategory, page, setPage, search, setSearch, restoreCategory, hardDelCategory } = useCategoryContext();
+    const baseUrlImage = "http://54.221.212.74/api";
+
 
     // console.log({ archiveCategory });
     const Headers = [
@@ -79,7 +81,7 @@ export default function ArchiveCategory() {
                             <TableCell className="font-medium my-2 w-40 h-10">
                                 <div className="flex justify-center items-center">
                                     <img
-                                        src={`/${data.image}`}
+                                        src={`${baseUrlImage}/${data.image}`}
                                         alt="image"
                                         className="w-15 h-15 rounded-md"
                                     />

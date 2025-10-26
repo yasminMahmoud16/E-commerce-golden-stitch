@@ -36,7 +36,9 @@ export default function AdminCategory() {
 
     const [selectedCategory, setSelectedCategory] = useState<ICategory>();
     const [openDetails, setOpenDetails] = useState<boolean>(false);
-const [, setSelectedData] = useState<string | null>(null);
+    const [, setSelectedData] = useState<string | null>(null);
+        const baseUrlImage ="http://54.221.212.74/api"
+
 
     const [isEditing, setIsEditing] = useState(false);
     // const [ setSelectedData] = useState<string>("");
@@ -165,7 +167,7 @@ const [, setSelectedData] = useState<string | null>(null);
                                     <TableCell className="font-medium my-2 w-80 h-20">
                                         <div className="flex justify-center items-center">
                                             <img
-                                                src={`/${data.image}`}
+                                                src={`${baseUrlImage}/${data.image}`}
                                                 alt="image"
                                                 className="w-15 h-15 rounded-md"
                                             />

@@ -23,6 +23,8 @@ export default function ArchiveProducts() {
 
 
   const { archiveProducts, page, setPage, search, setSearch, restoreProduct } = useProductContext();
+  const baseUrlImage = "http://54.221.212.74/api";
+
     // const { getCategories} = useCategoryContext();
   
 
@@ -101,7 +103,7 @@ export default function ArchiveProducts() {
           <TableCell className="font-medium my-2 w-20 h-8 ">
             <div className="flex justify-center items-center">
               <img
-                src={`/${data.images}`}
+                src={`${baseUrlImage}/${data.images}`}
                 alt="image"
                 className="w-15 h-15 rounded-md"
               />

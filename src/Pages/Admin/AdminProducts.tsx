@@ -39,7 +39,9 @@ export default function AdminProducts() {
     const location = useLocation();
     const currentLocation = location.pathname
     const showAddBtn = currentLocation.includes("/admin/products") || currentLocation.includes("/admin/category")
-  const { getCategories} = useCategoryContext();
+  const { getCategories } = useCategoryContext();
+  const baseUrlImage = "http://54.221.212.74/api";
+
   
 
 
@@ -230,7 +232,7 @@ const { data: catSize } = useQuery({
             <TableCell className="font-medium my-1">
               <div className="flex justify-center items-center overflow-hidden w-15 h-15">
                 <img
-                  src={`/${data.images[0]}`}
+                  src={`${baseUrlImage}/${data.images[0]}`}
                   alt="image"
                   className="w-full h-full rounded-md overflow-hidden"
                 />

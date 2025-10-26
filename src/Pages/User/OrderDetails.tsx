@@ -7,7 +7,9 @@ import { SpinnerCustomData } from "@/Loading/SpinnerCustomData";
 import { StateEnum } from "@/Utilities/types";
 
 export default function OrderDetails() {
-  const { ordersData ,page, setPage, statusFilter, setStatusFilter, loadingDetails} = useOrderContext();
+  const { ordersData, page, setPage, statusFilter, setStatusFilter, loadingDetails } = useOrderContext();
+  const baseUrlImage = "http://54.221.212.74/api";
+
 
   // console.log({ ordersDataUser: ordersData });
 
@@ -65,7 +67,7 @@ export default function OrderDetails() {
                   className="flex items-center gap-4 bg-white/5 rounded-lg p-3"
                 >
                   <img
-                    src={`/${p.productId?.images?.[0]}`}
+                    src={`${baseUrlImage}/${p.productId?.images?.[0]}`}
                     alt={p.productId?.name || "Product"}
                     className="w-20 h-20 rounded-lg object-cover"
                   />

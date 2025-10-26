@@ -20,12 +20,13 @@ export default function CategoryEdit({ category, onBack }:categoryEdit) {
   const [preview, setPreview] = useState<string | null>(null);
 
   const { updateCategory } = useCategoryContext(); 
+  const baseUrlImage = "http://54.221.212.74/api";
 
   useEffect(() => {
     if (category) {
       setValue("name", category.name);
       setValue("description", category.description);
-      if (category.image) setPreview(`/${category.image}`);
+      if (category.image) setPreview(`${baseUrlImage}/${category.image}`);
     }
   }, [category, setValue]);
 

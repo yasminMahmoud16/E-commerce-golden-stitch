@@ -29,6 +29,8 @@ export default function ProductsLanding() {
     const [open, setOpen] = useState(false);
     const { token } = useAuthContext()
     const navigate = useNavigate();
+    const baseUrlImage = "http://54.221.212.74/api";
+
 
 
 
@@ -162,7 +164,7 @@ export default function ProductsLanding() {
                                 filteredProducts?.map((product: IProduct) => (
                                     <CardCommon
                                         key={product.id}
-                                        image={`/${product.images?.[0]}`}
+                                        image={`${baseUrlImage}/${product.images?.[0]}`}
                                         title={product.name}
                                         description={product.description}
                                         mainPrice={product.mainPrice}

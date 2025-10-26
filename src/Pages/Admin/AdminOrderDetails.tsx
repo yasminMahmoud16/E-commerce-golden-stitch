@@ -16,6 +16,8 @@ export default function AdminOrderDetails() {
     const [pendingStatus, setPendingStatus] = useState<Record<string, string>>({});
     const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
+    const baseUrlImage ="http://54.221.212.74/api"
+
 
     if (loadingDetails) {
         return <p className="text-center text-gold">Loading...</p>;
@@ -48,7 +50,7 @@ export default function AdminOrderDetails() {
                         className="flex items-center gap-4 bg-white/5 rounded-lg p-3"
                     >
                         <img
-                            src={`/${p.productId?.images?.[0]}`}
+                            src={`${baseUrlImage}/${p.productId?.images?.[0]}`}
                             alt={p.productId?.name || "Product"}
                             className="w-20 h-20 rounded-lg object-cover"
                         />

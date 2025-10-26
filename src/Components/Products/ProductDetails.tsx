@@ -20,7 +20,8 @@ export default function ProductDetails({ product, onBack, onEdit, onDeleteSucces
   const { allCategoriesData } = useCategoryContext();
 const [parentImage, setParentImage] = useState<string | null>(null);
   const [isDelete, setIsDelete] = useState(false);
-  
+  const baseUrlImage = "http://54.221.212.74/api";
+
 
   const { data: productData } = useQuery({
     queryKey: ["product", product?.id],
@@ -86,7 +87,7 @@ const [parentImage, setParentImage] = useState<string | null>(null);
           <div className="w-50 md:w-96 flex flex-col items-center justify-center">
 
         <img
-          src={`/${parentImage || currentProduct?.images?.[0]}`}
+          src={`${baseUrlImage}/${parentImage || currentProduct?.images?.[0]}`}
           alt={currentProduct?.name}
           className="w-60 h-60 overflow-hidden object-cover rounded-xl shadow-lg"
         />
@@ -104,7 +105,7 @@ const [parentImage, setParentImage] = useState<string | null>(null);
               >
                 <div className="relative group cursor-pointer ">
                   <img
-                    src={`/${img}`}
+                    src={`${baseUrlImage}/${img}`}
                     alt={`thumbnail-${index}`}
                       className="w-full h-28 md:h-20 object-cover rounded-md overflow-hidden"
 

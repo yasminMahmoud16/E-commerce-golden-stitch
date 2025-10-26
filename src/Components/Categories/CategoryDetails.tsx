@@ -14,6 +14,7 @@ export default function CategoryDetails({ category, onBack, onEdit, onDeleteSucc
 
   const {  getCategoryById , isUpdating ,softDelCategory} = useCategoryContext();
 
+  const baseUrlImage = "http://54.221.212.74/api";
 
   const {
     data: categoryData,
@@ -66,7 +67,7 @@ export default function CategoryDetails({ category, onBack, onEdit, onDeleteSucc
       <div className="flex flex-col items-center justify-center md:flex-row gap-6">
         <div className=" w-50 mt-2  md:w-2xl ">
         <img
-          src={`/${currentCategory?.image}`}
+          src={`${baseUrlImage}/${currentCategory?.image}`}
           alt={currentCategory?.name}
           className="w-full  md:w-60 md:h-60 object-cover rounded-xl shadow-lg"
         />
