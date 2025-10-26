@@ -12,7 +12,7 @@ export function useAxios() {
   } = useAuthContext();
 
   const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BASE_URL ,
+    baseURL:"http://54.221.212.74/api" ,
     // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
   });
   // console.log({axiosInstance});
@@ -35,7 +35,7 @@ export function useAxios() {
     if (!refreshHeader?.Authorization) return null;
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/user/refresh-token`,
+        `http://54.221.212.74/api/user/refresh-token`,
         {},
         { headers: getRefreshHeader() }
       );
