@@ -19,7 +19,7 @@ export default function ProductContextProvider({ children }: { children: ReactNo
   const [isUpdating, setIsUpdating] = useState(false); 
   const { getAuthHeader ,token } = useAuthContext();
   const queryClient = useQueryClient();
-  const [isLoadingArchive, setIsLoadingArchive] = useState(false);
+  const [_isLoadingArchive, setIsLoadingArchive] = useState(false);
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
   const firstLoad = useRef(true);
 
