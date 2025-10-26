@@ -139,17 +139,16 @@ const getAllUsers = async () => {
     if (axios.isAxiosError(error)) {
       
       if (!isFirstRender.current) {
-        const detailedError =
-          error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
-        const generalError = error?.response?.data?.message;
-        const messageToShow =
-          detailedError || generalError || "Something went wrong";
+        // const detailedError =
+        //   error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+        // const generalError = error?.response?.data?.message;
+        // const messageToShow =
+        //   detailedError || generalError || "Something went wrong";
         // toast.error(messageToShow);
       }
     }
     return [];
   } finally {
-    // بعد أول محاولة تحميل، نخلي الفلاج false
     isFirstRender.current = false;
   }
 };
