@@ -141,9 +141,23 @@ const { data: catSize } = useQuery({
       <SpinnerCustomData />
     </div>
   )}
-    <div className="w-full relative  mb-2 flex flex-col md:flex-row items-center justify-between">
-            <div className="  mb-2">
-        <Icons.CiSearch
+    <div className="w-full relative  mb-2 flex flex-col md:flex-row  justify-between  ">
+                <div className="  ">
+                  
+                    <div className="relative w-50 md:w-80 md: ">
+    <Input
+      type="text"
+      placeholder="search"
+      className="w-full border-dark-blue-1 py-3 pl-10 pr-3 text-dark-blue-nav placeholder:text-gray-500 rounded-4xl ring-bg-gold-dark shadow "
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+    <Icons.CiSearch
+      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+      size={23}
+    />
+  </div>
+        {/* <Icons.CiSearch
           className="absolute left-3 top-4 -translate-y-1/2 text-footer-items"
           size={23}
         />
@@ -153,8 +167,10 @@ const { data: catSize } = useQuery({
           className="w-50 md:w-80 border-footer-items py-3 px-2 pl-10 mb-2 text-white placeholder:text-footer-items rounded-4xl"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-                  />
+                  /> */}
                   
+
+
 {/* CATEGORY FILTER BUTTONS */}
 <div className="flex flex-wrap gap-3 justify-center my-3">
   <button
@@ -182,8 +198,6 @@ const { data: catSize } = useQuery({
     </button>
   ))}
 </div>
-
-
       </div>
                 
                 <div className="absolute -top-4 -right-6 md:right-0 mr-8 py-4">
@@ -191,7 +205,7 @@ const { data: catSize } = useQuery({
           <BtnCommon
             text={"add"}
             onClick={handleAddClick}
-            className="w-20 rounded-xl shadow md:w-30 transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%]"
+            className="w-20 rounded-xl shadow md:w-20 lg:w-30 transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%] "
             icon={Icons.AiOutlinePlusCircle}
           />
         )}

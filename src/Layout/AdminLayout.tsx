@@ -84,7 +84,7 @@ export default function AdminLayout() {
                         
 
 
-                        <div className='bg-dark-blue-nav  mb-5 rounded-3xl w-full md:max-w-4xl lg:max-w-6xl   p-6 shadow-md'>
+                        <div className='bg-dark-blue-nav  mb-5 rounded-3xl w-full md:max-w-lg lg:max-w-6xl   p-6 shadow-md'>
 
                             <Outlet />
                         </div>
