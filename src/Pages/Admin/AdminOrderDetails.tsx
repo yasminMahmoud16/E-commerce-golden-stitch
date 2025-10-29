@@ -16,7 +16,7 @@ export default function AdminOrderDetails() {
     const [pendingStatus, setPendingStatus] = useState<Record<string, string>>({});
     const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
     const [open, setOpen] = useState(false);
-    const baseUrlImage ="http://54.221.212.74/api"
+    const baseUrlImage ="https://www.dev.goldenstitchleathers.com"
 
 
     if (loadingDetails) {

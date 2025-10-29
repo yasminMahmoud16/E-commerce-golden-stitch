@@ -23,7 +23,7 @@ export default function ArchiveProducts() {
 
 
   const { archiveProducts, page, setPage, search, setSearch, restoreProduct } = useProductContext();
-  const baseUrlImage = "http://54.221.212.74/api";
+  const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
 
     // const { getCategories} = useCategoryContext();
   

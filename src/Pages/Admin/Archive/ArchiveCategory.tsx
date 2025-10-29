@@ -22,7 +22,7 @@ export default function ArchiveCategory() {
 
 
     const { archiveCategory, page, setPage, search, setSearch, restoreCategory, hardDelCategory } = useCategoryContext();
-    const baseUrlImage = "http://54.221.212.74/api";
+    const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
 
 
     // console.log({ archiveCategory });

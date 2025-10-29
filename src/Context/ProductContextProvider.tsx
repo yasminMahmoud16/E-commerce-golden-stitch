@@ -28,7 +28,6 @@ export default function ProductContextProvider({ children }: { children: ReactNo
   const getProducts = async ({ page = 1, size = 5, search = "", categoryId = "" }) => {
   let url = `/product?page=${page}&size=${size}`;
 
-  // console.log("Full request URL:", "http://54.221.212.74/api" + url);
 
   if (categoryId) {
     url += `&categoryId=${categoryId}`;

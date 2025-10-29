@@ -40,7 +40,7 @@ export default function AdminProducts() {
     const currentLocation = location.pathname
     const showAddBtn = currentLocation.includes("/admin/products") || currentLocation.includes("/admin/category")
   const { getCategories } = useCategoryContext();
-  const baseUrlImage = "http://54.221.212.74/api";
+  const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
 
   
 

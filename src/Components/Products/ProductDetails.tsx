@@ -20,7 +20,7 @@ export default function ProductDetails({ product, onBack, onEdit, onDeleteSucces
   const { allCategoriesData } = useCategoryContext();
 const [parentImage, setParentImage] = useState<string | null>(null);
   const [isDelete, setIsDelete] = useState(false);
-  const baseUrlImage = "http://54.221.212.74/api";
+  const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
 
 
   const { data: productData } = useQuery({

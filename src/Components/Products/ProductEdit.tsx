@@ -33,7 +33,7 @@ export default function ProductEdit({ product, onBack }: {
 
     const { updateProduct } = useProductContext();
   const { getCategories, allCategoriesData } = useCategoryContext();
-      const baseUrlImage ="http://54.221.212.74/api"
+      const baseUrlImage ="https://www.dev.goldenstitchleathers.com"
 
 
     const { data: catSize } = useQuery({

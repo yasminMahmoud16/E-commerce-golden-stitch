@@ -14,7 +14,7 @@ export function useAxios() {
   let refreshing = false; //follow the res 
 
   const axiosInstance = axios.create({
-    baseURL:"http://54.221.212.74/api" ,
+    baseURL:"https://www.dev.goldenstitchleathers.com" ,
     // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
   });
   // console.log({axiosInstance});
@@ -37,7 +37,7 @@ export function useAxios() {
     if (!refreshHeader?.Authorization) return null;
     try {
       const res = await axios.post(
-        `http://54.221.212.74/api/user/refresh-token`,
+        `https://www.dev.goldenstitchleathers.com/user/refresh-token`,
         {},
         { headers: getRefreshHeader() }
       );
