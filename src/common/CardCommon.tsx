@@ -30,7 +30,17 @@ onClick={() => onClickCard?.()}
 
         <div className=" w-96 h-76">
 
-        <img src={image} alt="card1" className="w-full h-full object-fill  overflow-hidden" />
+          <img
+  src={image}
+  alt={title || "product"}
+  className="
+    w-full h-full object-fill overflow-hidden
+    transition-transform duration-500 ease-in-out
+    group-hover:scale-110
+  "
+/>
+
+        {/* <img src={image} alt={title || "product"} className="w-full h-full object-fill  overflow-hidden" /> */}
         </div>
             <div
           className="

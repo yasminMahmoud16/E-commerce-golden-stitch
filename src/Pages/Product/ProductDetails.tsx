@@ -15,6 +15,9 @@ import { useState } from "react";
 import { useCartContext, useProductContext, useProfileContext } from "@/Hooks/useAppContexts";
 import { useQuery } from "@tanstack/react-query";
 import type { IProduct } from "@/Utilities/interfaces";
+// import image from "@/assets/Images/card1.jpg"
+
+
 export default function ProductDetails() {
     const { getProductById } = useProductContext()
     const [parentImage, setParentImage] = useState<string | null>(null);
@@ -56,7 +59,13 @@ export default function ProductDetails() {
                     <div className=" my-8 grid grid-cols-1 md:grid-cols-6 items-center md:items-start justify-center pt-10 md:gap-4 relative z-20">
                         <div className="col-span-2 mb-6 md:mb-0  flex flex-col items-center justify-center">
                             <div className="w-80  overflow-hidden ">
-                                <img src={`${baseUrlImage}/${parentImage || product?.images?.[0]}`} alt=" " className="w-full overflow-hidden object-cover" />
+                                {/* <img src={`${baseUrlImage}/${parentImage || product?.images?.[0]}`} alt=" " className="w-full overflow-hidden object-cover" /> */}
+                                <img
+                                    src={`${baseUrlImage}/${parentImage || product?.images?.[0]}`} alt={product?.name || "product"}
+                                    // src={image}
+                                    className="w-full overflow-hidden   h-full object-fill 
+                                                        transition-transform duration-500 ease-in-out
+                                                        hover:scale-120" />
 
                             </div>
                             <div>

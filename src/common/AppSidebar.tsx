@@ -8,7 +8,7 @@ import {
   SidebarMenu,
 } from "@/Components/ui/sidebar"
 import { logoutEnum, type AppSidebarProps, type SidebarLink } from "@/Utilities/types"
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 
 import logo from '@/assets/Images/logo.png';
 import BtnCommon from "./BtnCommon";
@@ -21,32 +21,35 @@ import PopupCommon from "./PopupCommon";
 
 export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
   const { logout } = useAuthContext();
-    const {openPopup, setOpenPopup, navigate, } = useGlobal();
-  
-    const handleLogoutClick = async(flag: logoutEnum) => {
+  const { openPopup, setOpenPopup, navigate, } = useGlobal();
+
+  const handleLogoutClick = async (flag: logoutEnum) => {
     await logout({ flag })
     navigate("/login")
   };
   return <>
-   <Sidebar
-  collapsible="icon"
-  className="flex flex-col items-center justify-center bg-radial from-[#E6D7B6] to-[#DBC8A0] border-none "
->
+    <Sidebar
+      collapsible="icon"
+      className="flex flex-col items-center justify-center bg-radial from-[#E6D7B6] to-[#DBC8A0] border-none "
+    >
 
       {/* <SidebarHeader className=" relative" >
         <SidebarHeader /> */}
-      
-      <SidebarHeader className="bg-dark-blue-nav">
-        <div className=' flex justify-center items-center gap-2'>
-            <div>
-              <img src={logo} alt="logo"  className='w-10'/>
-                </div>
-              <p className='bg-gradient-to-r from-gold-dark to-gold-light bg-clip-text text-transparent uppercase font-bold text-xs'>golden stitch</p>
 
-          </div>
+      <SidebarHeader className="bg-dark-blue-nav">
+        <div className=' flex justify-center items-center gap-1 '>
+          <Link to={"/"} className="flex items-center gap-1">
+            <img src={logo} alt="logo" className='w-10' />
+          </Link>
+          <Link to={"/"}>
+          <p className='bg-gradient-to-r from-gold-dark to-gold-light bg-clip-text text-transparent uppercase font-bold text-xs'>golden stitch</p>
+          </Link>
+          
+
+        </div>
       </SidebarHeader>
       {/* <SidebarTrigger className='  text-white absolute left-65 top-6 md:left-2 md:top-9  z-10 ' /> */}
-<SidebarContent className="bg-dark-blue-nav w-full pt-5 border-none overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      <SidebarContent className="bg-dark-blue-nav w-full pt-5 border-none overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
 
         <SidebarGroup className="" />
         <SidebarGroupContent className="flex flex-col justify-center mt-6   relative gap-3 ">
@@ -67,8 +70,8 @@ export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
                     {link.icon && (
                       <span
                         className={`text-xl pr-2 ${isActive
-                            ? "text-gold-dark"
-                            : "text-gray-300"
+                          ? "text-gold-dark"
+                          : "text-gray-300"
                           }`}
                       >
                         {link.icon}
@@ -76,8 +79,8 @@ export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
                     )}
                     <span
                       className={`${isActive
-                          ? "bg-gradient-to-r from-gold-dark to-[#d8be81] bg-clip-text text-transparent"
-                          : "text-gray-300"
+                        ? "bg-gradient-to-r from-gold-dark to-[#d8be81] bg-clip-text text-transparent"
+                        : "text-gray-300"
                         }`}
                     >
                       {link.label}
@@ -91,7 +94,7 @@ export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
               text="Logout"
               className="absolute w-30 -bottom-10 left-0 bg-transparent rounded-xl transition-all duration-500 ease-in-out hover:translate-x-4 hover:bg-gold-dark    "
               icon={Icons.IoLogOut}
-              onClick={()=>{setOpenPopup(true);}}
+              onClick={() => { setOpenPopup(true); }}
             />
 
           </SidebarMenu>
@@ -101,24 +104,24 @@ export function AppSidebar({ sidebarLinks = [] }: AppSidebarProps) {
       {/* <SidebarFooter className="bg-green-500" /> */}
     </Sidebar>
 
-    
+
     <PopupCommon
-  open={openPopup}
-  onOpenChange={setOpenPopup}
-  title="Choose an Option"
-  text="Select what you want to do:"
-  options={[
-    {
-      label: "Logout from this device",
-      onClick: () => handleLogoutClick(logoutEnum.only),
-    },
-    {
-      label: "Logout from all devices",
-      onClick: () => handleLogoutClick(logoutEnum.all),
-    },
-  ]}
-  showCancel={true}   
-  showAction={false}  
-/>
+      open={openPopup}
+      onOpenChange={setOpenPopup}
+      title="Choose an Option"
+      text="Select what you want to do:"
+      options={[
+        {
+          label: "Logout from this device",
+          onClick: () => handleLogoutClick(logoutEnum.only),
+        },
+        {
+          label: "Logout from all devices",
+          onClick: () => handleLogoutClick(logoutEnum.all),
+        },
+      ]}
+      showCancel={true}
+      showAction={false}
+    />
   </>
 }

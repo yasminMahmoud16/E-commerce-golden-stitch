@@ -8,9 +8,9 @@ export default function About() {
             <div className="container">
                 <LayoutMotion >
 
-                    <h1 className="text-center mt-6 text-3xl font-semibold text-dark-blue-2">About Us</h1>
+                    <h1 className="text-center mt-6 text-3xl font-semibold text-dark-blue-2 mb-5">About Us</h1>
                     <div className="grid grid-cols-1 md:grid-cols-6 gap-2 items-center justify-center">
-                        <div className="col-span-4 flex justify-center items-center px-2 ">
+                        <div className="col-span-4 flex justify-center items-center px-3 ">
                             <p className=" font-medium text-dark-blue-1 leading-loose text-md text-justify ">
 
                                 Golden Stitch Leather was born out of a love for craftsmanship and the desire to bring back the charm of handmade goods.

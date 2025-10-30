@@ -7,6 +7,7 @@ import About from "@/Components/Home/About";
 import ProductsLanding from "@/Components/Home/ProductsLanding";
 import cornerBottomRightHero from "@/assets/Images/cornerBottomRightHero.png";
 import cornerBottomLeftHero from "@/assets/Images/cornerBottomLeftHero.png";
+import CategorySlider from "@/Components/Home/CategorySlider";
 
 export default function LandingPage() {
   return (
@@ -28,16 +29,22 @@ export default function LandingPage() {
             className="absolute left-0 top-0 z-0"
           />
 
-          {/* About */}
-          <div className="relative z-10 my-10 flex flex-col items-center justify-center">
-            <About />
-          </div>
+       
 
+          {/* Category Slider */}
+          <div className="relative z-10 mb-10">
+            <CategorySlider />
+          </div>
           {/* Products */}
           <div className="relative z-10 my-10">
             <ProductsLanding />
           </div>
 
+          
+             {/* About */}
+          <div className="relative z-10 my-10 flex flex-col items-center justify-center">
+            <About />
+          </div>
           <img
             src={cornerBottomRightHero}
             alt="cornerBottomRightHero"

@@ -25,7 +25,7 @@ export default function Footer() {
             />
 
             <div className="container relative z-10">
-                <div className="grid p-4 grid-cols-1 md:grid-cols-6 gap-4 ">
+                <div className="grid p-4 grid-cols-1 md:grid-cols-6 gap-3 ">
                     <div className="col-span-2  flex flex-col items-center justify-center">
                         <h3 className='font-semibold text-xl capitalize text-footer-items '>social app</h3>
                         <div className='flex items-center justify-center gap-2 mt-2'>
@@ -40,35 +40,35 @@ export default function Footer() {
                         </div>
                     </div>
                     <div className="col-span-2 flex  flex-col  items-center justify-center gap-2">
-                        <div className="flex  items-center justify-center gap-2">
+                        <div className="flex  items-center justify-center gap-2 group ">
 
-                            <Icons.MdOutlineMail className="text-lg text-footer-items" />
-                            <a href="mailto:stitchgolden30@gmail.com" className='text-footer-items text-sm'>stitchgolden30@gmail.com</a>
+                            <Icons.MdOutlineMail className="text-lg text-footer-items transition-all ease-in-out duration-300 group-hover:text-[hsl(22,55%,44%)] " />
+                            <a href="mailto:gstitchlearther@gmail.com" className='text-footer-items text-sm transition-all ease-in-out duration-300 group-hover:text-[hsl(22,55%,44%)] '>gstitchlearther@gmail.com</a>
                         </div>
-                        <div className=" flex   items-center justify-center gap-2">
-                            <Icons.FaPhoneAlt className="text-md text-footer-items" />
-                            <a href="tel:01119866111" className='text-footer-items text-sm'>01119866111</a>
+                        <div className=" flex   items-center justify-center gap-2 group">
+                            <Icons.FaPhoneAlt className="text-md text-footer-items transition-all ease-in-out duration-300 group-hover:text-[hsl(22,55%,44%)] " />
+                            <a href="tel:01119866111" className='text-footer-items text-sm transition-all ease-in-out duration-300 group-hover:text-[hsl(22,55%,44%)] '>01119866111</a>
                         </div>
                     </div>
-                    <div className="col-span-2 flex flex-col items-center justify-center">
-                        <ul className='capitalize text-[#c4b5a0f3] cursor-pointer '>
-                            <li className='mb-2 font-semibold text-footer-items '>pages</li>
-                            <li className='transition-all duration-500 ease-in-out hover:text-gold-dark'>
+                    <div className="col-span-2 flex flex-col items-center justify-center  ">
+                        <ul className='capitalize text-[#c4b5a0f3] cursor-pointer  text-[15px] '>
+                            {/* <li className='mb-2 font-semibold text-footer-items '>pages</li> */}
+                            <li className='transition-all duration-500 ease-in-out hover:text-gold-dark mb-1'>
                                 <Link to="/">Home</Link>
                             </li>
-                            <li className='transition-all duration-500 ease-in-out hover:text-gold-dark'>
+                            <li className='transition-all duration-500 ease-in-out hover:text-gold-dark mb-1'>
                                 <Link to="/products">Products</Link>
                             </li>
-                            <li className='transition-all duration-500 ease-in-out hover:text-gold-dark'>
+                            <li className='transition-all duration-500 ease-in-out hover:text-gold-dark mb-1'>
                                 <p  >About Us</p>
                             </li>
-                            <li className='transition-all duration-500 ease-in-out hover:text-gold-dark'>
+                            <li className='transition-all duration-500 ease-in-out hover:text-gold-dark mb-1'>
                                 <p  >Contact Us</p>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <p className='text-center text-footer-items text-sm pb-4'>copyright@ {`${appName}`}</p>
+                <p className='text-center text-footer-items text-sm pb-4 '>copyright@Golden-Stitch</p>
 
 
 

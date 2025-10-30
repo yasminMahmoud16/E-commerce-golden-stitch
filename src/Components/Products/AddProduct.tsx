@@ -26,7 +26,8 @@ import type { ICategory, IProductUpdateInput } from "@/Utilities/interfaces";
 // import type { ProductFormValues } from "@/Utilities/types";
 import { useQuery } from "@tanstack/react-query";
 // import { toast } from "sonner";
-
+import colorsList from "@/Utilities/data";
+import { Checkbox } from "../ui/checkbox";
 export default function AddProducts({
   // product,
   onBack }: {
@@ -34,6 +35,9 @@ export default function AddProducts({
   onBack: () => void,
 }) {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
+
+  // colors ==============================================
+const [selectedColorHexes, setSelectedColorHexes] = useState<string[]>([]);
   const [loading, setIsLoading]=useState<boolean>(false)
 const { register, handleSubmit, setValue, formState: { errors } } = useForm<ProductFormValues>({
   resolver: zodResolver(createProduct) as unknown as Resolver<ProductFormValues>,
@@ -104,10 +108,11 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
     }
   });
 
-};
+  };
+  // console.log(errors);
+  
 
 
-console.log(errors);
 
 
   return (
@@ -149,7 +154,7 @@ console.log(errors);
       setValue("categoryId", value);
     }}
   >
-    <SelectTrigger className="text-gray-300">
+    <SelectTrigger className="text-gray-300 cursor-pointer">
       <SelectValue
         placeholder={
           allCategoriesData?.docs?.find(
@@ -162,7 +167,7 @@ console.log(errors);
     <SelectContent className="bg-dark-blue-1 capitalize border-none text-white">
       {catSize && catSize?.docs?.length > 0 ? (
         catSize?.docs?.map((cat: ICategory) => (
-          <SelectItem key={cat.id} value={cat.id}>
+          <SelectItem key={cat.id} value={cat.id} className="cursor-pointer">
             {cat.name}
           </SelectItem>
         ))
@@ -199,6 +204,164 @@ console.log(errors);
           />
           {/* {errors.discountPercent && <p className="text-[hsl(22,55%,44%)]  text-sm">{errors.discountPercent.message}</p>} */}
         </div>
+
+
+        {/* colors */}
+        <div className="space-y-2">
+
+<Label
+  htmlFor="colors"
+  className="capitalize text-gold-light font-semibold"
+>
+  pick colors
+</Label>
+
+          <Select
+            
+  // open={false} // دايماً مفتوح للـ checkboxes
+  // onOpenChange={() => {}} // مش هيغلق
+>
+  <SelectTrigger className="text-gray-300 cursor-pointer">
+    <SelectValue placeholder="pick colors">
+      <div className="flex flex-wrap items-center gap-2">
+        {selectedColorHexes.length > 0 ? (
+          selectedColorHexes.slice(0, 3).map((hex) => {
+            const color = colorsList.find((c) => c.hex === hex);
+            return (
+              <div
+                key={hex}
+                className="flex items-center gap-1 px-2 py-1 bg-dark-blue-1 rounded text-xs border border-gray-600"
+              >
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: hex }}
+                />
+                <span className="capitalize">{color?.name}</span>
+              </div>
+            );
+          })
+        ) : (
+          <span className="text-gray-500">pick colors...</span>
+        )}
+        {selectedColorHexes.length > 3 && (
+          <span className="text-xs text-gray-400">+{selectedColorHexes.length - 3}</span>
+        )}
+      </div>
+    </SelectValue>
+  </SelectTrigger>
+
+<SelectContent className="bg-dark-blue-1 border-none text-white max-h-64 overflow-y-auto p-0">
+  <div className="p-2">
+    {colorsList.map((color) => {
+      const isChecked = selectedColorHexes.includes(color.hex);
+
+      return (
+        <div
+          key={color.hex}
+          className="flex items-center space-x-2 p-2 hover:bg-dark-blue-2 rounded cursor-pointer select-none"
+          onClick={(e) => {
+            e.stopPropagation();
+
+            const newColors = isChecked
+              ? selectedColorHexes.filter((c) => c !== color.hex)
+              : [...selectedColorHexes, color.hex];
+
+            setSelectedColorHexes(newColors);
+            // setValue("colors", newColors); //with api
+          }}
+        >
+          <Checkbox
+            checked={isChecked}
+            className="border-gray-400 pointer-events-none" 
+          />
+          <div className="flex items-center gap-2 flex-1">
+            <div
+              className="w-5 h-5 rounded-full border border-gray-400"
+              style={{ backgroundColor: color.hex }}
+            />
+            <p className="capitalize text-sm">{color.name}</p>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</SelectContent>
+</Select>
+
+  {/* <Label
+    htmlFor="category"
+    className="capitalize text-gold-light font-semibold"
+  >
+    pick a color
+  </Label> 
+
+  <Select
+    value={selectedColorHex}
+    onValueChange={(hex) => {
+      setSelectedColorHex(hex);
+      setValue("color", hex);
+    }}
+  >
+    <SelectTrigger className="text-gray-300">
+      <SelectValue placeholder="pick a color">
+        {selectedColorHex ? (
+          <div className="flex items-center gap-3">
+            <div
+              className="w-6 h-6 rounded-full border border-gray-500 shadow-sm"
+              style={{ backgroundColor: selectedColorHex }}
+            />
+            <span className="capitalize">
+              {colorsList.find((c) => c.hex === selectedColorHex)?.name}
+            </span>
+          </div>
+        ) : (
+          "pick a color"
+        )}
+      </SelectValue>
+    </SelectTrigger>
+
+            <SelectContent>
+  {colorsList.map((color) => (
+    <div key={color.hex} className="flex items-center space-x-2 p-2">
+      <Checkbox
+        checked={selectedColorHexes.includes(color.hex)}
+        onCheckedChange={(checked) => {
+          const newColors = checked
+            ? [...selectedColorHexes, color.hex]
+            : selectedColorHexes.filter((c) => c !== color.hex);
+          setSelectedColorHexes(newColors);
+          setValue("colors", newColors);
+        }}
+      />
+      <div className="flex items-center gap-2 flex-1">
+        <div
+          className="w-5 h-5 rounded-full border"
+          style={{ backgroundColor: color.hex }}
+        />
+        <span className="capitalize text-sm">{color.name}</span>
+      </div>
+    </div>
+  ))}
+</SelectContent>
+    {/* <SelectContent className="bg-dark-blue-1 border-none text-white max-h-64 overflow-y-auto">
+      {colorsList.map((color) => (
+        <SelectItem key={color.hex} value={color.hex}>
+          <div className="flex items-center gap-3 py-1">
+            <div
+              className="w-6 h-6 rounded-full border border-gray-400 shadow-sm"
+              style={{ backgroundColor: color.hex }}
+            />
+            <span className="capitalize">{color.name}</span>
+          </div>
+        </SelectItem>
+      ))}
+    </SelectContent> */}
+  {/* </Select> */} 
+
+
+</div>
+
+
 
         {/* MULTIPLE IMAGE UPLOAD */}
         <div className="space-y-2 flex flex-col items-center justify-center">

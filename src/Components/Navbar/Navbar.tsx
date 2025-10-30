@@ -64,7 +64,9 @@ export default function Navbar() {
         {/* Logo + Toggle */}
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-4 ">
           <div className="flex items-center space-x-3 rtl:space-x-reverse">
+            <Link to="/" className="">
             {!isLanding && <img src={logo} className="h-10 w-10" alt="Logo" />}
+            </Link>
           </div>
           <button
             onClick={toggleNavbar}

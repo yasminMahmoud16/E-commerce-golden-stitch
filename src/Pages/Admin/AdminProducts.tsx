@@ -63,7 +63,7 @@ const { data: catSize } = useQuery({
     { id: 7, label: "Category Name" },
     { id: 4, label: "Price" },
     { id: 10, label: "Sale Price" },
-    { id: 10, label: "Discount Percent" },
+    { id: 12, label: "Discount Percent" },
     { id: 6, label: "Customer Name" },
     { id: 5, label: "Stock" },
     { id: 8, label: "Description" },

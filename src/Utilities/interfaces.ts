@@ -151,6 +151,7 @@ export interface IAuthContextType {
 export interface IProduct {
     id: string;
     name: string;
+    slug?: string;
     description: string;
     stock: number;
     mainPrice: number;
@@ -172,6 +173,7 @@ export interface ICategory {
     id: string;
     name: string;
     description?: string;
+    slug?: string;
     numberOfSale: number;
     // stock: number;
     // mainPrice: number;
