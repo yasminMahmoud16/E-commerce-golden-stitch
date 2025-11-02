@@ -12,13 +12,14 @@ export function useAxios() {
   } = useAuthContext();
 
   let refreshing = false; //follow the res 
+  console.log(refreshing);
 
   const axiosInstance = axios.create({
-    baseURL:"http://54.221.212.74/api" ,
+    baseURL: "https://www.goldenstitchleathers.com/api",
     // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
   });
   // console.log({axiosInstance});
-  
+
 
   axiosInstance.interceptors.request.use(
     (config) => {
@@ -37,7 +38,7 @@ export function useAxios() {
     if (!refreshHeader?.Authorization) return null;
     try {
       const res = await axios.post(
-        `http://54.221.212.74/api/user/refresh-token`,
+        `https://www.goldenstitchleathers.com/api/user/refresh-token`,
         {},
         { headers: getRefreshHeader() }
       );
@@ -68,8 +69,8 @@ export function useAxios() {
         //   error?.response?.data?.message ||
         //   "get new credentials issue";
 
-        
-        
+
+
         // console.log(msg);
         return null;
       }
@@ -94,7 +95,7 @@ export function useAxios() {
         refreshing = false;
 
         // refresh token success
-        
+
         if (newCredentials?.access_token) {
           const role = localStorage.getItem("role");
           const signature = role === "System" ? "System" : "Bearer";
@@ -149,7 +150,7 @@ export function useAxios() {
   //         // return Promise.reject({ ...error, silent: true });
   //       }
   //     }
-      
+
   //     // return Promise.resolve({ data: null }); 
   //     return Promise.reject(error);
   //     // return Promise.reject({ ...error, silent: true });

@@ -29,7 +29,7 @@ export default function CartCommon({
     const { getProductById } = useProductContext();
     // const [quantity , setQuantity]= useState(item.quantity);
     const navigate = useNavigate();
-    const baseUrlImage = "http://54.221.212.74/api";
+    const baseUrlImage = "https://www.goldenstitchleathers.com/api";
     // console.log(wishListItems,"ffom wishhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
 

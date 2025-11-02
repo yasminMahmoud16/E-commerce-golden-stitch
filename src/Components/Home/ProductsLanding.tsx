@@ -29,7 +29,7 @@ export default function ProductsLanding() {
     const [open, setOpen] = useState(false);
     const { token } = useAuthContext()
     const navigate = useNavigate();
-    const baseUrlImage = "http://54.221.212.74/api";
+    const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
 
 

@@ -20,7 +20,7 @@ export default function ProductDetails() {
     const [parentImage, setParentImage] = useState<string | null>(null);
     const {  addToCart } = useCartContext();
     const { addToWishList } = useProfileContext();
-    const baseUrlImage = "http://54.221.212.74/api";
+    const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
 
     

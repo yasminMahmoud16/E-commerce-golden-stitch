@@ -18,7 +18,7 @@ interface DecodedToken {
 
 export default function AuthContextProvider({ children }: { children: ReactNode }) {
   const axiosInstance = axios.create({
-    baseURL: "http://54.221.212.74/api" 
+    baseURL: "https://www.goldenstitchleathers.com/api" 
   });
 
   const [token, setToken] = useState<string | null>(null);

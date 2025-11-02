@@ -8,7 +8,7 @@ import { StateEnum } from "@/Utilities/types";
 
 export default function OrderDetails() {
   const { ordersData, page, setPage, statusFilter, setStatusFilter, loadingDetails } = useOrderContext();
-  const baseUrlImage = "http://54.221.212.74/api";
+  const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
 
   // console.log({ ordersDataUser: ordersData });

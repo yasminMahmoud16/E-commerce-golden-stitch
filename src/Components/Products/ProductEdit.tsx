@@ -17,6 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProductSchema, type UpdateProductForm } from "@/Pages/Auth/validation/productValidation";
 import type { ICategory, IProduct, IProductEditInput } from "@/Utilities/interfaces";
 import { toast } from "sonner";
+console.log(toast);
+
 import { useQuery } from "@tanstack/react-query";
 
 
@@ -34,7 +36,7 @@ export default function ProductEdit({ product, onBack }: {
 
     const { updateProduct } = useProductContext();
   const { getCategories, allCategoriesData } = useCategoryContext();
-      const baseUrlImage ="http://54.221.212.74/api"
+      const baseUrlImage ="https://www.goldenstitchleathers.com/api"
 
 
     const { data: catSize } = useQuery({

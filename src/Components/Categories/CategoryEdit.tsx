@@ -20,7 +20,7 @@ export default function CategoryEdit({ category, onBack }:categoryEdit) {
   const [preview, setPreview] = useState<string | null>(null);
 
   const { updateCategory } = useCategoryContext(); 
-  const baseUrlImage = "http://54.221.212.74/api";
+  const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
   useEffect(() => {
     if (category) {

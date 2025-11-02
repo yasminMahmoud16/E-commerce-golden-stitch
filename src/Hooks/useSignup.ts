@@ -8,7 +8,7 @@ export default function useSignup() {
   const [loading, setLoading] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
 
-  const baseUrl = "http://54.221.212.74/api";
+  const baseUrl = "https://www.goldenstitchleathers.com/api";
   interface ISignupResponse {
     data?: {
       message: string;
