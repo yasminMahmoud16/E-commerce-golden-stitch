@@ -14,7 +14,7 @@ export default function CategoryDetails({ category, onBack, onEdit, onDeleteSucc
 
   const {  getCategoryById , isUpdating ,softDelCategory} = useCategoryContext();
 
-  const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
+  const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
   const {
     data: categoryData,

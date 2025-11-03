@@ -8,7 +8,7 @@ import { StateEnum } from "@/Utilities/types";
 
 export default function OrderDetails() {
   const { ordersData, page, setPage, statusFilter, setStatusFilter, loadingDetails } = useOrderContext();
-  const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
+  const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
 
   // console.log({ ordersDataUser: ordersData });
@@ -101,6 +101,21 @@ export default function OrderDetails() {
               <p>
                 <span className="text-gold font-semibold">Payment:</span>{" "}
                 {order.paymentType}
+              </p>
+              <p className="flex items-center gap-2 text-gold font-semibold">
+                color:
+                {order.products.map((pro) => (
+                  <span
+                  className="inline-block w-5 h-5 rounded-full border border-gray-400 mr-1"
+                    title={pro.color}
+                    style={{
+        backgroundColor: pro.color 
+      }}
+                  >
+
+                    
+                  </span>
+                ))}
               </p>
               <p>
                 <span className="text-gold font-semibold">Note:</span>{" "}

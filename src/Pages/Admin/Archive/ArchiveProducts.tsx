@@ -23,7 +23,7 @@ export default function ArchiveProducts() {
 
 
   const { archiveProducts, page, setPage, search, setSearch, restoreProduct } = useProductContext();
-  const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
+  const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
     // const { getCategories} = useCategoryContext();
   
@@ -41,7 +41,8 @@ export default function ArchiveProducts() {
         { id: 10, label: "Stock" },
         { id: 11, label: "Discount Percent" },
         { id: 12, label: "Sale Price" },
-        { id: 6, label: "Customer Name" },
+        { id: 6, label: "Created By" },
+        { id: 6, label: "Colors" },
         { id: 8, label: "Description" },
         { id: 7, label: "Canceled At" },
         { id: 9, label: "Restore" },
@@ -100,12 +101,12 @@ export default function ArchiveProducts() {
           key={data.id}
           className=" border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize"
         >
-          <TableCell className="font-medium my-2 w-20 h-8 ">
+          <TableCell className="font-medium my-2 w-10 h-5 ">
             <div className="flex justify-center items-center">
               <img
                 src={`${baseUrlImage}/${data.images}`}
                 alt="image"
-                className="w-15 h-15 rounded-md"
+                className="w-10 h-10 rounded-md"
               />
             </div>
           </TableCell>
@@ -114,19 +115,57 @@ export default function ArchiveProducts() {
           <TableCell className="font-medium text-center">{data.stock}</TableCell>
           <TableCell className="font-medium text-center">{data.discountPercent || 0}</TableCell>
           <TableCell className="font-medium text-center">{data.salePrice}</TableCell>
-          <TableCell className="font-medium text-center text-xs">{data.createdBy.username}</TableCell>
+          <TableCell className="font-medium text-center text-xs">{data.createdBy?.firstName}</TableCell>
+          <TableCell className="font-medium text-sm text-center ">
+            {data.colors && data.colors.length > 0 ? (
+              <div className="flex items-center justify-center gap-2  ">
+                {data.colors.slice(0, 3).map((color, index) => (
+                  <span
+                    key={index}
+                    className="w-5 h-5 rounded-full border border-gray-300 shadow-sm inline-block"
+                    style={{ backgroundColor: color }}
+                    title={color}
+                  />
+                ))}
+
+                {data.colors.length > 3 && (
+                  <span className="text-xs text-gray-500">
+                    +{data.colors.length - 3}
+                  </span>
+                )}
+              </div>
+            ) : (
+              <span className="text-gray-500">—</span>
+            )}
+          </TableCell>
+
           <TableCell className="font-medium text-xs truncate max-w-[200px]">
             {String(data.description || "").slice(0, 60)}
           </TableCell>
-          <TableCell className="font-medium text-center text-xs">
-            {new Date(data.freezedAt).toLocaleString()}
+          <TableCell className="font-medium text-center text-xs ">
+            {new Date(data.freezedAt).toLocaleString([], { 
+              // weekday: 'short',   
+              day:"numeric",
+              year: 'numeric',
+                month:"short",
+                hour: '2-digit', 
+                minute: '2-digit', 
+              hour12: false,
+})}
+
+
           </TableCell>
                       {/* <TableCell className="font-medium text-center">{data.category?.name}</TableCell> */}
 
-          <TableCell className="font-medium text-center flex items-center justify-center mt-5" ><Icons.MdOutlineRestore className="text-2xl text-gold-dark transition-all duration-300 ease-in-out hover:text-green-400 hover:cursor-pointer" onClick={(e) => {
+          <TableCell className="font-medium flex  items-center justify-center  text-center mt-2 " >
+            <div>
+
+            <Icons.MdOutlineRestore className="text-2xl  text-gold-dark transition-all duration-300 ease-in-out hover:text-green-400 hover:cursor-pointer" onClick={(e) => {
              e.stopPropagation();
             restoreProduct(data.id)
-          }} /></TableCell>
+            }} />
+            </div>
+          </TableCell>
         </TableRow>
       ))}
     </TableBody>

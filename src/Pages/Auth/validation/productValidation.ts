@@ -14,6 +14,8 @@ export const createProduct = z.strictObject({
         id: z.string().optional(),
         name: z.string().optional(),
     }).optional(),
+    colors: z.array(z.string()),
+
 
 });
 
@@ -33,7 +35,10 @@ export const updateProductSchema = z.strictObject({
         .object({
             id: z.string().optional(),
             name: z.string().optional(),
-        })
+        }),
+    
+        colors: z.array(z.string()).optional(),
+
 
 });
 

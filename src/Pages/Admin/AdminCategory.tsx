@@ -37,7 +37,7 @@ export default function AdminCategory() {
     const [selectedCategory, setSelectedCategory] = useState<ICategory>();
     const [openDetails, setOpenDetails] = useState<boolean>(false);
     const [, setSelectedData] = useState<string | null>(null);
-        const baseUrlImage ="https://www.dev.goldenstitchleathers.com"
+        const baseUrlImage ="https://www.goldenstitchleathers.com/api"
 
 
     const [isEditing, setIsEditing] = useState(false);

@@ -12,7 +12,7 @@ import type { IForgetPasswordResponse } from "@/Utilities/interfaces";
 export default function useForgetPassword() {
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const baseUrl = "https://www.dev.goldenstitchleathers.com";
+  const baseUrl = "https://www.goldenstitchleathers.com/api";
   const location = useLocation();
 
   const emailFromState = location.state?.email;

@@ -52,11 +52,25 @@ export default function CartContextProvider({ children }: { children: ReactNode 
     });
 
 
-    const addToCart = async (productId: string, quantity: number, showToast: boolean = true) => {
+    const addToCart = async (
+        {
+            productId,
+            quantity,
+            showToast = true,
+            color
+        }: {
+    productId: string,
+    quantity: number,
+    color:string,
+    showToast?: boolean 
+    }) => {
+
         try {
+                // console.log("🛒 Sending to backend:", { productId, quantity, color });
+
             const res = await axiosInstance.post(
                 "/cart",
-                { productId, quantity },
+                { productId, quantity ,color},
                 { headers: getAuthHeader() }
             );
 
@@ -94,15 +108,15 @@ export default function CartContextProvider({ children }: { children: ReactNode 
     };
 
     // incrementQuantity
-    const incrementQuantity = (productId: string, currentQuantity: number) => {
+    const incrementQuantity = (productId: string, currentQuantity: number ,color:string) => {
         const newQuantity = currentQuantity + 1;
-        addToCart(productId, newQuantity, false);
+        addToCart({productId,quantity:newQuantity, showToast:false, color});
     };
 
     // decrementQuantity
-    const decrementQuantity = (productId: string, currentQuantity: number) => {
+    const decrementQuantity = (productId: string, currentQuantity: number, color:string) => {
         const newQuantity = Math.max(1, currentQuantity - 1);
-        addToCart(productId, newQuantity, false);
+        addToCart({productId, quantity:newQuantity, showToast:false, color});
     };
 
 

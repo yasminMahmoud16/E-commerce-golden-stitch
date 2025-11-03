@@ -113,9 +113,20 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
   });
 }
 
+       // colors
+      if (data.colors && data.colors.length > 0) {
+        Array.from(data.colors).forEach((color) => {
+          formData.append("colors[]", color);
+        });
+      }
       if (Array.isArray(data.removedAttachments) && data.removedAttachments.length > 0) {
   data.removedAttachments.forEach((path, index) => {
     formData.append(`removedAttachments[${index}]`, path ?? "");
+  });
+}
+      if (Array.isArray(data.removedColors) && data.removedColors.length > 0) {
+  data.removedColors.forEach((path, index) => {
+    formData.append(`removedColors[${index}]`, path ?? "");
   });
 }
       // if (data.removedAttachments?.length > 0) {
@@ -124,7 +135,7 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
       //   });
       // }
 
-      // console.log("🧩 updateProduct payload:", data);
+      console.log("🧩 updateProduct payload:", data);
 // console.log("🧩 product id:", data.id);
       const res = await axiosInstance.patch(`/product/${data.id}`, formData, {
         headers: getAuthHeader(),
@@ -156,6 +167,8 @@ formData.append("categoryId", data.category?.id ?? data.category?.id ?? "");
     },
 onError: (error) => {
   if (axios.isAxiosError(error)) {
+    // console.log({error});
+    
     const issue = error.response?.data?.cause?.validationErrors?.[0]?.issues?.[0];
 
     if (issue) {
@@ -217,6 +230,12 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
           formData.append("attachments", file);
         });
       }
+      // colors
+      if (data.colors && data.colors.length > 0) {
+        Array.from(data.colors).forEach((color) => {
+          formData.append("colors[]", color);
+        });
+      }
 
       const res = await axiosInstance.post("/product", formData, {
         headers: getAuthHeader(),
@@ -226,10 +245,14 @@ const addProduct = useMutation<IAddProductResponse, unknown, IProductUpdateInput
         throw new Error("No response from server");
       }
 
+      // console.log({addProduct:res.data});
+      
       return res.data as IAddProductResponse;
 
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
+        // console.log({error});
+        
         throw error;
       } else {
         throw new Error("Unexpected error during product upload");

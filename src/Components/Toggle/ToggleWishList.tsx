@@ -1,4 +1,3 @@
-import cornerBottomRightHero from "@/assets/Images/cornerBottomRightHero.png"
 import {
     Sheet,
     SheetContent,

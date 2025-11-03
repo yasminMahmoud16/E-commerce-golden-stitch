@@ -22,7 +22,7 @@ export default function ArchiveCategory() {
 
 
     const { archiveCategory, page, setPage, search, setSearch, restoreCategory, hardDelCategory } = useCategoryContext();
-    const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
+    const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
 
     // console.log({ archiveCategory });
@@ -88,7 +88,7 @@ export default function ArchiveCategory() {
                                 </div>
                             </TableCell>
                             <TableCell className="font-medium text-center">{data.name}</TableCell>
-                            <TableCell className="font-medium text-center">{data.createdBy.username}</TableCell>
+                            <TableCell className="font-medium text-center">{data.createdBy?.username}</TableCell>
                             <TableCell className="font-medium text-xs truncate max-w-[200px]">
                                 {String(data.description || "").slice(0, 60)}
                             </TableCell>

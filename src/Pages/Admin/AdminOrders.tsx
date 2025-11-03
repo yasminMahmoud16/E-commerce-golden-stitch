@@ -46,6 +46,7 @@ export default function ArchiveOrders() {
         { id: 9, label: "Product Name" },
         { id: 9, label: "Total Price" },
         { id: 2, label: "Payment-Type" },
+        { id: 2, label: "Color" },
         { id: 4, label: "note" },
         { id: 5, label: "Phone" },
         { id: 8, label: "Status" },
@@ -126,6 +127,18 @@ export default function ArchiveOrders() {
 
 
                             <TableCell className="font-medium text-center ">{data.paymentType}</TableCell>
+                            <TableCell className="font-medium text-center ">{data.products.map((pro) => (
+                  <span
+                  className="inline-block w-5 h-5 rounded-full border border-gray-400 mr-1"
+                    title={pro.color}
+                    style={{
+        backgroundColor: pro.color 
+      }}
+                  >
+
+                    
+                  </span>
+                ))}</TableCell>
                             <TableCell className="font-medium text-xs truncate text-center ">
                                 {String(data.note || "no note for this order")}
                             </TableCell>

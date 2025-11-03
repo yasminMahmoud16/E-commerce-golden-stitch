@@ -48,6 +48,7 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
     discountPercent: undefined ,
     description: "",
     categoryId: "",
+    colors:[],
     attachments: undefined,
     category: { id: "", name: "" },
   },
@@ -95,6 +96,7 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
     category: { id: selectedCategoryId || "" },
 
   attachments: data.attachments || [],
+  colors: data.colors || [],
   };
 
   addProduct.mutate(payload, {
@@ -217,9 +219,8 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
 </Label>
 
           <Select
-            
-  // open={false} // دايماً مفتوح للـ checkboxes
-  // onOpenChange={() => {}} // مش هيغلق
+  // open={false}
+  // onOpenChange={() => {}} 
 >
   <SelectTrigger className="text-gray-300 cursor-pointer">
     <SelectValue placeholder="pick colors">
@@ -267,7 +268,7 @@ const { register, handleSubmit, setValue, formState: { errors } } = useForm<Prod
               : [...selectedColorHexes, color.hex];
 
             setSelectedColorHexes(newColors);
-            // setValue("colors", newColors); //with api
+            setValue("colors", newColors); //with api
           }}
         >
           <Checkbox

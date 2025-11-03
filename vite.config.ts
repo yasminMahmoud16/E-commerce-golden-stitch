@@ -26,7 +26,7 @@ export default defineConfig({
         // target: 'https://carletta-nonchimerical-hilda.ngrok-free.dev',
         // target: 'http://18.234.168.49',
         // target: 'http://54.221.212.74/',
-        target: 'https://www.dev.goldenstitchleathers.com',
+        target: 'https://www.goldenstitchleathers.com/api',
         changeOrigin: true,
       },
     },

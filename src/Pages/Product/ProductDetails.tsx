@@ -11,7 +11,7 @@ import {
     Carousel, CarouselContent, CarouselItem, CarouselNext,
     CarouselPrevious
 } from "@/Components/ui/carousel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCartContext, useProductContext, useProfileContext } from "@/Hooks/useAppContexts";
 import { useQuery } from "@tanstack/react-query";
 import type { IProduct } from "@/Utilities/interfaces";
@@ -21,10 +21,11 @@ import type { IProduct } from "@/Utilities/interfaces";
 export default function ProductDetails() {
     const { getProductById } = useProductContext()
     const [parentImage, setParentImage] = useState<string | null>(null);
-    const {  addToCart } = useCartContext();
+    const { addToCart } = useCartContext();
     const { addToWishList } = useProfileContext();
-    const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
-
+    const baseUrlImage = "https://www.goldenstitchleathers.com/api";
+    
+    
 
     
     const { id } = useParams();
@@ -35,13 +36,20 @@ export default function ProductDetails() {
     const { data: product } = useQuery<IProduct>({
         queryKey: ['product', id],
         queryFn: () => getProductById(id!),
-        enabled: !!id, 
+        enabled: !!id,
     });
+    const [selectedColor, setSelectedColor] = useState<string>("");
+
+useEffect(() => {
+  if (product?.colors && product.colors.length > 0) {
+    setSelectedColor(product.colors[0]); 
+  }
+}, [product]);
     // console.log({product});
-    
+// const defaultColor = product?.colors?.[0]
 
 
-    const handleGallery = (img:string) => {
+    const handleGallery = (img: string) => {
         setParentImage(img)
     }
 
@@ -111,55 +119,84 @@ export default function ProductDetails() {
                                     <p className="text-md font-semibold text-gold-dark mb-1">
                                         <span className="text-dark-blue-2 font-light">
                                             stock:
-                                    </span> {product?.stock} </p>
-                                    
+                                        </span> {product?.stock} </p>
+
                                 </div>
-                                
+
                                 <div >
                                     <p className="text-md font-semibold text-gold-dark mb-1">
                                         <span className="text-dark-blue-2 font-light">
-                                        Discount Percent:
+                                            Discount Percent:
                                         </span>
-                                            
-                                        
+
+
                                         {product?.discountPercent} %</p>
-                                    
+
                                 </div>
                                 <div >
                                     <del>
 
-                                    <p className="text-md font-semibold text-gold-dark mb-1 ">
-                                        main Price:
-                                        <span className="text-dark-blue-2 font-light">
-                                        {product?.mainPrice}
+                                        <p className="text-md font-semibold text-gold-dark mb-1 ">
+                                            main Price:
+                                            <span className="text-dark-blue-2 font-light">
+                                                {product?.mainPrice}
 
-                                        </span>
-                                            
-                                        
-                                    </p>
+                                            </span>
+
+
+                                        </p>
                                     </del>
 
-                                    
+
+                                </div>
+                                <div className=" flex items-center justify-between " >
+                                    <p className="text-4xl font-bold text-gold-dark mb-1">{product?.salePrice} EGP</p>
+                                    <div className="flex flex-wrap gap-2 p-2 rounded-md">
+                                        <div className="flex flex-wrap gap-3 p-3 rounded-md">
+  {product?.colors?.map((color, index) => (
+    <div
+      key={index}
+      onClick={() => setSelectedColor(color)}   
+      className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 cursor-pointer
+        ${selectedColor === color 
+          ? 'border-dark-blue-2 shadow-lg scale-110'   
+          : 'border-gray-300 hover:border-dark-blue-2' 
+        }`}
+    >
+      <span
+        className="w-full h-full rounded-full"
+        style={{ backgroundColor: color }}
+        title={color}
+      />
+    </div>
+  ))}
+</div>
+
+                                    </div>
+
+
                                 </div>
                                 <div >
-                                    <p className="text-4xl font-bold text-gold-dark mb-1">{product?.salePrice} EGP</p>
-                                    
                                 </div>
-                                <div  >
-                                    {/* <p className="text-lg capitalize font-bold text-gold-dark mb-3">                                    category: {product?.category?.name} </p>
-                                     */}
-                                </div>
-                                
+
 
                                 <BtnCommon
                                     text={"add to cart"}
                                     className="rounded-md bg-dark-blue-nav"
-                                    onClick={()=>{addToCart(product!.id,1)}}
+                                    onClick={() => {
+                                    console.log(selectedColor);
+                                    
+                                        addToCart({
+                                            productId: product?.id || "",
+                                            quantity: 1,
+                                            color: selectedColor 
+                                        });
+                                    }}
                                 />
                                 <BtnCommon
                                     text={"add to wish List"}
                                     className="rounded-md bg-gold-dark"
-                                    onClick={()=>{addToWishList(product!.id)}}
+                                    onClick={() => { addToWishList(product!.id) }}
                                 />
                             </div>
                         </div>
@@ -189,7 +226,7 @@ export default function ProductDetails() {
             </section>
 
 
-            
+
         </PagesWrapper>
 
     </>

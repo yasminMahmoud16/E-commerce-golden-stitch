@@ -9,20 +9,18 @@ import {
 import { Button } from "../ui/button";
 import { useCategoryContext } from "@/Hooks/useAppContexts";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 
 export default function CategorySlider() {
-    const { allCategoriesData, getCategories } = useCategoryContext();
+    const { allCategoriesData } = useCategoryContext();
     const navigate = useNavigate();
-    const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
+    const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
-    // تحميل البيانات
-    const { data: catSize } = useQuery({
-        queryKey: ["allCategories"],
-        queryFn: () => getCategories({ size: 50 }),
-    });
+    // const { data: catSize } = useQuery({
+    //     queryKey: ["allCategories"],
+    //     queryFn: () => getCategories({ size: 50 }),
+    // });
 
-    // دالة الضغط على الزر
     const handleClickShopNow = (slug: string) => {
         navigate(`/products?category=${slug}`);
     };
@@ -36,14 +34,12 @@ export default function CategorySlider() {
                             key={category.id}
                             className="w-full flex justify-center items-center p-0 relative"
                         >
-                            {/* الصورة */}
                             <img
                                 src={`${baseUrlImage}/${category.image}`}
                                 alt={category.name}
                                 className="w-full h-[500px] object-cover"
                             />
 
-                            {/* الزرار فوق الصورة */}
                             <div className="absolute inset-0 flex justify-center items-center">
                                 <Button
                                     className="
@@ -73,7 +69,6 @@ export default function CategorySlider() {
                     ))}
                 </CarouselContent>
 
-                {/* الأسهم */}
                 <CarouselPrevious className="absolute cursor-pointer left-4 top-1/2 -translate-y-1/2 z-20 bg-dark-blue-nav border-dark-blue-nav text-[hsl(22,55%,44%)] transition-all ease-in-out duration-300 hover:bg-[hsl(22,55%,44%)] hover:text-dark-blue-nav rounded-full shadow-lg" />
                 <CarouselNext className="absolute cursor-pointer right-4 top-1/2 -translate-y-1/2 z-20 bg-dark-blue-nav border-dark-blue-nav text-[hsl(22,55%,44%)] transition-all ease-in-out duration-300 hover:bg-[hsl(22,55%,44%)] hover:text-dark-blue-nav rounded-full shadow-lg" />
             </Carousel>

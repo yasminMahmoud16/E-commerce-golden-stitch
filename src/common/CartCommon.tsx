@@ -29,7 +29,7 @@ export default function CartCommon({
     const { getProductById } = useProductContext();
     // const [quantity , setQuantity]= useState(item.quantity);
     const navigate = useNavigate();
-    const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
+    const baseUrlImage = "https://www.goldenstitchleathers.com/api";
     // console.log(wishListItems,"ffom wishhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
 
@@ -55,6 +55,7 @@ export default function CartCommon({
         navigate(`/product-details/${id}`);
     };
 
+// console.log({listToRender});
 
 
 
@@ -65,6 +66,8 @@ export default function CartCommon({
             await removeFromWishList(id);
         }
     };
+
+
     return (
         <>
 
@@ -73,18 +76,19 @@ export default function CartCommon({
 
                 {listToRender?.map((item) => (
 
-                    <Card onClick={() => { handleOnClickProductDetails(item.productId.id) }} key={item.productId.id} className="relative cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-2 h-30 z-10 bg-[#b2a384a4] border-none ">
+
+                    <Card onClick={() => { handleOnClickProductDetails(item.productId?.id) }} key={item.productId?.id} className="relative cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-2 h-40 z-10 bg-[#b2a384a4] border-none  ">
                         <div className="grid grid-cols-6 gap-3">
                             <div className="col-span-3 ">
                                 <CardContent>
-                                    <div className="overflow-hidden flex items-center justify-center bg-gray-100 rounded-md">
+                                    <div className="overflow-hidden flex items-center justify-center bg-gray-100 rounded-md mt-2">
                                         {item.productId && item.productId.images?.[0] ? (
 
                                             <div className=" w-full h-20">
 
                                                 <img
                                                     src={`${baseUrlImage}/${item.productId.images[0]}`}
-                                                    alt={item.productId.name}
+                                                    alt={item.productId?.name}
                                                     className="w-full h-full object-fit transition-transform duration-500 group-hover:scale-105 overflow-hidden"
                                                 />
                                             </div>
@@ -101,13 +105,33 @@ export default function CartCommon({
                             <div className="col-span-3 gap-4  relative">
                                 <Icons.FaTrash className="text-md absolute right-3.5 text-gold-dark transition-all duration-300 ease-in-out hover:text-red-600 cursor-pointer  " onClick={(e) => {
                                     e.stopPropagation();
-                                    handleDelete(item.productId.id)
+                                    handleDelete(item.productId?.id)
                                 }} />
 
                                 <CardHeader>
-                                    <CardTitle className="text-dark-blue-2 text-sm font-medium capitalize truncate w-full">
-                                        {item.productId.name}
-                                    </CardTitle>
+<CardTitle className="text-dark-blue-2 text-sm font-medium capitalize truncate w-full">
+  {item.productId?.name}
+
+  <div className="mt-1 flex items-center gap-2">
+    <p>Color:</p>
+    <span
+      className="inline-block w-5 h-5 rounded-full border border-gray-400"
+      style={{
+        backgroundColor:
+          item.color && item.color !== ""
+            ? item.color
+            : item.productId?.colors?.[0] || "#ccc",
+      }}
+      title={
+        item.color && item.color !== ""
+          ? item.color 
+          : item.productId?.colors?.[0] || "No color"
+      }
+    ></span>
+  </div>
+</CardTitle>
+
+
 
 
                                     {type !== CardEnum.wishList && (
@@ -115,14 +139,24 @@ export default function CartCommon({
                                             <div className="flex items-center justify-center rounded-full mr-2 cursor-pointer transition-all duration-500 ease-in-out group hover:bg-dark-blue-1">
                                                 <Icons.CiCircleMinus className="text-2xl text-dark-blue-nav group-hover:text-gold-light" onClick={(e) => {
                                                     e.stopPropagation();
-                                                    decrementQuantity(item.productId.id, item.quantity);
+                                                    decrementQuantity(
+                                                        item.productId.id,
+                                                        item.quantity,
+                                                        // getSelectedColor(item)
+                                                        item.color as string
+                                                    );
                                                 }} />
                                             </div>
                                             {item.quantity}
 
                                             <div className="flex items-center justify-center rounded-full ml-2 cursor-pointer transition-all duration-500 ease-in-out group hover:bg-dark-blue-1" onClick={(e) => {
                                                 e.stopPropagation();
-                                                incrementQuantity(item.productId.id, item.quantity);
+                                                incrementQuantity(
+                                                    item.productId.id,
+                                                    item.quantity,
+                                                    item.color as string
+                                                    // getSelectedColor(item)
+                                                );
                                             }}>
                                                 <Icons.CiCirclePlus className="text-dark-blue-nav text-2xl group-hover:text-gold-light" />
                                             </div>
@@ -131,10 +165,10 @@ export default function CartCommon({
 
                                 </CardHeader>
                                 <CardFooter className="  flex w-full items-center mt-2">
-                                    <del className="font-light text-xs text-gold-dark w-30">
-                                        {item.productId.mainPrice}
+                                    <del className="font-light text-xs text-gold-dark w-30 mr-2">
+                                        {item.productId?.mainPrice}
                                         EGP</del>
-                                    <p className="font-bold text-md text-gold-dark w-50 ">{item.productId.salePrice} EGP</p>
+                                    <p className="font-bold text-md text-gold-dark w-50 ">{item.productId?.salePrice} EGP</p>
                                 </CardFooter>
                             </div>
                         </div>

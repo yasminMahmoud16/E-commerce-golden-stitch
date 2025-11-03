@@ -11,10 +11,12 @@ export function useAxios() {
     getRefreshHeader,
   } = useAuthContext();
 
-  let refreshing = false; //follow the res 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  let refreshing = false; //follow the res
 
   const axiosInstance = axios.create({
-    baseURL:"https://www.dev.goldenstitchleathers.com" ,
+    baseURL:"https://www.goldenstitchleathers.com/api" ,
     // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
   });
   // console.log({axiosInstance});
@@ -37,7 +39,7 @@ export function useAxios() {
     if (!refreshHeader?.Authorization) return null;
     try {
       const res = await axios.post(
-        `https://www.dev.goldenstitchleathers.com/user/refresh-token`,
+        `https://www.goldenstitchleathers.com/api/user/refresh-token`,
         {},
         { headers: getRefreshHeader() }
       );

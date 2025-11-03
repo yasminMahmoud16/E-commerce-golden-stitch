@@ -238,6 +238,7 @@ export type CartItemFromAPI = {
   productId: IProduct;
   quantity: number;
   product?: IProduct;
+  color?:string
 };
 // export type WishListItem = {
 //   productId: IProduct;

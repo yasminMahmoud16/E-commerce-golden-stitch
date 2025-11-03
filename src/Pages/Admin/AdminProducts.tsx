@@ -22,36 +22,36 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/Components/ui/table"; 
+} from "@/Components/ui/table";
 import { useCategoryContext, useProductContext } from "@/Hooks/useAppContexts";
 import { SpinnerCustomData } from "@/Loading/SpinnerCustomData";
 import type { IProduct } from "@/Utilities/interfaces";
 import { useQuery } from "@tanstack/react-query";
-import {   useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 export default function AdminProducts() {
   const [openDetails, setOpenDetails] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<IProduct |null>();
+  const [selectedProduct, setSelectedProduct] = useState<IProduct | null>();
   const [isEditing, setIsEditing] = useState(false);
   const { allProductsData, categoryId,
     setCategoryId, isLoading, page, setPage, search, setSearch, getProductById, isUpdating } = useProductContext();
-    const location = useLocation();
-    const currentLocation = location.pathname
-    const showAddBtn = currentLocation.includes("/admin/products") || currentLocation.includes("/admin/category")
+  const location = useLocation();
+  const currentLocation = location.pathname
+  const showAddBtn = currentLocation.includes("/admin/products") || currentLocation.includes("/admin/category")
   const { getCategories } = useCategoryContext();
-  const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
-
-  
+  const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
 
 
 
 
-const { data: catSize } = useQuery({
+
+
+  const { data: catSize } = useQuery({
     queryKey: ["allCategories"],
-    queryFn: () => getCategories({ size:50}),
-});
+    queryFn: () => getCategories({ size: 50 }),
+  });
 
 
 
@@ -61,10 +61,11 @@ const { data: catSize } = useQuery({
     { id: 2, label: "image" },
     { id: 3, label: "Product Name" },
     { id: 7, label: "Category Name" },
+    { id: 6, label: "Created By" },
     { id: 4, label: "Price" },
     { id: 10, label: "Sale Price" },
     { id: 12, label: "Discount Percent" },
-    { id: 6, label: "Customer Name" },
+    { id: 14, label: "Colors" },
     { id: 5, label: "Stock" },
     { id: 8, label: "Description" },
 
@@ -90,11 +91,11 @@ const { data: catSize } = useQuery({
     setOpenAdd(true);
   };
 
-  if (isUpdating ) {
+  if (isUpdating) {
     return <>
-        <SpinnerCustomData /> 
+      <SpinnerCustomData />
     </>
-    
+
   }
 
   return <>
@@ -109,55 +110,55 @@ const { data: catSize } = useQuery({
 
 
 
-{openAdd ? (
-  <AddProduct
-    onBack={() => setOpenAdd(false)} 
-  />
-) : openDetails && selectedProduct ? (
-  isEditing ? (
-    <ProductEdit
-      product={selectedProduct}
-      onBack={() => setIsEditing(false)}
-    />
-  ) : (
-    <ProductDetails
-      product={selectedProduct}
-      onBack={() => setOpenDetails(false)}
-      onEdit={(cat:IProduct) => {
-    setSelectedProduct(cat); 
-        setIsEditing(true);
-        
-  }} onDeleteSuccess={() => {
-    setOpenDetails(false); 
-    setSelectedProduct(null); 
-  }}
-    />
-  )
-) : (
-          <>
-            <div>
-{isUpdating && (
-    <div className="absolute inset-0 flex justify-center items-center bg-black/40 backdrop-blur-sm z-50">
-      <SpinnerCustomData />
-    </div>
-  )}
-    <div className="w-full relative  mb-2 flex flex-col md:flex-row  justify-between  ">
-                <div className="  ">
-                  
-                    <div className="relative w-50 md:w-80 md: ">
-    <Input
-      type="text"
-      placeholder="search"
-      className="w-full border-dark-blue-1 py-3 pl-10 pr-3 text-dark-blue-nav placeholder:text-gray-500 rounded-4xl ring-bg-gold-dark shadow "
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-    />
-    <Icons.CiSearch
-      className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
-      size={23}
-    />
-  </div>
-        {/* <Icons.CiSearch
+    {openAdd ? (
+      <AddProduct
+        onBack={() => setOpenAdd(false)}
+      />
+    ) : openDetails && selectedProduct ? (
+      isEditing ? (
+        <ProductEdit
+          product={selectedProduct}
+          onBack={() => setIsEditing(false)}
+        />
+      ) : (
+        <ProductDetails
+          product={selectedProduct}
+          onBack={() => setOpenDetails(false)}
+          onEdit={(cat: IProduct) => {
+            setSelectedProduct(cat);
+            setIsEditing(true);
+
+          }} onDeleteSuccess={() => {
+            setOpenDetails(false);
+            setSelectedProduct(null);
+          }}
+        />
+      )
+    ) : (
+      <>
+        <div>
+          {isUpdating && (
+            <div className="absolute inset-0 flex justify-center items-center bg-black/40 backdrop-blur-sm z-50">
+              <SpinnerCustomData />
+            </div>
+          )}
+          <div className="w-full relative  mb-2 flex flex-col md:flex-row  justify-between  ">
+            <div className="  ">
+
+              <div className="relative w-50 md:w-80 md: ">
+                <Input
+                  type="text"
+                  placeholder="search"
+                  className="w-full border-dark-blue-1 py-3 pl-10 pr-3 text-dark-blue-nav placeholder:text-gray-500 rounded-4xl ring-bg-gold-dark shadow "
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <Icons.CiSearch
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+                  size={23}
+                />
+              </div>
+              {/* <Icons.CiSearch
           className="absolute left-3 top-4 -translate-y-1/2 text-footer-items"
           size={23}
         />
@@ -168,140 +169,164 @@ const { data: catSize } = useQuery({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
                   /> */}
-                  
 
 
-{/* CATEGORY FILTER BUTTONS */}
-<div className="flex flex-wrap gap-3 justify-center my-3">
-  <button
-    onClick={() => setCategoryId("")} 
-    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-      categoryId === ""
-        ? "bg-gold text-white"
-        : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
-    }`}
-  >
-    All
-  </button>
 
-  {catSize?.docs?.map((cat) => (
-    <button
-      key={cat.id}
-      onClick={() => setCategoryId(cat.id)}
-      className={`px-4 py-2 rounded-full text-xs font-semibold capitalize transition-all duration-300 ${
-        categoryId === cat.id
-          ? "bg-gold text-white"
-          : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
-      }`}
-    >
-      {cat.name}
-    </button>
-  ))}
-</div>
-      </div>
-                
-                <div className="absolute -top-4 -right-6 md:right-0 mr-8 py-4">
-        {showAddBtn && (
-          <BtnCommon
-            text={"add"}
-            onClick={handleAddClick}
-            className="w-20 rounded-xl shadow md:w-20 lg:w-30 transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%] "
-            icon={Icons.AiOutlinePlusCircle}
-          />
-        )}
-      </div>
+              {/* CATEGORY FILTER BUTTONS */}
+              <div className="flex flex-wrap gap-3 justify-center my-3">
+                <button
+                  onClick={() => setCategoryId("")}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${categoryId === ""
+                      ? "bg-gold text-white"
+                      : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
+                    }`}
+                >
+                  All
+                </button>
 
-
-    </div>
-
-              
-              <div className=" overflow-x-auto hide-scrollbar"
-              
-              
-              
->
-            <Table  className="overflow-x-hidden scrollbar-hide ">
-      <TableHeader>
-        <TableRow>
-          {productHeaders.map((header) => (
-            <TableHead
-              className="bg-gold-light w-md text-center text-gold-dark font-semibold mr-2"
-              key={header.id}
-            >
-              {header.label}
-            </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-
-      <TableCaption>{isLoading && <SpinnerCustomData />}</TableCaption>
-
-      <TableBody>
-        {filteredProducts?.map((data) => (
-          <TableRow 
-            
-            onClick={() => handleDetailsClick(data.id)}
-            key={data.id}
-            className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize "
-          >
-            <TableCell className="font-medium my-1">
-              <div className="flex justify-center items-center overflow-hidden w-15 h-15">
-                <img
-                  src={`${baseUrlImage}/${data.images[0]}`}
-                  alt="image"
-                  className="w-full h-full rounded-md overflow-hidden"
-                />
+                {catSize?.docs?.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setCategoryId(cat.id)}
+                    className={`px-4 py-2 rounded-full text-xs font-semibold capitalize transition-all duration-300 ${categoryId === cat.id
+                        ? "bg-gold text-white"
+                        : "bg-transparent border border-gold text-gold hover:bg-gold-dark hover:text-white"
+                      }`}
+                  >
+                    {cat.name}
+                  </button>
+                ))}
               </div>
-            </TableCell>
-            <TableCell className="font-medium  text-sm text-center">{data.name}</TableCell>
-            <TableCell className="font-medium  text-sm text-center">{data.category?.name}</TableCell>
-            <TableCell className="font-medium  text-sm text-center">{data.mainPrice}</TableCell>
-            <TableCell className="font-medium  text-sm text-center">{data.salePrice}</TableCell>
-            <TableCell className="font-medium  text-sm text-center">{data.discountPercent ||0}</TableCell>
-            <TableCell className="font-medium  text-sm text-center">{data.createdBy.username}</TableCell>
-            <TableCell className="font-medium text-sm text-center">{data.stock}</TableCell>
-            <TableCell className="font-medium text-xs">{data.description.slice(0, 30)}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-              </div>
-
-
-<Pagination className="my-4">
-                            <PaginationContent>
-                                {page > 1 && (
-                                    <PaginationItem>
-                                        <PaginationPrevious
-                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
-                                            onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
-                                        />
-                                    </PaginationItem>
-                                )}
-
-                                <PaginationItem>
-                                    <PaginationLink isActive className="cursor-pointer rounded-full">
-                                        {page}
-                                    </PaginationLink>
-                                </PaginationItem>
-
-                                {page < (allProductsData?.pages || 1) && (
-                                    <PaginationItem>
-                                        <PaginationNext
-                                            className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
-                                            onClick={() =>
-                                                setPage((prev) =>
-                                                    prev < (allProductsData?.pages || 1) ? prev + 1 : prev
-                                                )
-                                            }
-                                        />
-                                    </PaginationItem>
-                                )}
-                            </PaginationContent>
-                        </Pagination>
             </div>
-  </>
-)}
+
+            <div className="absolute -top-4 -right-6 md:right-0 mr-8 py-4">
+              {showAddBtn && (
+                <BtnCommon
+                  text={"add"}
+                  onClick={handleAddClick}
+                  className="w-20 rounded-xl shadow md:w-20 lg:w-30 transition-all duration-700 ease-in-out hover:from-gold-dark hover:to-[55%] "
+                  icon={Icons.AiOutlinePlusCircle}
+                />
+              )}
+            </div>
+
+
+          </div>
+
+
+          <div className=" overflow-x-auto hide-scrollbar"
+
+
+
+          >
+            <Table className="overflow-x-hidden scrollbar-hide ">
+              <TableHeader>
+                <TableRow>
+                  {productHeaders.map((header) => (
+                    <TableHead
+                      className="bg-gold-light w-md text-center text-gold-dark font-semibold mr-2"
+                      key={header.id}
+                    >
+                      {header.label}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+
+              <TableCaption>{isLoading && <SpinnerCustomData />}</TableCaption>
+
+              <TableBody>
+                {filteredProducts?.map((data) => (
+                  <TableRow
+
+                    onClick={() => handleDetailsClick(data.id)}
+                    key={data.id}
+                    className="cursor-pointer border-none rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-white/10 text-gray-400 capitalize "
+                  >
+                    <TableCell className="font-medium my-1">
+                      <div className="flex justify-center items-center overflow-hidden w-10 h-10">
+                        <img
+                          src={`${baseUrlImage}/${data.images[0]}`}
+                          alt="image"
+                          className="w-full h-full rounded-md overflow-hidden"
+                        />
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-medium  text-sm text-center">{data.name}</TableCell>
+                    <TableCell className="font-medium  text-sm text-center">{data.category?.name}</TableCell>
+                     <TableCell className="font-medium  text-sm text-center">{data.createdBy?.firstName}</TableCell>
+                    <TableCell className="font-medium  text-sm text-center">{data.mainPrice}</TableCell>
+                    <TableCell className="font-medium  text-sm text-center">{data.salePrice}</TableCell>
+                    <TableCell className="font-medium  text-sm text-center">{data.discountPercent || 0}</TableCell>
+
+                   <TableCell className="font-medium text-sm text-center ">
+  {data.colors && data.colors.length > 0 ? (
+    <div className="flex items-center justify-center gap-2  ">
+      {data.colors.slice(0, 3).map((color, index) => (
+        <span
+          key={index}
+          className="w-5 h-5 rounded-full border border-gray-300 shadow-sm inline-block"
+          style={{ backgroundColor: color }}
+          title={color}
+        />
+      ))}
+
+      {data.colors.length > 3 && (
+        <span className="text-xs text-gray-500">
+          +{data.colors.length - 3}
+        </span>
+      )}
+    </div>
+  ) : (
+    <span className="text-gray-500">—</span>
+  )}
+</TableCell>
+
+
+
+                    <TableCell className="font-medium text-sm text-center">{data.stock}</TableCell>
+                    <TableCell className="font-medium text-xs">{data.description.slice(0, 30)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+
+          <Pagination className="my-4">
+            <PaginationContent>
+              {page > 1 && (
+                <PaginationItem>
+                  <PaginationPrevious
+                    className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                    onClick={() => setPage((prev) => (prev > 1 ? prev - 1 : 1))}
+                  />
+                </PaginationItem>
+              )}
+
+              <PaginationItem>
+                <PaginationLink isActive className="cursor-pointer rounded-full">
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+
+              {page < (allProductsData?.pages || 1) && (
+                <PaginationItem>
+                  <PaginationNext
+                    className="cursor-pointer transition-all ease-in-out duration-300 text-gold-dark hover:bg-transparent hover:text-dark-blue-2"
+                    onClick={() =>
+                      setPage((prev) =>
+                        prev < (allProductsData?.pages || 1) ? prev + 1 : prev
+                      )
+                    }
+                  />
+                </PaginationItem>
+              )}
+            </PaginationContent>
+          </Pagination>
+        </div>
+      </>
+    )}
 
 
 

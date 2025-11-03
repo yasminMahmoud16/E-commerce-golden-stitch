@@ -16,11 +16,11 @@ import type { productDetails } from "@/Utilities/types";
 
 export default function ProductDetails({ product, onBack, onEdit, onDeleteSuccess }: productDetails) {
   const queryClient = useQueryClient();
-  const { getProductById, isUpdating ,softDelProduct} = useProductContext();
+  const { getProductById, isUpdating, softDelProduct } = useProductContext();
   const { allCategoriesData } = useCategoryContext();
-const [parentImage, setParentImage] = useState<string | null>(null);
+  const [parentImage, setParentImage] = useState<string | null>(null);
   const [isDelete, setIsDelete] = useState(false);
-  const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
+  const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
 
   const { data: productData } = useQuery({
@@ -36,10 +36,10 @@ const [parentImage, setParentImage] = useState<string | null>(null);
   const categoryName =
     typeof currentProduct?.category === "string"
       ? allCategoriesData?.docs?.find((cat) => cat.id === currentProduct.category)
-          ?.name || "Unknown Category"
+        ?.name || "Unknown Category"
       : currentProduct?.category?.name || "Unknown Category";
 
-  const handleGallery = (image:string) => {
+  const handleGallery = (image: string) => {
     setParentImage(image);
   };
 
@@ -52,12 +52,12 @@ const [parentImage, setParentImage] = useState<string | null>(null);
   }
 
 
-  const handleDeleteClick = async(id:string) => {
-    const result =await softDelProduct(id)
+  const handleDeleteClick = async (id: string) => {
+    const result = await softDelProduct(id)
     if (result === "Done" && onDeleteSuccess) {
       onDeleteSuccess();
     }
-}
+  }
 
   return <>
     <div className="p-6 text-gray-800">
@@ -76,7 +76,7 @@ const [parentImage, setParentImage] = useState<string | null>(null);
             onClick={() => currentProduct && onEdit(currentProduct)}
           />
           <Icons.FaTrash size={20} className="  text-[hsl(22,55%,44%)] transition-all duration-300 ease-in-out hover:text-red-700 cursor-pointer"
-            onClick={()=>{setIsDelete(true)}} />
+            onClick={() => { setIsDelete(true) }} />
         </div>
       </div>
 
@@ -86,38 +86,38 @@ const [parentImage, setParentImage] = useState<string | null>(null);
 
           <div className="w-50 md:w-96 flex flex-col items-center justify-center">
 
-        <img
-          src={`${baseUrlImage}/${parentImage || currentProduct?.images?.[0]}`}
-          alt={currentProduct?.name}
-          className="w-60 h-60 overflow-hidden object-cover rounded-xl shadow-lg"
-        />
+            <img
+              src={`${baseUrlImage}/${parentImage || currentProduct?.images?.[0]}`}
+              alt={currentProduct?.name}
+              className="w-60 h-60 overflow-hidden object-cover rounded-xl shadow-lg"
+            />
           </div>
 
-        <Carousel className="relative w-full md:w-[350px]">
-          <CarouselPrevious className="cursor-pointer absolute left-1 z-10" />
-          <CarouselContent className="-ml-4 flex mt-3">
-            {currentProduct?.images?.map((img, index) => (
-              <CarouselItem
-                key={index}
-                className="pl-4 basis-auto shrink-0 w-28"
+          <Carousel className="relative w-full md:w-[350px]">
+            <CarouselPrevious className="cursor-pointer absolute left-1 z-10" />
+            <CarouselContent className="-ml-4 flex mt-3">
+              {currentProduct?.images?.map((img, index) => (
+                <CarouselItem
+                  key={index}
+                  className="pl-4 basis-auto shrink-0 w-28"
 
-                onClick={() => handleGallery(img)}
-              >
-                <div className="relative group cursor-pointer ">
-                  <img
-                    src={`${baseUrlImage}/${img}`}
-                    alt={`thumbnail-${index}`}
-                      className="w-full h-28 md:h-20 object-cover rounded-md overflow-hidden"
+                  onClick={() => handleGallery(img)}
+                >
+                  <div className="relative group cursor-pointer w-full ">
+                    <img
+                      src={`${baseUrlImage}/${img}`}
+                      alt={`thumbnail-${index}`}
+                      className="w-full h-28   md:h-full object-cover rounded-md overflow-hidden"
 
-                  />
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/30 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselNext className="cursor-pointer absolute right-1 z-10" />
-        </Carousel>
+                    />
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-black/30 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselNext className="cursor-pointer absolute right-1 z-10" />
+          </Carousel>
         </div>
 
         <div>
@@ -125,67 +125,88 @@ const [parentImage, setParentImage] = useState<string | null>(null);
             {currentProduct?.name}
           </h2>
 
-              <p className="text-gray-400 mb-3 capitalize">{currentProduct?.description}</p>
+          <p className="text-gray-400 mb-3 capitalize">{currentProduct?.description}</p>
           <div className="grid grid-cols-1 md:grid-cols-6 ">
 
             <div className="col-span-3 ">
-          <p className="text-gray-400 capitalize mb-2">
-            <strong>Price :</strong> {currentProduct?.mainPrice}
-          </p>
-          <p className="text-gray-400 capitalize mb-2">
-            <strong>Stock :</strong> {currentProduct?.stock}
-          </p>
-               <p className="text-gray-400 capitalize mb-2">
-            <strong>Sale Price :</strong> {currentProduct?.salePrice}
-          </p>
+              <p className="text-gray-400 capitalize mb-2">
+                <strong>Price :</strong> {currentProduct?.mainPrice}
+              </p>
+              <p className="text-gray-400 capitalize mb-2">
+                <strong>Sale Price :</strong> {currentProduct?.salePrice}
+              </p>
+              <p className="text-gray-400 capitalize mb-2">
+                <strong>Discount Percent :</strong> {currentProduct?.discountPercent}
+              </p>
+
             </div>
 
 
 
             <div className="col-span-3">
-          <p className="text-gray-400 capitalize mb-2">
-            <strong>Category :</strong> {categoryName}
-          </p>
-          <p className="text-gray-400 capitalize mb-2">
-            <strong>Discount Percent :</strong> {currentProduct?.discountPercent}
-          </p>
+              <p className="text-gray-400 capitalize mb-2">
+                <strong>Category :</strong> {categoryName}
+              </p>
+              <p className="text-gray-400 capitalize mb-2">
+                <strong>Stock :</strong> {currentProduct?.stock}
+              </p>
+              {/* <p className="text-gray-400 capitalize mb-2">
+                <strong>Colors :</strong> {currentProduct?.colors}
+              </p> */}
+              <p className="text-gray-400 capitalize mb-2 flex items-center gap-2 flex-wrap">
+                <strong>Colors :</strong>
+                {currentProduct?.colors && currentProduct.colors.length > 0 ? (
+                  currentProduct.colors.map((color, index) => (
+                    <span
+                      key={index}
+                      className="w-6 h-6 rounded-full border border-gray-300 shadow-sm"
+                      style={{ backgroundColor: color }}
+                      title={color}
+                    />
+                  ))
+                ) : (
+                  <span className="text-gray-500 ml-2">No colors</span>
+                )}
+              </p>
+
+
             </div>
           </div>
-          
-         
+
+
         </div>
       </div>
     </div>
 
-{isDelete && (
-  <PopupCommon
-    open={isDelete}
-    onOpenChange={setIsDelete}
-    title="Are you sure you want to delete this product?"
-    // text="Only Admin can restore the product after deletion."
-    classNameText="text-center text-gray-400"
-    classNameTitle="!text-red-700 text-3xl text-center"
-    image={deleteImage}
-    options={[
-      {
-        label: "Yes, Delete it",
-        className: "bg-red-600 hover:bg-red-700",
-        onClick: async () => {
-          await handleDeleteClick(currentProduct!.id);
-          setIsDelete(false); // close popup
-        },
-      },
-      {
-        label: "Cancel",
-        className: "bg-gray-500 hover:bg-gray-600",
-        onClick: () => setIsDelete(false),
-      },
-    ]}
-    showCancel={false}
-    showAction={false}
-  />
-)}
+    {isDelete && (
+      <PopupCommon
+        open={isDelete}
+        onOpenChange={setIsDelete}
+        title="Are you sure you want to delete this product?"
+        // text="Only Admin can restore the product after deletion."
+        classNameText="text-center text-gray-400"
+        classNameTitle="!text-red-700 text-3xl text-center"
+        image={deleteImage}
+        options={[
+          {
+            label: "Yes, Delete it",
+            className: "bg-red-600 hover:bg-red-700",
+            onClick: async () => {
+              await handleDeleteClick(currentProduct!.id);
+              setIsDelete(false); // close popup
+            },
+          },
+          {
+            label: "Cancel",
+            className: "bg-gray-500 hover:bg-gray-600",
+            onClick: () => setIsDelete(false),
+          },
+        ]}
+        showCancel={false}
+        showAction={false}
+      />
+    )}
 
   </>
-  
+
 }

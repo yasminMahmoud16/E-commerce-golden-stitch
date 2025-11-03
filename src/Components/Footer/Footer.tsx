@@ -6,7 +6,7 @@ import cornerBottomLeft from "@/assets/Images/cornerBottomLeft.png"
 import { Icons } from '@/assets/Icons/icons'
 import { Link } from 'react-router-dom'
 export default function Footer() {
-    const appName = import.meta.env.VITE_APPLICATION_NAME;
+    // const appName = import.meta.env.VITE_APPLICATION_NAME;
 
     return <>
         <footer id='contact' className=' md:h-[200px] flex items-center justify-center bg-radial from-dark-blue-1 via-dark-blue-2 to-dark-blue-nav  relative'>

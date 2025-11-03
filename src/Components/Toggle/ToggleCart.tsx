@@ -1,4 +1,3 @@
-import cornerBottomRightHero from "@/assets/Images/cornerBottomRightHero.png"
 import {
     Sheet,
     SheetContent,
@@ -64,7 +63,9 @@ export default function ToggleCart({ openCart, setOpenCart, title }: ToggleCommo
                                 <CartCommon
                                     cartList={cartItems?.map((item: CartItemFromAPI) => ({
                                         productId: item.productId,
-                                        quantity: item.quantity
+                                        quantity: item.quantity,
+                                        color:item.color
+                                        
                                     }))}
                                     type={CardEnum.cart}
                                 />

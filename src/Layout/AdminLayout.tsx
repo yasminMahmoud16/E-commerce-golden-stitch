@@ -61,7 +61,7 @@ export default function AdminLayout() {
     return <>
 
         <NavbarUser />
-        <PagesWrapper className="relative">
+        <PagesWrapper className="relative ">
             <div className="absolute right-0 bottom-0">
                 <img src={cornerBottomRightHero} alt="cornerBottomRightHero" className="w-40" />
             </div>
@@ -79,16 +79,22 @@ export default function AdminLayout() {
 
                         <img src={border} alt="border" className=' w-80 md:w-90 absolute -bottom-5 left-9' />
                     </div>
-                    <div className="container">
+                    <div className="container max-w-none ">
 
-                        
-
-
-                        <div className='bg-dark-blue-nav  mb-5 rounded-3xl w-full md:max-w-lg lg:max-w-6xl   p-6 shadow-md'>
-
-                            <Outlet />
-                        </div>
-                    </div>
+    <div className="
+        bg-dark-blue-nav mb-5 rounded-3xl 
+        w-full 
+        max-w-md        
+        md:max-w-2xl    
+        lg:max-w-5xl    
+        xl:max-w-7xl    
+        2xl:max-w-7xl 
+        mx-auto         
+        p-3 shadow-md 
+    ">
+        <Outlet />
+    </div>
+</div>
                 </section>
             </SidebarProvider>
         </PagesWrapper>

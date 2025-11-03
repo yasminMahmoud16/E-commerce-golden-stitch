@@ -47,7 +47,7 @@ export default function ProductsLanding() {
 
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-    const baseUrlImage = "https://www.dev.goldenstitchleathers.com";
+    const baseUrlImage = "https://www.goldenstitchleathers.com/api";
 
     const [searchParams] = useSearchParams();
     const categorySlugUrl = searchParams.get("category") || "";
@@ -96,11 +96,11 @@ export default function ProductsLanding() {
         navigate(`/product-details/${id}`);
     };
 
-    const handleOnClickCart = async (id: string, quantity: number) => {
-        await addToCart(id, quantity);
+    const handleOnClickCart = async (id: string, quantity: number, color:string) => {
+        await addToCart({productId:id, quantity, color});
     };
 
-    const handleOnClickWishList = async (id: string) => {
+    const handleOnClickWishList = async (id: string): Promise<void> => {
         if (!token) setOpen(true);
         await addToWishList(id);
     };
@@ -179,7 +179,7 @@ export default function ProductsLanding() {
                                             handleOnClickProductDetails(product.id)
                                         }
                                         onClickCart={() =>
-                                            handleOnClickCart(product.id, 1)
+                                            handleOnClickCart(product.id, 1, product.colors[0])
                                         }
                                         onClickWishList={() =>
                                             handleOnClickWishList(product.id)

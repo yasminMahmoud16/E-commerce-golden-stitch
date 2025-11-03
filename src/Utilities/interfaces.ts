@@ -121,13 +121,27 @@ export interface ICategoryContextType {
 export interface ICartContextType {
     cartItems?: CartItemFromAPI[] | null;
     isLoading: boolean;
-    addToCart: (productId: string, quantity: number) => Promise<void>;
-    incrementQuantity: (productId: string, currentQuantity: number) => void;
-    decrementQuantity: (productId: string, currentQuantity: number) => void;
+    // addToCart: (productId: string, quantity: number, color:string) => Promise<void>;
+    addToCart: (params: {
+        productId: string;
+        quantity: number;
+        color: string;
+        showToast?: boolean;
+    }) => Promise<void>;
+    incrementQuantity: (productId: string, currentQuantity: number, color:string) => void;
+    decrementQuantity: (productId: string, currentQuantity: number, color: string) => void;
     removeFromCart: (productId: string) => Promise<void>;
     clearCart: () => Promise<void>;
     getCartItems: () => Promise<CartItemFromAPI[] | undefined>;
     cartRefresh: () => void;
+}
+
+
+export interface ICart {
+    productId: string,
+    quantity: number,
+    color:string,
+    showToast: boolean 
 }
 
 export interface IAuthContextType {
@@ -164,9 +178,11 @@ export interface IProduct {
     createdBy: {
         id?: string;
         username?: string;
+        firstName?: string;
     };
     images: string[];
     attachments?: string[];
+    colors: string[];
     freezedAt: string;
 }
 export interface ICategory {
@@ -211,6 +227,7 @@ export interface IProductUpdateInput {
     };
     attachments?: FileList | File[];
     removedAttachments?: string[];
+    colors?: string[];
 }
 export interface IProductEditInput {
     id?: string;
@@ -225,6 +242,8 @@ export interface IProductEditInput {
     };
     attachments?: FileList | File[];
     removedAttachments?: string[];
+    colors?: string[];
+    removedColors?: string[] |undefined;
 }
 export interface ICategoryUpdateInput {
     id?: string;
@@ -281,6 +300,7 @@ interface IOrderProduct {
         stock: number;
         images: string[]
     };
+    color: string;
     quantity: number;
     unitPrice: number;
     finalPrice: number;
