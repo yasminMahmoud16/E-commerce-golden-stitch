@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 import { useCategoryContext } from "@/Hooks/useAppContexts";
 import { useNavigate } from "react-router-dom";
 // import { useQuery } from "@tanstack/react-query";
-
+// import cat from "@//assets/Images/cat.jpg"
 export default function CategorySlider() {
     const { allCategoriesData } = useCategoryContext();
     const navigate = useNavigate();
@@ -36,8 +36,9 @@ export default function CategorySlider() {
                         >
                             <img
                                 src={`${baseUrlImage}/${category.image}`}
+                                // src={cat}
                                 alt={category.name}
-                                className="w-full h-[500px] object-cover"
+                                className="w-full h-[500px] object-fill"
                             />
 
                             <div className="absolute inset-0 flex justify-center items-center">
@@ -62,7 +63,7 @@ export default function CategorySlider() {
                                     "
                                     onClick={() => handleClickShopNow(category.slug!)}
                                 >
-                                    <p className="relative z-10">Shop Now</p>
+                                    <p className="relative z-10 text-gold-dark font-bold">Shop Now</p>
                                 </Button>
                             </div>
                         </CarouselItem>

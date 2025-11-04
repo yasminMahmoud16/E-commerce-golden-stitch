@@ -81,7 +81,7 @@ onClick={() => onClickCard?.()}
     </div>
       </CardContent>
       <CardHeader className="absolute opacity-0  -bottom-10 bg-gray-900/30 w-full p-2 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:bottom-0">
-        <CardTitle className="text-gray-300 font-semibold text-xl capitalize flex justify-between px-3">
+        <CardTitle className="text-gray-300 font-semibold text-xl capitalize flex justify-between px-6">
           <p>
 
           {title}
@@ -92,13 +92,25 @@ onClick={() => onClickCard?.()}
           </p>
 
         </CardTitle>
-        <CardDescription className="flex items-center justify-center " >
-          <p className="capitalize text-gray-300">{description.slice(0, 60)}</p>
-          <div>
+        <CardDescription className="flex items-center justify-center" >
 
-          <del className="font-light text-sm text-[hsl(22,55%,44%)]  w-25">{mainPrice} EGP</del>
-          <p className="font-bold text-lg text-[#fdd888] w-25 ">{price} EGP</p>
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+            <div className="col-span-4   w-67 px-6">
+               <div>
+
+          <p className="capitalize text-gray-300 ">{description.slice(0, 60)}</p>
           </div>
+            </div>
+            <div className="col-span-2  text-center">
+               <div className="">
+
+            <del className="font-light text-sm text-[hsl(22,55%,44%)]  w-25">{mainPrice} EGP</del>
+            <p className="font-bold text-lg text-[#fdd888] w-25 ">{price} EGP</p>
+          </div>
+            </div>
+          </div>
+         
+         
         </CardDescription>
         
         {/* <CardAction>Card Action</CardAction> */}

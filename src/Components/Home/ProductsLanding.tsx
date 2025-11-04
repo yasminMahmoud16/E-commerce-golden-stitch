@@ -26,7 +26,7 @@ import { Icons } from "@/assets/Icons/icons";
 import { Input } from "../ui/input";
 import type { IProduct } from "@/Utilities/interfaces";
 
-// import image from "@/assets/Images/card1.jpg"
+// import image from "@/assets/Images/cat3.jpg"
 
 export default function ProductsLanding() {
     const {

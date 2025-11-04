@@ -16,7 +16,7 @@ export function useAxios() {
   let refreshing = false; //follow the res
 
   const axiosInstance = axios.create({
-    baseURL:"https://www.goldenstitchleathers.com/api" ,
+    baseURL: "https://www.goldenstitchleathers.com/api" ,
     // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
   });
   // console.log({axiosInstance});
