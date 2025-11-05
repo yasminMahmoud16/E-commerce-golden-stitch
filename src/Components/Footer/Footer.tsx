@@ -30,12 +30,19 @@ export default function Footer() {
                         <h3 className='font-semibold text-xl capitalize text-footer-items '>social app</h3>
                         <div className='flex items-center justify-center gap-2 mt-2'>
 
-                            <span className='w-8 h-8 rounded-full flex items-center justify-center  '><Icons.FaFacebook size={20} className='text-footer-items transition-all duration-500 ease-in-out hover:text-blue-600' /></span>
-                            <a href="https://wa.me/01119866111"
+                            <a href="https://www.facebook.com/GoldenStitchLeathers/" target="_blank" className='cursor-pointer w-8 h-8 rounded-full flex items-center justify-center  '>
+                                <Icons.FaFacebook size={20} className='cursor-pointer text-footer-items transition-all duration-500 ease-in-out hover:text-blue-600' />
+                            </a>
+
+
+                            <a href="https://wa.me/message/U2EYRCEWKMG6N1"
                                 target="_blank"
-                                rel="noopener noreferrer" className='w-8 h-8 rounded-full flex items-center justify-center  '><Icons.FaWhatsapp size={22} className='text-footer-items transition-all duration-500 ease-in-out hover:text-green-400' /></a>
-                            <a href="https://www.instagram.com/gsl3_0/" target="_blank" className='w-8 h-8 rounded-full flex items-center justify-center  '>
-                                <Icons.FaInstagram size={20} className='text-footer-items transition-all duration-500 ease-in-out hover:text-pink-700' />
+                                rel="noopener noreferrer" className='cursor-pointer w-8 h-8 rounded-full flex items-center justify-center  '><Icons.FaWhatsapp size={22} className='cursor-pointer text-footer-items transition-all duration-500 ease-in-out hover:text-green-400' />
+                            </a>
+
+
+                            <a href="https://www.instagram.com/gsl3_0/" target="_blank" className='cursor-pointer w-8 h-8 rounded-full flex items-center justify-center  '>
+                                <Icons.FaInstagram size={20} className='cursor-pointer text-footer-items transition-all duration-500 ease-in-out hover:text-pink-700' />
                             </a>
                         </div>
                     </div>
@@ -47,7 +54,7 @@ export default function Footer() {
                         </div>
                         <div className=" flex   items-center justify-center gap-2 group">
                             <Icons.FaPhoneAlt className="text-md text-footer-items transition-all ease-in-out duration-300 group-hover:text-[hsl(22,55%,44%)] " />
-                            <a href="tel:01119866111" className='text-footer-items text-sm transition-all ease-in-out duration-300 group-hover:text-[hsl(22,55%,44%)] '>01119866111</a>
+                            <a href="https://wa.me/message/U2EYRCEWKMG6N1" target="_blank" className='text-footer-items text-sm transition-all ease-in-out duration-300 group-hover:text-[hsl(22,55%,44%)] '>01119866111</a>
                         </div>
                     </div>
                     <div className="col-span-2 flex flex-col items-center justify-center  ">
