@@ -105,9 +105,9 @@ export default function Navbar() {
           >
             <li>
               <NavLink
-                to="/#hero"
+                to="/#home"
                 className={`relative 
-        ${location.hash === "#hero" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
+        ${location.hash === "#home" ? "text-gold-light after:w-full" : "text-gold after:w-0"} 
         after:content-[''] after:absolute after:left-0 after:-bottom-1 
         after:h-[2px] after:bg-amber-100 after:transition-all after:duration-300 
         hover:after:w-full

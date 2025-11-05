@@ -5,6 +5,7 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/Components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay"
 
 import { Button } from "../ui/button";
 import { useCategoryContext } from "@/Hooks/useAppContexts";
@@ -27,7 +28,19 @@ export default function CategorySlider() {
 
     return (
         <div className="w-full flex justify-center items-center relative">
-            <Carousel className="w-full relative">
+            <Carousel
+                opts={{
+    loop: true,
+    duration: 50,
+    align: "start",
+  }}
+                plugins={[
+        Autoplay({
+            delay: 4000,
+            stopOnInteraction: false
+        }),
+      ]}
+                className="w-full relative">
                 <CarouselContent className="p-0 m-0 gap-0">
                     {allCategoriesData?.docs?.map((category) => (
                         <CarouselItem

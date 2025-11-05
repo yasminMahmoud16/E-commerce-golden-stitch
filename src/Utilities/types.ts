@@ -230,6 +230,7 @@ export type cardProps = cartProps & {
   discount?: number
   image?: string;
   description: string;
+  stock?: number;
   onClickCard?: () => void;
   onClickWishList?: () => void;
   onClickCart?: () => void;

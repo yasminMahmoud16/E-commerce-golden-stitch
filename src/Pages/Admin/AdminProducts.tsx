@@ -284,7 +284,15 @@ export default function AdminProducts() {
 
 
 
-                    <TableCell className="font-medium text-sm text-center">{data.stock}</TableCell>
+                    {data.stock !== 0 ? <>
+                      <TableCell className="font-medium text-sm text-center">
+                        {data.stock}
+                      </TableCell>
+                    </> : <>
+                        <TableCell className="font-medium text-sm text-center  ">
+                        out of stock
+                      </TableCell>
+                    </>}
                     <TableCell className="font-medium text-xs">{data.description.slice(0, 30)}</TableCell>
                   </TableRow>
                 ))}

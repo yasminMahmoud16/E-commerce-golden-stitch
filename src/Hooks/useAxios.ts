@@ -12,9 +12,10 @@ export function useAxios() {
   } = useAuthContext();
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   let refreshing = false; //follow the res
 
+  console.log(refreshing);
+  
   const axiosInstance = axios.create({
     baseURL: "https://www.goldenstitchleathers.com/api" ,
     // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",

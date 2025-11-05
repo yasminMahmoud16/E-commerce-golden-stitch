@@ -175,6 +175,7 @@ export default function ProductsLanding() {
                                         mainPrice={product.mainPrice}
                                         discount={product.discountPercent}
                                         price={product.salePrice}
+                                        stock={product.stock}
                                         onClickCard={() =>
                                             handleOnClickProductDetails(product.id)
                                         }

@@ -117,9 +117,19 @@ useEffect(() => {
 
                                 <div >
                                     <p className="text-md font-semibold text-gold-dark mb-1">
-                                        <span className="text-dark-blue-2 font-light">
                                             stock:
-                                        </span> {product?.stock} </p>
+                                        
+                                        
+                                        {product?.stock !== 0 ? <>
+                                            <span className="text-dark-blue-2 font-light ml-1">
+                                                {product?.stock}
+                                        </span>
+                                        </> : <>
+                                                <span className="text-dark-blue-2 font-medium ml-1 text-sm">
+                                                    out of stock
+                                        </span>
+                                        </>}
+                                    </p>
 
                                 </div>
 

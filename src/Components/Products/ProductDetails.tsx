@@ -147,9 +147,19 @@ export default function ProductDetails({ product, onBack, onEdit, onDeleteSucces
               <p className="text-gray-400 capitalize mb-2">
                 <strong>Category :</strong> {categoryName}
               </p>
-              <p className="text-gray-400 capitalize mb-2">
-                <strong>Stock :</strong> {currentProduct?.stock}
+
+              {currentProduct?.stock !== 0 ? <>
+                <p className="text-gray-400 capitalize mb-2">
+                <strong className="mr-2">Stock :</strong>
+                {currentProduct?.stock}
               </p>
+              </> : <>
+                  <p className="text-gray-400 capitalize mb-2 ">
+                <strong className="mr-2">Stock :</strong>
+                out of stock
+              </p>
+              </>}
+              
               {/* <p className="text-gray-400 capitalize mb-2">
                 <strong>Colors :</strong> {currentProduct?.colors}
               </p> */}

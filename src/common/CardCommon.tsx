@@ -11,19 +11,20 @@ import { Icons } from "@/assets/Icons/icons"
 
 export default function CardCommon({
   image,
-    title,
+  title,
   description,
   price,
   mainPrice,
   discount,
+  stock,
   onClickCard,
   onClickCart,
   onClickWishList
 
-}:cardProps) {
+}: cardProps) {
   return <>
     <Card
-onClick={() => onClickCard?.()}
+      onClick={() => onClickCard?.()}
       className="group  cursor-pointer w-96 p-0 bg-transparent relative border-none overflow-hidden rounded-none">
       <CardContent className=" w-full p-0">
 
@@ -31,18 +32,18 @@ onClick={() => onClickCard?.()}
         <div className=" w-96 h-76">
 
           <img
-  src={image}
-  alt={title || "product"}
-  className="
+            src={image}
+            alt={title || "product"}
+            className="
     w-full h-full object-fill overflow-hidden
     transition-transform duration-500 ease-in-out
     group-hover:scale-110
   "
-/>
+          />
 
-        {/* <img src={image} alt={title || "product"} className="w-full h-full object-fill  overflow-hidden" /> */}
+          {/* <img src={image} alt={title || "product"} className="w-full h-full object-fill  overflow-hidden" /> */}
         </div>
-            <div
+        <div
           className="
       
         absolute inset-0 
@@ -65,8 +66,8 @@ onClick={() => onClickCard?.()}
               }}
               className="w-9 h-9 rounded-full bg-gray-400/15 flex items-center justify-center">
 
-              
-            <Icons.FaHeart size={20} className="text-gray-50 transition-all duration-300 ease-in-out hover:text-red-800 hover:cursor-pointer"/>
+
+              <Icons.FaHeart size={20} className="text-gray-50 transition-all duration-300 ease-in-out hover:text-red-800 hover:cursor-pointer" />
             </button>
             <button
               onClick={(e) => {
@@ -75,47 +76,51 @@ onClick={() => onClickCard?.()}
               }}
               className="w-9 h-9 rounded-full bg-gray-400/15 flex items-center justify-center mt-3">
 
-            <Icons.FaShoppingBag size={20} className="text-gray-50 transition-all duration-300 ease-in-out hover:text-gold-light hover:cursor-pointer"/>
+              <Icons.FaShoppingBag size={20} className="text-gray-50 transition-all duration-300 ease-in-out hover:text-gold-light hover:cursor-pointer" />
             </button>
           </span>
-    </div>
+        </div>
       </CardContent>
       <CardHeader className="absolute opacity-0  -bottom-10 bg-gray-900/30 w-full p-2 transition-all duration-300 ease-in-out group-hover:opacity-100 group-hover:bottom-0">
         <CardTitle className="text-gray-300 font-semibold text-xl capitalize flex justify-between px-6">
           <p>
 
-          {title}
+            {title}
           </p>
           <p className="text-[hsl(22,55%,44%)] ">
 
-          {discount}%
+            {discount}%
           </p>
 
         </CardTitle>
         <CardDescription className="flex items-center justify-center" >
 
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+          <div className="grid  grid-cols-6 gap-6">
             <div className="col-span-4   w-67 px-6">
-               <div>
+              <div>
 
-          <p className="capitalize text-gray-300 ">{description.slice(0, 60)}</p>
-          </div>
+                <p className="capitalize text-gray-300 ">{description.slice(0, 60)}</p>
+              </div>
+
+              {stock == 0 ? <>
+                <p className=" absolute bottom-27 md:bottom-27 left-2 bg-dark-blue-nav text-gold py-1 px-2 rounded-full text-xs">out of stock</p>
+              </> : null}
             </div>
             <div className="col-span-2  text-center">
-               <div className="">
+              <div className="">
 
-            <del className="font-light text-sm text-[hsl(22,55%,44%)]  w-25">{mainPrice} EGP</del>
-            <p className="font-bold text-lg text-[#fdd888] w-25 ">{price} EGP</p>
-          </div>
+                <del className="font-light text-sm text-[hsl(22,55%,44%)]  w-25">{mainPrice} EGP</del>
+                <p className="font-bold text-lg text-[#fdd888] w-25 ">{price} EGP</p>
+              </div>
             </div>
           </div>
-         
-         
+
+
         </CardDescription>
-        
+
         {/* <CardAction>Card Action</CardAction> */}
       </CardHeader>
-      
+
 
     </Card>
   </>
