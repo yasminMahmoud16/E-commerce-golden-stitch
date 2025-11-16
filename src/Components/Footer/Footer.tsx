@@ -34,6 +34,9 @@ export default function Footer() {
                                 <Icons.FaFacebook size={20} className='cursor-pointer text-footer-items transition-all duration-500 ease-in-out hover:text-blue-600' />
                             </a>
 
+                             <a href="https://www.tiktok.com/@golden.stitch964?_r=1&_t=ZS-91S92Q5tIUk" target="_blank" className='cursor-pointer w-8 h-8 rounded-full flex items-center justify-center  '>
+                                <Icons.FaTiktok size={20} className='cursor-pointer text-footer-items transition-all duration-500 ease-in-out hover:text-gray-950' />
+                            </a>
 
                             <a href="https://wa.me/message/U2EYRCEWKMG6N1"
                                 target="_blank"
@@ -44,6 +47,7 @@ export default function Footer() {
                             <a href="https://www.instagram.com/gsl3_0/" target="_blank" className='cursor-pointer w-8 h-8 rounded-full flex items-center justify-center  '>
                                 <Icons.FaInstagram size={20} className='cursor-pointer text-footer-items transition-all duration-500 ease-in-out hover:text-pink-700' />
                             </a>
+                           
                         </div>
                     </div>
                     <div className="col-span-2 flex  flex-col  items-center justify-center gap-2">

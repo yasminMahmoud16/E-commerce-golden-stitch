@@ -29,6 +29,7 @@ import { CiCircleMinus } from "react-icons/ci";
 import { CiCirclePlus } from "react-icons/ci";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa";
+import { FaTiktok } from "react-icons/fa";
 
 export const Icons = {
     FaRegEye,
@@ -54,5 +55,5 @@ export const Icons = {
     BiSolidCategoryAlt,
     FaUsers,
     AiOutlinePlusCircle,
-    IoLogOut, FaCamera, IoMdArchive, MdOutlineRestore, MdCancel, CiCircleMinus, CiCirclePlus, FaPhoneAlt, FaWhatsapp
+    IoLogOut, FaCamera, IoMdArchive, MdOutlineRestore, MdCancel, CiCircleMinus, CiCirclePlus, FaPhoneAlt, FaWhatsapp, FaTiktok
 };
