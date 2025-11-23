@@ -91,12 +91,32 @@ const login = async (
   return { Authorization: `${signature} ${currentRefreshToken}` };
 };
 
-  const logout = async (values?: logoutFlags): Promise<void> => {
-    try {
-      const res = await axiosInstance.post(`/user/logout`, values, {
-        headers: getAuthHeader(),
-      });
 
+const logout = async (values?: logoutFlags): Promise<void> => {
+  try {
+    const res = await axiosInstance.post(`/user/logout`, values, {
+      headers: getAuthHeader(),
+    });
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("role");
+
+    setToken(null);
+    setRefreshToken(null);
+    setRole(null);
+    setUserId(null);
+
+    toast.success(res.data?.message);
+  } catch (error) {
+  if (axios.isAxiosError(error)) {
+    const detailedError =
+      error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+    const generalError = error?.response?.data?.message;
+
+    const message = detailedError || generalError;
+
+    if (message) {
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("role");
@@ -106,26 +126,64 @@ const login = async (
       setRole(null);
       setUserId(null);
 
-      toast.success(res.data?.message);
-      // navigate?.("/login");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (axios.isAxiosError(error)) {
-          // console.log({errorlogout:error});
-          
-          const detailedError =
-            error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
-          const generalError = error?.response?.data?.message;
-         
-          // console.log({generalError,detailedError });
-          
-          toast.error(detailedError || generalError || "logout issue ");
-        }
-        
-      }
-      
+      // window.location.href = "/login";
+
+      return;
     }
-  };
+
+    // toast.error(message || "logout issue");
+  }
+}
+
+};
+
+  // const logout = async (values?: logoutFlags): Promise<void> => {
+  //   try {
+  //     const res = await axiosInstance.post(`/user/logout`, values, {
+  //       headers: getAuthHeader(),
+  //     });
+      
+      
+  //     localStorage.removeItem("token");
+  //     localStorage.removeItem("refreshToken");
+  //     localStorage.removeItem("role");
+      
+  //     setToken(null);
+  //     setRefreshToken(null);
+  //     setRole(null);
+  //     setUserId(null);
+      
+  //     toast.success(res.data?.message);
+  //     // navigate?.("/login");
+  //   } catch (error) {
+  //     if (axios.isAxiosError(error)) {
+  //       if (axios.isAxiosError(error)) {
+  //         console.log({errorlogout:error});
+          
+  //         const detailedError =
+  //           error?.response?.data?.cause?.validationErrors?.[0]?.issues?.[0]?.message;
+  //         const generalError = error?.response?.data?.message;
+        
+  //         if (detailedError || generalError) {
+  //             localStorage.removeItem("token");
+  //             localStorage.removeItem("refreshToken");
+  //             localStorage.removeItem("role");
+              
+  //             setToken(null);
+  //             setRefreshToken(null);
+  //             setRole(null);
+  //             setUserId(null);
+  //             return;
+  //           }
+  //           // console.log({generalError,detailedError });
+  //           toast.error(detailedError || generalError || "logout issue ");
+          
+  //       }
+        
+  //     }
+      
+  //   }
+  // };
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");

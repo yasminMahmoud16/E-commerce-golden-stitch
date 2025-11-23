@@ -2,14 +2,30 @@
 
 import axios from "axios";
 import { useAuthContext } from "./useAppContexts";
+import { useState } from "react";
 
 export function useAxios() {
+    const [_role, setRole] = useState<string | null>("Bearer");
+    const [_userId, setUserId] = useState<string | null>(null);
   const {
     setToken,
     setRefreshToken,
     getAuthHeader,
     getRefreshHeader,
   } = useAuthContext();
+
+  const handleForceLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("role");
+
+    setToken(null);
+    setRefreshToken(null);
+    setRole(null);
+    setUserId(null);
+
+    window.location.href = "/login";
+  };
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   let refreshing = false; //follow the res
@@ -18,7 +34,7 @@ export function useAxios() {
   
   const axiosInstance = axios.create({
     baseURL: "https://www.goldenstitchleathers.com/api" ,
-    // baseURL: import.meta.env.VITE_BASE_URL || "http://localhost:3000",
+    // baseURL: import.meta.env.VITE_BASE_URL || "",
   });
   // console.log({axiosInstance});
   
@@ -83,10 +99,20 @@ export function useAxios() {
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
+
       // check token expired
       const isTokenExpired =
         error.response?.status === 401 ||
         error.response?.data?.message?.toLowerCase()?.includes("jwt expired");
+
+      // logout condition
+      const logoutRes =
+        error.response?.data?.message?.toLowerCase()?.includes("not registered account");
+
+      if (logoutRes) {
+        handleForceLogout();
+        return Promise.reject(error);
+      }
 
       // retry if token end
       if (isTokenExpired && !originalRequest._retry) {
@@ -96,28 +122,22 @@ export function useAxios() {
         const newCredentials = await getNewCredentials();
         refreshing = false;
 
-        // refresh token success
-        
         if (newCredentials?.access_token) {
           const role = localStorage.getItem("role");
           const signature = role === "System" ? "System" : "Bearer";
           originalRequest.headers["Authorization"] = `${signature} ${newCredentials.access_token}`;
 
-          // req re-back
           return axiosInstance(originalRequest);
         } else {
-          // silent error
-          return Promise.reject({ ...error, silent: true });
+          handleForceLogout();
+          return Promise.reject(error);
         }
       }
-
-      // don't show jwt 
 
       const jwtMsg = error?.response?.data?.message?.toLowerCase?.() || "";
       if (jwtMsg.includes("jwt expired")) {
         return Promise.reject({ ...error, silent: true });
       }
-      // return author errors
 
       return Promise.reject(error);
     }
@@ -127,37 +147,67 @@ export function useAxios() {
   //   (response) => response,
   //   async (error) => {
   //     const originalRequest = error.config;
-
+  //     // check token expired
   //     const isTokenExpired =
   //       error.response?.status === 401 ||
   //       error.response?.data?.message?.toLowerCase()?.includes("jwt expired");
+  //       // error.response?.data?.message?.toLowerCase()?.includes("Not registered account");
+  //     const logoutRes =
 
+  //       error.response?.data?.message?.toLowerCase()?.includes("Not registered account");
+
+  //     if (logoutRes) {
+  //       localStorage.removeItem("token");
+  //       localStorage.removeItem("refreshToken");
+  //       localStorage.removeItem("role");
+
+  //       setToken(null);
+  //       setRefreshToken(null);
+  //       setRole(null);
+  //       setUserId(null);
+
+  //       // 2. حولي مباشرة لصفحة اللوجين
+  //       window.location.href = "/login";
+
+  //       // 3. أوقف الكود
+  //       return Promise.reject(error);
+  //     }
+  //     // retry if token end
   //     if (isTokenExpired && !originalRequest._retry) {
   //       originalRequest._retry = true;
-  //       refreshing = true; //start refresh
-  //       const newCredentials = await getNewCredentials();
-  //       refreshing = false; //refresh ending 
+  //       refreshing = true;
 
+  //       const newCredentials = await getNewCredentials();
+  //       refreshing = false;
+
+  //       // refresh token success
+        
   //       if (newCredentials?.access_token) {
   //         const role = localStorage.getItem("role");
   //         const signature = role === "System" ? "System" : "Bearer";
   //         originalRequest.headers["Authorization"] = `${signature} ${newCredentials.access_token}`;
 
+  //         // req re-back
   //         return axiosInstance(originalRequest);
   //       } else {
-  //         // localStorage.removeItem("token");
-  //         // localStorage.removeItem("refreshToken");
-  //         // return Promise.resolve({ data: null }); 
-  //         // return Promise.reject(error)
-  //         // return Promise.reject({ ...error, silent: true });
+  //         // silent error
+  //         return Promise.reject({ ...error, silent: true });
   //       }
   //     }
-      
-  //     // return Promise.resolve({ data: null }); 
+
+  //     // don't show jwt 
+
+  //     const jwtMsg = error?.response?.data?.message?.toLowerCase?.() || "";
+  //     if (jwtMsg.includes("jwt expired")) {
+  //       return Promise.reject({ ...error, silent: true });
+  //     }
+  //     // return author errors
+
   //     return Promise.reject(error);
-  //     // return Promise.reject({ ...error, silent: true });
   //   }
   // );
+
+
 
   return axiosInstance;
 }
