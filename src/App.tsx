@@ -70,9 +70,9 @@ const router = createHashRouter([
         path: "product-details/:id",
         element: (
           <Suspense fallback={<SpinnerCustom />}>
-            <Guard>
+            {/* <Guard> */}
               <ProductDetails />
-            </Guard>
+            {/* </Guard> */}
           </Suspense>
         ),
       },
@@ -80,9 +80,9 @@ const router = createHashRouter([
         path: "products",
         element: (
           <Suspense fallback={<SpinnerCustom />}>
-            <Guard>
+            {/* <Guard> */}
               <Products />
-            </Guard>
+            {/* </Guard> */}
           </Suspense>
         ),
       },
